@@ -1,7 +1,7 @@
 ---
 layout: page
 title: OpenCL
-permalink: /02_opencl/
+permalink: /opencl/
 ---
 
 ## Clone the repository
@@ -11,4 +11,4 @@ permalink: /02_opencl/
   cd knowledge_architecture
 ```
 
-[API](opencl/OpenCL_Note)
+[API](./opencl_note/OpenCL_Note)

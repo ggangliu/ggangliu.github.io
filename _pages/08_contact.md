@@ -9,4 +9,3 @@ permalink: /contact/
   at the <a href="http://www.illinois.edu" target="_blank">University of Illinois</a>.
 
   Questions, comments, and discussions can be posted on <a href="https://groups.google.com/d/forum/chai-dev" target="_blank">chai-dev</a>.
-
