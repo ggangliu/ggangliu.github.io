@@ -11,4 +11,4 @@ permalink: /opencl/
   cd knowledge_architecture
 ```
 
-[API](/_pages/opencl_note/OpenCL_Note)
+[API](/opencl_note/OpenCL_Note)
