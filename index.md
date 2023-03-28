@@ -2,16 +2,11 @@
 layout: default
 ---
 
-# Overview
+# Welcome to ggangliu's Pages
 
-Here is a personal study website.  
-
-Please cite the following paper if you find how to use:
+Here is a personal learning website.  
+Please cite the following link:
 
 - Related public as follow
 
-  In *Proceedings of IEEE International Symposium on Performance Analysis of Systems and Software (ISPASS)*, 2017.
-  [\[pdf\]](/assets/ispass17.pdf)
-  [\[slides\]](/assets/ispass17.pptx)
-  [\[bibtex\]](/assets/ispass17.bib)
-
+  > Nothing right now
