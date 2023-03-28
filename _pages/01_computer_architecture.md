@@ -5,6 +5,10 @@ show_position: home
 permalink: /computer_architecture/
 ---
 
+## GPGPU
+
+## Computer Architecture
+
 ## Clone the repository
 
 ```#!/bash/sh
