@@ -1,6 +1,6 @@
-# OpenCL Note
+# OpenCL
 
-## API
+## OpenCL API
 
 ### async_work_group_copy
 
@@ -55,4 +55,5 @@ __kernel void test(__global float *x) {
 - <https://man.opencl.org/async_work_group_copy.html>
 
 ### Download
-[\[PDF\]](/assets/OpenCL_Note.pdf)
+
+[[PDF]](/assets/OpenCL_Note.pdf)
