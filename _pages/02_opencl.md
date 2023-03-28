@@ -1,7 +1,7 @@
 ---
 layout: page
 title: OpenCL
-permalink: /opencl/
+permalink: /02_opencl/
 ---
 
 ## Clone the repository
@@ -10,3 +10,5 @@ permalink: /opencl/
   git clone https://github.com/ggangliu/knowledge_architecture.git
   cd knowledge_architecture
 ```
+
+[API](opencl/OpenCL_Note)
