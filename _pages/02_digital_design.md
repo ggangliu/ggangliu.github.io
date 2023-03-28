@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Digital Design
+show_position: home
 permalink: /digital_design/
 ---
 

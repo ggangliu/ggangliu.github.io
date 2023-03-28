@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Publications
+show_position: home
 permalink: /publications/
 ---
 

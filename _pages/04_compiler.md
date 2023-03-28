@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Compiler
+show_position: home
 permalink: /compiler/
 ---
 

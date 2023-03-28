@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Computer Architecture
+show_position: home
 permalink: /computer_architecture/
 ---
 

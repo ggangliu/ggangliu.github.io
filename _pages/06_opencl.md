@@ -1,6 +1,7 @@
 ---
 layout: page
 title: OpenCL
+show_position: home
 permalink: /opencl/
 ---
 

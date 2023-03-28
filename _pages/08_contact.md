@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Contact
+show_position: home
 permalink: /contact/
 ---
 

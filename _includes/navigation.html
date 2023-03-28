@@ -5,7 +5,7 @@
 <nav>
 <ul>
 <li><a href="/">Home</a></li>
-{% for page in site.pages %} {% if page.title %}
+{% for page in site.pages %} {% if page.show_position %}
 <li><a href="{{ page.url }}">{{ page.title }}</a></li>
 {% endif %} {% endfor %}
 </ul>

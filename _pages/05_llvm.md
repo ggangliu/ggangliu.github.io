@@ -1,6 +1,7 @@
 ---
 layout: page
 title: LLVM
+show_position: home
 permalink: /llvm/
 ---
 
