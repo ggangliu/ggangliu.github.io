@@ -1,10 +1,10 @@
 ---
 layout: post
 title: "Welcome to my first post"
-tag: archived
+tags: archived
 ---
 
-# How to create a post
+## How to create a post
 
 **Hello world**, this is my first post
 

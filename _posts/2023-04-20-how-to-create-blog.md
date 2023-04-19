@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Welcome to my first blog"
-tag: recent
+tags: recent
 ---
 
 ## How to create a blog
