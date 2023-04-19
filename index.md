@@ -7,6 +7,10 @@ layout: default
 Here is a personal learning website.  
 Please cite the following link:
 
-- Related public as follow
-
-  > Nothing right now
+<ul>
+  {% for post in site.posts %} 
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>

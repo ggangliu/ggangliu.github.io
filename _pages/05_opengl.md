@@ -1,6 +1,6 @@
 ---
 layout: page
-title: LLVM
+title: OpenGL
 show_position: home
 permalink: /llvm/
 ---

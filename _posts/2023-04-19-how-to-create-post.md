@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Welcome to my first post"
-tag: Archived
+tags: Archived blog
 ---
 
 ## How to create a post
