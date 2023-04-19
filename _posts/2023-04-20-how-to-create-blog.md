@@ -4,7 +4,7 @@ title: "Welcome to my first blog"
 tag: recent
 ---
 
-# How to create a blog
+## How to create a blog
 
 **Hello world**, this is my first blog
 
