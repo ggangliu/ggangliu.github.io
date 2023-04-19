@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "OpenCL"
-tags: archived
+tag: Archived
 ---
 
 ## OpenCL API
