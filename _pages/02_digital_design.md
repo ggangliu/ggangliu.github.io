@@ -6,7 +6,19 @@ permalink: /digital_design/
 ---
 
 ## Amaranth HDL
+
 Here we plan to implement a RISC-V cpu core
+
+### first-riscv
+
+#### Architecture Design
+
+- register_file
+- alu
+- csr
+- mem
+  - rom
+  - ram
 
 ## Clone the repository
 
