@@ -10,7 +10,7 @@ Please cite the following link:
 <ul>
   {% for post in site.posts %} 
     <li>
-      <i> {{ post.date }} </i> <a href="{{ post.url }}">{{ post.title }}</a>
+      <a href="{{ post.url }}">{{ post.title }}</a>
     </li>
   {% endfor %}
 </ul>
