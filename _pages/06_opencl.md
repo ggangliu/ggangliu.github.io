@@ -5,11 +5,14 @@ show_position: home
 permalink: /opencl/
 ---
 
-## Clone the repository
+{% for tag in site.tags %}
+{% if tag[0] == "opencl" %}
+  <h3>{{ tag[0] }}</h3>
+  <ul>
+    {% for post in tag[1] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endfor %}
 
-```#!/bash/sh
-  git clone https://github.com/ggangliu/knowledge_architecture.git
-  cd knowledge_architecture
-```
-
-[API](/opencl_note/opencl_note)
