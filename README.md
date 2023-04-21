@@ -1,3 +1,3 @@
-# Welcome to ggangliu's Pages
+# chipsandfree
 
-This repo is a personal website
+This repo is for sharing some chips articles and RISC-V Playground project
