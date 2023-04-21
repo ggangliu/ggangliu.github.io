@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "OpenCL"
 tags: Archived opencl
 ---
+
+记录OpenCL API async_work_group_copy()的使用方法
 
 ## OpenCL API
 
