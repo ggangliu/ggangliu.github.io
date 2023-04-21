@@ -1,14 +1,14 @@
-title: Chips and Free
+title: Chips and Freedom
 author:
-  name: chipsandfree
+  name: ggangliu
   email: ggangliu@gmail.com
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
-  Write an awesome description for your new site here. You can edit this line
-  in _config.yml. It will appear in your document head meta (for Google search
-  results) and in your feed.xml site description.
+  ggangliu's Blog, would like to share some summary and study notes.
+  Here may contain some chips knowledge and computer architecture related things.
+  RISC-V also is my favorite topic.
 
 # Build settings
 
@@ -60,9 +60,7 @@ header_pages:
    - _pages/07_Contact.md
 
 disqus:
-    shortname: chipsandfree-github-io
-
-
+    shortname: gganglius-blog
 
 # Set to `true` to show excerpts on the homepage.
 #
