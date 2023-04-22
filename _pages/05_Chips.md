@@ -2,7 +2,7 @@
 layout: page
 title: Chips
 show_position: home
-permalink: /Other/
+permalink: /Chips/
 ---
 
 ## Nvidia
