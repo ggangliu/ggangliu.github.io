@@ -1,14 +1,17 @@
 ---
 layout: page
-title: RISCV
+title: GPU
 show_position: home
-permalink: /RISCV/
+permalink: /GPU/
 ---
 
-## RISC-V
+## Computer Graphic
+
+## OpenGL
 
 {% for tag in site.tags %}
-{% if tag[0] == "riscv" %}
+{% if tag[0] == "opengl" %}
+  <h3>{{ tag[0] }}</h3>
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -17,19 +20,11 @@ permalink: /RISCV/
 {% endif %}
 {% endfor %}
 
-## First RISC-V
-
-### Architecture Design
-
-- register_file
-- alu
-- csr
-- mem
-  - rom
-  - ram
+## OpenCL
 
 {% for tag in site.tags %}
-{% if tag[0] == "first" %}
+{% if tag[0] == "opencl" %}
+  <h3>{{ tag[0] }}</h3>
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
