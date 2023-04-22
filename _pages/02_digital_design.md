@@ -9,13 +9,4 @@ permalink: /digital_design/
 
 Here we plan to implement a RISC-V cpu core
 
-### first-riscv
 
-#### Architecture Design
-
-- register_file
-- alu
-- csr
-- mem
-  - rom
-  - ram

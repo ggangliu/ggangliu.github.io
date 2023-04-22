@@ -14,3 +14,14 @@ permalink: /RISCV/
   </ul>
 {% endif %}
 {% endfor %}
+
+### first-riscv
+
+#### Architecture Design
+
+- register_file
+- alu
+- csr
+- mem
+  - rom
+  - ram

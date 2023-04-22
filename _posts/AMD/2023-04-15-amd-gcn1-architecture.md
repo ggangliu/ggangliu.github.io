@@ -1,6 +1,6 @@
 ---
 layout: post
-tags: amd
+tags: amd-chips
 comments: false
 ---
 

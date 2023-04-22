@@ -2,7 +2,7 @@
 layout: post
 title: "NVIDIA TESLA V100 GPU ARCHITECTURE"
 comments: true
-tags: nvidia
+tags: nvidia-arch
 ---
 
 # NVIDIA TESLA V100 GPU ARCHITECTURE

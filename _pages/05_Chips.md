@@ -1,14 +1,14 @@
 ---
 layout: page
-title: Compiler
+title: Chips
 show_position: home
-permalink: /compiler/
+permalink: /Other/
 ---
 
-## Compiler
+## Nvidia
 
 {% for tag in site.tags %}
-{% if tag[0] == "compiler" %}
+{% if tag[0] == "nvidia-chips" %}
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -17,10 +17,22 @@ permalink: /compiler/
 {% endif %}
 {% endfor %}
 
-## LLVM
+## AMD
 
 {% for tag in site.tags %}
-{% if tag[0] == "llvm" %}
+{% if tag[0] == "amd-chips" %}
+  <ul>
+    {% for post in tag[1] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endfor %}
+
+## Other-chips
+
+{% for tag in site.tags %}
+{% if tag[0] == "other-chips" %}
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>

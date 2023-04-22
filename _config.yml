@@ -52,12 +52,12 @@ include:
   - _pages
 
 header_pages:
-   - _pages/01_NVIDIA.md
-   - _pages/02_AMD.md
+   - _pages/01_Computer-Architecture.md
+   - _pages/02_Digtial-Design.md
    - _pages/03_RISCV.md
-   - _pages/04_First.md
-   - _pages/05_Other.md
-   - _pages/07_Contact.md
+   - _pages/04_Compiler.md
+   - _pages/05_Chips.md
+   - _pages/06_Contact.md
 
 disqus:
     shortname: gganglius-blog
