@@ -1,6 +1,6 @@
 ---
 layout: post
-tags: Archived opencl
+tags: archived opencl
 ---
 
 记录OpenCL API async_work_group_copy()的使用方法
@@ -55,10 +55,7 @@ __kernel void test(__global float *x) {
 
 ### Reference
 
-- <https://stackoverflow.com/questions/15545841/how-to-use-async-work-group-copy-in-opencl>
-- <https://registry.khronos.org/OpenCL/specs/opencl-1.0.pdf#page=201>
-- <https://man.opencl.org/async_work_group_copy.html>
+- [how-to-use-async-work-group-copy-in-opencl](https://stackoverflow.com/questions/15545841/how-to-use-async-work-group-copy-in-opencl)
+- [opencl-1.0.pdf](https://registry.khronos.org/OpenCL/specs/opencl-1.0.pdf#page=201)
+- [async_work_group_copy](https://man.opencl.org/async_work_group_copy.html)
 
-### Download
-
-[[PDF]](/assets/OpenCL_Note.pdf)
