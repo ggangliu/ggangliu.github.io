@@ -53,7 +53,7 @@ include:
 
 header_pages:
    - _pages/01_Computer-Architecture.md
-   - _pages/02_Digtial-Design.md
+   - _pages/02_Digital-Design.md
    - _pages/03_RISCV.md
    - _pages/04_Compiler.md
    - _pages/05_Chips.md
