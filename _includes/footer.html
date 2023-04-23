@@ -5,23 +5,39 @@
 
     <div class="footer-col-wrapper">
       <div class="footer-col">
+<!--
         <p class="feed-subscribe">
-          <a href="https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom&amp;loc=en_US" onclick="window.open(this.href, 'mywin',
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
                     'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
             <svg class="svg-icon orange">
               <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
             </svg>
             <span>Subscribe</span>
           </a>
-<!--       https://feeds.feedburner.com/chipsandfreedom
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
           <a href="{{ site.feed.path | default: 'feed.xml' | absolute_url }}">
             <svg class="svg-icon orange">
               <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
             </svg>
             <span>Subscribe</span>
           </a>
--->
         </p>
+-->
+          <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+            <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
+            </svg>
+            Enter your email address: </p>
+            <input type="text" style="width:140px" name="email"/>
+            <input type="hidden" value="chipsandfreedom" name="uri"/>
+            <input type="hidden" name="loc" value="en_US"/>
+            <input type="submit" value="Subscribe" />
+          </form>
+
       {%- if site.author %}
         <ul class="contact-list">
           {% if site.author.name -%}
