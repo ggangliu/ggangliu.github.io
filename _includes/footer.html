@@ -26,17 +26,35 @@
           </a>
         </p>
 -->
-          <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
-            <p>
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
             <svg class="svg-icon orange">
               <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
             </svg>
-            Enter your email address: </p>
-            <input type="text" style="width:140px" name="email"/>
-            <input type="hidden" value="chipsandfreedom" name="uri"/>
-            <input type="hidden" name="loc" value="en_US"/>
-            <input type="submit" value="Subscribe" />
-          </form>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&amp;id=3ba7961b0a&amp;f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="{{ 'assets/minima-social-icons.svg#rss' | relative_url }}"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+        </form>
+        <input type="hidden" name="_next" value="thanks.html" />
+        <script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+        <script type='text/javascript'>(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
 
       {%- if site.author %}
         <ul class="contact-list">
