@@ -1,14 +1,14 @@
 ---
 layout: page
-title: RISCV
+title: Amaranth
 show_position: home
-permalink: /RISCV/
+permalink: /Amaranth/
 ---
 
-## RISC-V Basic Knowledge
+## Digital Design
 
 {% for tag in site.tags %}
-{% if tag[0] == "riscv" %}
+{% if tag[0] == "digitial-design" %}
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -17,19 +17,10 @@ permalink: /RISCV/
 {% endif %}
 {% endfor %}
 
-## First RISC-V
-
-### Architecture Design
-
-- register_file
-- alu
-- csr
-- mem
-  - rom
-  - ram
+## Amaranth HDL
 
 {% for tag in site.tags %}
-{% if tag[0] == "first" %}
+{% if tag[0] == "amaranth" %}
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
@@ -37,3 +28,4 @@ permalink: /RISCV/
   </ul>
 {% endif %}
 {% endfor %}
+

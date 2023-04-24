@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Computer Architecture
+title: Architecture
 show_position: home
-permalink: /Computer-Architecture/
+permalink: /Architecture/
 ---
 
 ## Computer Architecture
