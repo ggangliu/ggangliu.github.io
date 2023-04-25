@@ -1,6 +1,6 @@
 ---
 layout: post
-tags: amd-archi
+tags: amd-arch
 comments: false
 ---
 
