@@ -5,8 +5,6 @@ comments: true
 tags: nvidia-arch
 ---
 
-# NVIDIA TESLA V100 GPU ARCHITECTURE
-
 |Name|Transistors|Die size|manufacturing|
 |:---|:---|:---|:---|
 |Tesla GV100|21.1 billion | 815 mm^2^ |TSMC 12nm |

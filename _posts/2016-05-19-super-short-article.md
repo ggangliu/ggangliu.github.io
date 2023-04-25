@@ -1,6 +1,5 @@
 ---
 layout: post
-categories: misc
 ---
 
 # Some articles are just so short that we have to make the footer stick
