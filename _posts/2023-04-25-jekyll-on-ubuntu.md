@@ -38,5 +38,5 @@ Then, localhost:4000
 
 ## How to create a subscribe form on Jekyll blog
 
-[How to create a subscribe form on Jekyll blog](https://blog.webjeda.com/jekyll-subscribe-form/#how-to-create-a-subscribe-form-on-jekyll-blog)
-[Jekyll Contact Form Creation with Added Security](https://blog.webjeda.com/jekyll-contact-form/)
+- [How to create a subscribe form on Jekyll blog](https://blog.webjeda.com/jekyll-subscribe-form/#how-to-create-a-subscribe-form-on-jekyll-blog)
+- [Jekyll Contact Form Creation with Added Security](https://blog.webjeda.com/jekyll-contact-form/)
