@@ -17,7 +17,7 @@ permalink: /Amaranth/
 {% endif %}
 {% endfor %}
 
-## Amaranth HDL
+## [Amaranth HDL](https://amaranth-lang.org/docs/amaranth/latest/)
 
 {% for tag in site.tags %}
 {% if tag[0] == "amaranth" %}
@@ -28,4 +28,3 @@ permalink: /Amaranth/
   </ul>
 {% endif %}
 {% endfor %}
-
