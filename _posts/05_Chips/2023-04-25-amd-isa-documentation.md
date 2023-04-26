@@ -1,5 +1,6 @@
 ---
 layout: post
+title: AMD GPU ISA Documentation
 tags: amd-arch
 comments: false
 ---
