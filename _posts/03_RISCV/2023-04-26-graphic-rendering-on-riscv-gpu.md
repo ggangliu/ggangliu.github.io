@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Accelerating Graphic Rendering on Programmable RISC-V GPUs"
-tags: riscv
+tags: riscv other-arch
 ---
 
 ## Motivation
