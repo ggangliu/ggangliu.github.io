@@ -1,6 +1,6 @@
 ---
 layout: post
 title: "Implementing Hardware Extensions for Multicore RISC-V GPUs"
-tags: riscv
+tags: riscv other-arch
 ---
 
