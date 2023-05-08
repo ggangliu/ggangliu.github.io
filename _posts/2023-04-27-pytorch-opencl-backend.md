@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Pytorch OpenCL backend"
-tags: 
+tags: opencl
 ---
 
 ## Pytorch OpenCL backend - simplified
@@ -24,3 +24,7 @@ tags:
 ```bash
 python mnist.py --device=ocl:0
 ```
+
+## Reference
+
+[dlprimitives.org](http://blog.dlprimitives.org/)
