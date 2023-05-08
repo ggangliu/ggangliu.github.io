@@ -2,9 +2,9 @@ title: Chips and Freedom
 author:
   name:
   email:
-  url: https://yonggangliu.com/
+  url: https://ggangliu.cn/
 
-url: https://yonggangliu.com/
+url: https://ggangliu.cn/
 
 # The `>` after `description:` means to ignore line-breaks until next key.
 # If you want to omit the line-break after the end of text, use `>-` instead.
@@ -58,7 +58,7 @@ header_pages:
    - _pages/01_Architecture.md
    - _pages/02_Amaranth.md
    - _pages/03_RISCV.md
-   - _pages/04_Compiler.md
+   - _pages/04_Software.md
    - _pages/05_Chips.md
    - _pages/06_Contact.md
 
