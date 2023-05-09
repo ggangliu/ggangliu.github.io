@@ -94,7 +94,7 @@ LLVM IR到指令选择之间的一些主要流程及各阶段中的存在形式
 
 ### Code emission
 
-![Code emission](../images/machine-code-framework.png)
+![Code emission](/assets/machine-code-framework.png)
 
 All the steps from an MI instruction to MCInst
 
