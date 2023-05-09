@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "如何使用Markdown编写技术文档"
-tags: Latest blog
+title: "How to use Markdown to write technology documents"
+tags: blog
 ---
 
 ## Markdown常用语法
@@ -18,7 +18,7 @@ tags: Latest blog
 
 ### 链接
 
-[链接]()
+[链接](https://www.ggangliu.cn)
 
 <https://www.ggangliu.cn>
 
@@ -72,7 +72,7 @@ tags: Latest blog
 
 - 饼图
 
-```mermaid!
+```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'pie1': '#00FF00', 'pie2': '#FFFF00', 'pie3': '#ff0000', 'pie4': '#0000FF', 'pie5': '#800080', 'pie6': '#ff0000', 'pie7': '#FFA500'}}}%%
 pie
     title 为什么总是宅在家里？

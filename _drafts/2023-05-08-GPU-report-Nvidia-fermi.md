@@ -24,9 +24,12 @@ GPU vs GPGPU
 评估GPU物理性能的参数主要包括：微架构、制程、图形处理器数量、流处理器数量、显存容量/位宽/带宽/频率、核心频率
 ![Image](/assets/snip-images/2023-05-08_191932.png)
 
-[微架构]
+**微架构**
 又称为微处理器体系结构，是硬件电路结构，用以实现指令执行
 
 ## 性能：决定GPU是否“高效”，其中微架构是GPU性能领先的关键
 
 ## 生态：构筑通用计算壁垒
+
+>[!VIDEO](https://video.tv.adobe.com/v/29770/?quality=12)
+![daf](https://www.youtube.com/watch?v=Ptk_1Dc2iPY)
