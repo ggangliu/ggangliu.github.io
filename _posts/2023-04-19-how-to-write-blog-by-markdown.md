@@ -1,12 +1,14 @@
 ---
 layout: post
-title: "How to use Markdown to write technology documents"
+title: "How to use Markdown to write technical documents"
 tags: blog
 ---
 
 ## Markdown常用语法
 
-### 字体
+[TOC]
+
+### 基本用法
 
 **粗体**
 
@@ -15,6 +17,74 @@ tags: blog
 <u>下划线</u>
 
 创建脚注[^脚注]
+
+事物
+: 事物的定义
+
+代码块定义
+: 代码块定义……
+
+      var a = 10;         // 保持空一行与 递进缩进
+
+开头一个`:` + `Tab` 或 四个空格
+
+### 字体
+
+face : 字体样式
+<font face= "华文彩云">华文彩云</font> 
+  
+color : 可以用十六位颜色值，也可以用已知颜色名
+<font color="#f00">标红字体</font> 
+
+size : 规定文本尺寸大小,可能值从 1~7，浏览器默认值为 3
+<font size="1">1号尺寸</font>
+
+### 背景色
+
+<table>
+  <tr>
+    <td bgcolor=orange>背景色是：orange</td>
+  </tr>
+</table>
+
+### 格式化文本
+
+保持输入排版格式不变
+<pre>
+hello world
+         hi
+  hello world
+</pre>
+
+### 其他特殊字符
+
+代码	显示结果
+&#10084;	❤
+&#10003;	✓
+&#9728;	  ☀
+&#9733;	  ★
+&#10052;	❄
+&#10003;	☂
+&#9762;	  ☢
+&#9742;	  ☎
+&#9835;	  ♫
+&#8734;	  ∞
+
+### 锚点 {#index}
+
+插入锚点: {#index}
+跳转锚点: [描述](#index)
+
+### emoji表情符号
+
+:smile:
+:smiley:
+:worried:
+
+### 多选项
+
+- [ ] 选项一
+- [ ] 选项二
 
 ### 链接
 
@@ -30,12 +100,30 @@ tags: blog
 
 <img decoding="async" src="/assets/header.png" width="50%">
 
+![gif](https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.gif)
+
+<img decoding="async" src="https://media.giphy.com/media/Q7ozWVYCR0nyW2rvPW/giphy.gif" width="30%">
+
 ### 表格
 
 |  表头   | 表头  |
 |  ----  | ----  |
 | 单元格  | 单元格 |
 | 单元格  | 单元格 |
+
+<table class="tg">
+  <tr>
+    <th class="tg-0pky" rowspan="2">AAA</th>
+    <th class="tg-0pky" colspan="2">BBB</th>
+  </tr>
+  <tr>
+    <td class="tg-0pky"></td>
+    <td class="tg-fymr" rowspan="2">CCC</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="2">DDD</td>
+  </tr>
+</table>
 
 ### 高级技巧
 
@@ -106,7 +194,7 @@ title 软件开发甘特图
 
 section 设计
 需求 :done, des1, 2014-01-06,2014-01-08
-原型 :active, des2, 2014-01-09, 3d
+原型 :active, des2, after des1, 3d
 UI设计 :des3, after des2, 5d
 未来任务 :des4, after des3, 5d
 

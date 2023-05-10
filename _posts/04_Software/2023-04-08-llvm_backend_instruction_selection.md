@@ -123,6 +123,6 @@ All the steps from an MI instruction to MCInst
   
 > 📝: **Notes**
 
-- llc程序选项 -debug或者-debug-only=<name>仅在LLVM以调试模式（配置时使用--disable-optimized）编译是才可用
+- llc程序选项 -debug或者-debug-only=\<name\>仅在LLVM以调试模式（配置时使用--disable-optimized）编译是才可用
 
 - 可以使用-debug-only选项为特定的LLVM流程或组件启用内部调试信息。若要寻找某个要调试的组件，在LLVM源代码文件夹中运行grep -r "DEBUG_TYPE" *。  DEBUG_TYPE宏定义了可以激活当前文件的调试消息的标志选项
