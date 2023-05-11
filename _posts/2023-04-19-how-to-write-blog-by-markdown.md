@@ -231,7 +231,7 @@ section 测试
 
 ### Media
 
-[VIDEO](https://video.tv.adobe.com/v/29770/?quality=12)
+![](https://video.tv.adobe.com/v/29770/?quality=12)
 
 <iframe width="420" height="315" src="https://video.tv.adobe.com/v/29770/?quality=12" frameborder="0" allowfullscreen></iframe>
 
