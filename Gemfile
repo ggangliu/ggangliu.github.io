@@ -9,3 +9,4 @@ gem "kramdown-parser-gfm"
 
 # If you have any plugins, put them here!
 gem 'jekyll-spaceship', group: :jekyll_plugins
+gem 'jekyll-toc'

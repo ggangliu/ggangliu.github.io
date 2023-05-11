@@ -2,6 +2,7 @@
 layout: post
 title: "How to use Markdown to write technical documents"
 tags: blog
+toc: true
 ---
 
 ## Markdown常用语法
