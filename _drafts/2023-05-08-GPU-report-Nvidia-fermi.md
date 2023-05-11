@@ -1,12 +1,16 @@
 ---
 layout: post
-title: "理解GPU的核心"
+title: "理解Nvidia GPU的核心"
 tags: nvidia-arch
 ---
 
+[TOC]
+
 理解GPU的核心：性能+生态
 
-## 1. GPU：计算机图形处理以及并行计算的核心
+## GPU：计算机图形处理以及并行计算的核心
+
+---
 
 GPU全称是Graphic Processing Unit，即图形处理单元，是计算机显卡的核心
 
@@ -19,7 +23,7 @@ GPU vs GPGPU
 - 由GPU性能拓展至计算密集领域，将GPU强大的并行运算能力运用于通用计算领域。多侧重科学计算、AI领域、大数据处理、通用计算、
 物理计算、加密货币生成等领域
 
-### 1.1 GPU性能影响因素：微架构、制程、核心频率
+### GPU性能影响因素：微架构、制程、核心频率
 
 评估GPU物理性能的参数主要包括：微架构、制程、图形处理器数量、流处理器数量、显存容量/位宽/带宽/频率、核心频率
 ![Image](/assets/snip-images/2023-05-08_191932.png)
@@ -33,14 +37,16 @@ GPU vs GPGPU
 核心频率
 : 代表GPU显示核心处理图像频率大小/工作频率
 
-## 2. 性能：决定GPU是否“高效”，其中微架构是GPU性能领先的关键
+## 微架构是GPU性能领先的关键
+
+---
 
 显存容量：显存作为GPU核心部件，用以临时存储未处理数据
 显存位宽：是GPU在单位时钟周期内传送数据的最大位数，位数越大GPU的吞吐量越大
 显存频率：显存数据传输的速度即显存工作频率，通常以MHz为显存频率计数单位
 显存带宽：显存带宽=显存频率X显存位宽/8，为显存与显卡芯片间数据传输量
 
-### Fermi架构
+### Fermi(费米)
 
 ![Fermi](/assets/snip-images/2023-05-10_200703.png "Fermi")
 
@@ -77,16 +83,30 @@ Concurrent Kernel Execution
 
 ![summary](/assets/snip-images/2023-05-10_204728.png)
 
-### Hopper架构
+### Kepler(开普勒)
+
+### Maxwell(麦克斯韦)
+
+### Pascal(帕斯卡)
+
+### Volta(伏特)
+
+### Turing(图灵)
+
+### Ampere(安培)
+
+### Hopper(赫柏)
+
+[NVIDIA Hopper Architecture In-Depth](https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/)
 
 ![Full-H100-GPU](/assets/snip-images/Full-H100-GPU-with-144-SMs-1024x457.png)[^0]
 ![H100 SM](/assets/snip-images/H100-Streaming-Multiprocessor-SM.png)
 
+### Summary
 
-## 3. 生态：构筑通用计算壁垒
+![summary](/assets/snip-images/2023-05-11_093322.png)
 
 >[!VIDEO](https://video.tv.adobe.com/v/29770/?quality=12)
 ![daf](https://www.youtube.com/watch?v=Ptk_1Dc2iPY)
-
 
 [^0]: <https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth>
