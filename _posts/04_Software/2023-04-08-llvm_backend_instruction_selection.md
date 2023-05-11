@@ -6,7 +6,7 @@ tags: llvm
 
 LLVM后端主要流程
 
-```mermaid
+```mermaid!
 graph TD
   A1[LLVM IR] --> B1[Pass] --> A2[SelectionDAG] --> A3[指令调度] --> B2[Pass] --> A4[寄存器分配] --> B3[Pass];
   B3[Pass] --> A5[指令调度] --> B4[Pass] --> A6[代码导出];
@@ -69,7 +69,7 @@ LLVM IR到指令选择之间的一些主要流程及各阶段中的存在形式
 
   寄存器分配的主要任务是将数量无限的虚拟寄存器转换为物理（有限）寄存器。由于编译目标的物理寄存器数量有限，因此需要为一些虚拟寄存器分配对应的内存地址，即溢出地址(spill slots)。但是有些机器指令需要用到特定寄存器来存储结果，或者ABI有某些特殊的规定，因此一些MI代码可能在寄存器分配之前就已经使用了物理寄存器。LLVM寄存器分配有4个实现，可以使用lcc的-regalloc=<regalloc_name>选择使用<pbqp, greedy, basic, fast>。寄存器分配的主要流程如下所示：
   
-  ```mermaid
+  ```mermaid!
   graph TD
     A1[机器指令类MachineInstr] --虚拟寄存器--> B1[流程] --> A2[寄存器合并器] --> B2[流程] --> A3[寄存器分配];
     A3[寄存器分配] --> B3[流程] --> A4[虚拟寄存器重写] --物理寄存器--> A5[机器指令类MachineInstr];
@@ -98,7 +98,7 @@ LLVM IR到指令选择之间的一些主要流程及各阶段中的存在形式
 
 All the steps from an MI instruction to MCInst
 
-  ```mermaid
+  ```mermaid!
   graph TD
   A1[MachineInstr] ---> B1[AsmPrinter] ---> A2[MCInst] ---> B2[MCStreamer]
   B2[MCStreamer] -.-> A6[MCAsmStreamer] ---> A3[MCInstPrinter] ---> B3[Assembly instruction]
