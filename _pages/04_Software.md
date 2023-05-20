@@ -5,6 +5,16 @@ show_position: home
 permalink: /Software/
 ---
 
+{% for tag in site.tags %}
+{% if tag[0] == "software" %}
+  <ul>
+    {% for post in tag[1] %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% endfor %}
+
 ## Compiler
 
 ### Compiler Knowledge
@@ -49,19 +59,6 @@ permalink: /Software/
 
 {% for tag in site.tags %}
 {% if tag[0] == "opengl" %}
-  <ul>
-    {% for post in tag[1] %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-{% endif %}
-{% endfor %}
-
-
-## Software
-
-{% for tag in site.tags %}
-{% if tag[0] == "software" %}
   <ul>
     {% for post in tag[1] %}
       <li><a href="{{ post.url }}">{{ post.title }}</a></li>
