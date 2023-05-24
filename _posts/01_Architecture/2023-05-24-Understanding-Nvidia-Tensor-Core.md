@@ -35,6 +35,10 @@ The basic role of a tensor core is to perform the following operation on 4x4 mat
 
 ![TensorCoreVolta](/assets/snip-images/TensorCoreVolta.png)
 
+![legacy and current programming interface](/assets/snip-images/2023-05-24_141810.png)
+
+![mma instruction](/assets/snip-images/2023-05-24_142303.png)
+
 #### NVIDIA Volta Tensor Cores (1th)
 
 第一代Tensor Core是来自于Volta GPU微架构。
