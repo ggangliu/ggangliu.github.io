@@ -102,7 +102,7 @@ These new instructions provide support for advanced fused operands for the inner
 
 #### Thread block clusters
 
-H100 introduces a new thread block cluster architecture that exposes control of locality at a granularity larger than a single thread block on a single SM. 
+H100 introduces a new thread block cluster architecture that exposes control of locality at a granularity larger than a single thread block on a single SM.
 
 A cluster is a group of thread blocks that are guaranteed to be concurrently scheduled onto a group of SMs, where the goal is to enable efficient cooperation of threads across multiple SMs. The clusters in H100 run concurrently across SMs within a GPC.
 
