@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "NVIDIA TESLA V100 GPU ARCHITECTURE"
+title: "NVIDIA Volta Architecture"
 comments: true
-tags: nvidia-arch
+tags: nvidia-arch nvidia-chips
 ---
 
 |Name|Transistors|Die size|manufacturing|
