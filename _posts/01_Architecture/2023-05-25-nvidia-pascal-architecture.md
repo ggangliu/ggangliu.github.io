@@ -23,6 +23,8 @@ The GP100 SM is partitioned into two processing blocks, each having 32 single-pr
 
 > 相比Maxwell的SM，Pascal的cuda核数量只有其一半，但保留了相同大小的寄存器文件size. 但是Pascal的SM数量增加了，也就意味相比前一代能支持更多的线程，warp和线程块
 
+每个SM有32 double precision（FP64）CUDA Cores，数量是FP32 single precision CUDA Cores的一半。一个全GP100 GPU有1920 FP64 CUDA Cores。GP100支持full IEEE 754-2008兼容单精度和双精度，包括支持Fused Multiply-Add(FMA)操作。所以在计算算力的时候，每个core的一个clock内可以执行2个操作，一个乘法和一个加法。
+
 Each warp scheduler (one per processing block) is capable of dispatching two warp instructions per clock.
 
 ![pascal sm](/assets/snip-images/pascal-sm.png)
