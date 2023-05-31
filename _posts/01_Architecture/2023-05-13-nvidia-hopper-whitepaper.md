@@ -108,6 +108,8 @@ A cluster is a group of thread blocks that are guaranteed to be concurrently sch
 
 ![Thread-Block-Clusters-and-Grids-with-Clusters](/assets/snip-images/Thread-Block-Clusters-and-Grids-with-Clusters.jpg)
 
+![Thread block cluster](/assets/snip-images/2023-05-29_135411.png)
+
 #### Distributed shared memory
 
 With clusters, it is possible for all the threads to directly access other SM’s shared memory with load, store, and atomic operations. This feature is called distributed shared memory (DSMEM) because shared memory virtual address space is logically distributed across all the blocks in the cluster. The dedicated SM-to-SM network for clusters ensures fast, low latency access to remote DSMEM.
@@ -132,10 +134,11 @@ A100的异步memory copy由一个特殊的loadGlobalStoreShared指令执行，�
 Asynchronous transaction barrier
 : Consider an example where a set of threads are producing data that they all consume after a barrier. Asynchronous barriers split the synchronization process into two steps.
 
-: - First, threads signal Arrive when they are done producing their portion of the shared data. This Arrive is non-blocking so that the threads are free to execute other independent work.
-: - Eventually, the threads need the data produced by all the other threads. At this point, they do a Wait, which blocks them until every thread has signaled Arrive.
+: - First, threads signal Arrive when they are done producing their portion of the shared data. This **Arrive** is non-blocking so that the threads are free to execute other independent work.
+: - Eventually, the threads need the data produced by all the other threads. At this point, they do a **Wait**, which blocks them until every thread has signaled Arrive.
 
 ![Asynchronous-Barrier-in-Ampere-vs-Asynchronous-Transaction-Barrier-in-Hopper-1536x527](/assets/snip-images/Asynchronous-Barrier-in-Ampere-vs-Asynchronous-Transaction-Barrier-in-Hopper-1536x527.jpg)
+
 
 ### H100 HBM and L2 Cache Memory Architectures
 
@@ -169,7 +172,7 @@ H100 incorporates a PCI Express Gen 5 x16 lane interface, providing 128 GB/sec t
 
 The major reason how H100 has higher performance for A100. There are following consideration:
 
-1. Clock-for-clock performance per SM 
+1. Clock-for-clock performance per SM
 
 ## Reference
 

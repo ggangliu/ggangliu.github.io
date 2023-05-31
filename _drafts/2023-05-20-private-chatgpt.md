@@ -15,6 +15,7 @@ tags: software
 - 细分行业的信息检索和管理
 
 <https://github.com/ggangliu/langchain-ChatGLM.git>
+<https://github.com/imClumsyPanda/langchain-ChatGLM.git>
 
 ## 项目基本原理
 
@@ -29,9 +30,9 @@ tags: software
   模型文件下载至本地需要 15 GB 存储空间
   |量化等级	|最低 GPU 显存（推理）|最低 GPU 显存（高效参数微调）|
   |:--|:--|:--|
-  |FP16（无量化）|	13 GB|	14 GB |
-  |INT8	|8 GB	|9 GB|
-  |INT4	|6 GB	|7 GB|
+  |FP16（无量化）|13 GB|14 GB|
+  |INT8         |8  GB|9  GB|
+  |INT4         |6  GB|7  GB|
 - MOSS 模型硬件需求
   模型文件下载至本地需要 70 GB 存储空间
   |量化等级	|最低 GPU 显存（推理）|最低 GPU 显存（高效参数微调）|
