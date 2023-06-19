@@ -1,0 +1,6 @@
+mipi 接口
+
+FFT FP32 1M
+RRAM MRAM
+eFLASH
+MCU+AI

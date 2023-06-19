@@ -31,9 +31,13 @@ The basic role of a tensor core is to perform the following operation on 4x4 mat
 
 两个矩阵A和B相乘，如下图所示，两个矩阵在中间立方体的外侧（注意，在左侧的矩阵A是转置矩阵）。立方体自身代表生成完整4x4输出矩阵的64个元素。想象一下，立方体内所有64个blocks一旦被点亮，水平层根据输入瞬间一起完成乘法，接下来，垂直线瞬间求和，一个完整的生成矩阵就掉下来了，然后与下面白色线框内的矩阵C(转置矩阵)求和，变成下一个输出矩阵D，并被push进结果栈。
 
+![matrix multiply](/assets/snip-images/image11.png)
+
 张量核心如何工作的实现无疑比图解所显示的要复杂得多。它可能涉及一个多层次的FMA管道，一层一层向下发展。然后设想连续的C矩阵从顶部下降，累积每层乘积的部分和。
 
 ![TensorCoreVolta](/assets/snip-images/TensorCoreVolta.png)
+
+<iframe width="620" height="315" src="https://vdn6.vzuu.com/SD/9bcd01ac-2383-11eb-bb0b-de553f2879c1.mp4?pkey=AAXMPi3g3MLAqMbiW8KkdXyEpSgkT14QXHKR8uFO24IgjOq998rsshjP72Gs1tRi6y4AwA_dha9hLB1hzkaYSqzN&c=avc.0.0&f=mp4&pu=078babd7&bu=078babd7&expiration=1687070400&v=ks6" frameborder="0" allowfullscreen></iframe>
 
 ![legacy and current programming interface](/assets/snip-images/2023-05-24_141810.png)
 
@@ -43,6 +47,8 @@ The basic role of a tensor core is to perform the following operation on 4x4 mat
 
 第一代Tensor Core是来自于Volta GPU微架构。
 Designed specifically for deep learning, the first-generation Tensor Cores in NVIDIA Volta™ deliver groundbreaking performance with mixed-precision matrix multiply in FP16 and FP32, up to 12X higher peak teraFLOPS (TFLOPS) for training and 6X higher peak TFLOPS for inference over NVIDIA Pascal.
+
+The Tesla V100 GPU contains 640 Tensor Cores: eight (8) per SM and two (2) per each processing block (partition) within an SM. In Volta GV100, each Tensor Core performs 64 floating point FMA operations per clock, and eight Tensor Cores in an SM perform a total of 512 FMA operations (or 1024 individual floating point operations) per clock. Tesla V100’s Tensor Cores deliver up to 125 Tensor TFLOPS for training and inference applications.
 
 ![Volta-Tensor-Core_30fps_FINAL_994x559](/assets/snip-images/Volta-Tensor-Core_30fps_FINAL_994x559.gif)
 
@@ -91,3 +97,4 @@ Ampere架构Tensor Core的构建是基于前一代的创新，仅引入了新精
 - <https://www.nvidia.com/en-us/data-center/tensor-cores/>
 - <https://blog.paperspace.com/understanding-tensor-cores/>
 - <https://cvw.cac.cornell.edu/GPUarch/tensor_cores>
+- <iframe width="853" height="480" src="https://www.youtube.com/embed/xjjN9q2ym6s" title="Analysis of a Tensor Core" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
