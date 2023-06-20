@@ -26,3 +26,8 @@ tags: nvidia-arch nvidia-chips
 - 95% memory bandwidth utilization
 
 ### Enhanced Unified Memory and Addres Tranlation Services
+
+
+
+## Reference 
+- <https://www.tomshardware.com/news/nvidia-volta-gv100-gpu-ai,35297.html>
