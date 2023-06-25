@@ -8,7 +8,7 @@ tags: nvidia-arch
 
 ![Pipelines](/assets/snip-images/2023-06-09_132948.png)
 
-## 2. Unified Pipeline 
+## 2. Unified Pipeline
 
 ### Why Unify
 

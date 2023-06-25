@@ -27,6 +27,7 @@ Tensor Core是一个能够进行混合精度训练的特殊核。这个特殊核
 The basic role of a tensor core is to perform the following operation on 4x4 matrices:
 > D = A×B + C
 
+![matrix multiplication](/assets/snip-images/2023-06-22_153510.png)
 ![TensorCoreOps](/assets/snip-images/TensorCoreOps.png)
 
 两个矩阵A和B相乘，如下图所示，两个矩阵在中间立方体的外侧（注意，在左侧的矩阵A是转置矩阵）。立方体自身代表生成完整4x4输出矩阵的64个元素。想象一下，立方体内所有64个blocks一旦被点亮，水平层根据输入瞬间一起完成乘法，接下来，垂直线瞬间求和，一个完整的生成矩阵就掉下来了，然后与下面白色线框内的矩阵C(转置矩阵)求和，变成下一个输出矩阵D，并被push进结果栈。
