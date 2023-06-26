@@ -80,6 +80,20 @@ The combined capacity of the L1 data cache and shared memory is 192 KB/SM in A10
 
 ### Simultaneous execution of FP32 and INT32 operations
 
+A100 SM also includes separate FP32 and INT32 cores, allowing simultaneous execution of FP32 and INT32 operations at full throughput
+
+## A100 HBM2 DRAM subsystem
+
+Tesla P100 was the world’s first GPU architecture to support the high-bandwidth HBM2 memory technology, while Tesla V100 provided a faster, more efficient, and higher capacity HBM2 implementation. A100 raises the bar yet again on HBM2 performance and capacity. 
+
+### A100 L2 cache
+
+The A100 GPU includes 40 MB of L2 cache, which is 6.7x larger than V100 L2 cache. The L2 cache is divided into two partitions to enable higher bandwidth and lower latency memory access.
+
+Each L2 cache partition is divided into 40 L2 cache slices. Eight 512 KB L2 slices are associated with each memory controller. As mentioned in the MIG section below, an L2 slice group composed of 10 L2 cache slices is included in each GPU slice in a GPU Instance of a MIG configuration. **The A100 L2 read bandwidth is 5120 Bytes/clk**, compared to V100 L2 cache read bandwidth of 2048 Bytes/clk.
+
+The NVIDIA Ampere architecture provides L2 cache residency controls for the programmer to manage data to keep or evict from the cache (see the CUDA Advances for NVIDIA Ampere Architecture GPUs section below for more details).
+
 ## Reference
 
 - [NVIDIA Ampere Architecture In-Depth](https://developer.nvidia.com/blog/nvidia-ampere-architecture-in-depth)
