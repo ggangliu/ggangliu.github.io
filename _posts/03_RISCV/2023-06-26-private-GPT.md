@@ -32,7 +32,7 @@ tags: software
 
     并且编辑.env文件中相关的变量
 
-    ```ini
+    ```bat
     MODEL_TYPE: supports LlamaCpp or GPT4All
     PERSIST_DIRECTORY: is the folder you want your vectorstore in
     MODEL_PATH: Path to your GPT4All or LlamaCpp supported LLM
