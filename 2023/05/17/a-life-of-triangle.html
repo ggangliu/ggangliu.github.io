@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Life of a triangle - NVIDIA’s logical pipeline | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Life of a triangle - NVIDIA’s logical pipeline">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Fermi是第一个实现了一个完全可扩展图形引擎的英伟达GPU，并且它的核心架构同样可以在Kepler和Maxwell上看到。这篇文章聚焦在图形的视角来看GPU是怎么工作的。">
+<meta property="og:description" content="Fermi是第一个实现了一个完全可扩展图形引擎的英伟达GPU，并且它的核心架构同样可以在Kepler和Maxwell上看到。这篇文章聚焦在图形的视角来看GPU是怎么工作的。">
+<link rel="canonical" href="https://ggangliu.cn//2023/05/17/a-life-of-triangle.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/05/17/a-life-of-triangle.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-17T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Life of a triangle - NVIDIA’s logical pipeline">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-17T00:00:00+00:00","datePublished":"2023-05-17T00:00:00+00:00","description":"Fermi是第一个实现了一个完全可扩展图形引擎的英伟达GPU，并且它的核心架构同样可以在Kepler和Maxwell上看到。这篇文章聚焦在图形的视角来看GPU是怎么工作的。","headline":"Life of a triangle - NVIDIA’s logical pipeline","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/05/17/a-life-of-triangle.html"},"url":"https://ggangliu.cn//2023/05/17/a-life-of-triangle.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Life of a triangle - NVIDIA's logical pipeline</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-05-17T00:00:00+00:00" itemprop="datePublished">
+        2023-05-17
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Fermi是第一个实现了一个完全可扩展图形引擎的英伟达GPU，并且它的核心架构同样可以在Kepler和Maxwell上看到。这篇文章聚焦在图形的视角来看GPU是怎么工作的。</p>
+
+<h2 id="pipeline-architecture-image">Pipeline Architecture Image</h2>
+
+<p><img src="/assets/snip-images/fermipipeline.png" alt="Pipeline Architecture Image"></p>
+
+<h2 id="gpus-are-super-parallel-work-distributors">GPUs are super parallel work distributors</h2>
+
+<p>为什么这么复杂？在图形中，每个draw调用都可能产生不同数量的三角形。Clipping之后顶点的个数也是不同于开始的数量。经过背面和深度剔除，不是所有的三角形都需要显示在屏幕上。一个三角形的屏幕尺寸可能意味着它需要上百万个像素或者一个也不需要。因此，现代GPU让它的图元（三角形，线，点）遵从一个逻辑管线，而不是一个物理管线。在G80统一架构之前，管线是不同的阶段，并且渲染工作将在这些stages上逐个运行。G80复用一些单元做顶点和片元着色器计算，但它仍然有一个串行的处理过程，比如图元装配，光栅化等等。直到Fermi，管线变为全并行，意味着芯片利用多个引擎实现了一个逻辑管线。</p>
+
+<p>以2个三角形A和B为例，它们的部分工作可能在不同的逻辑管线阶段。A已经被转换并且将被光栅化。它的一些像素可能已经正在运行像素着色器，一部分像素可能被深度测试剔除了，一部分像素可能已经被写到framebuffer,并且还有一部分可能正在等待。并且紧接着我们可以fetch三角形B的顶点。所以每个三角形必须经历各个逻辑步骤。让draw调用的三角形显示在屏幕上的工作被分割为多个小任务，甚至能够并行的子任务。每个任务被调度到可用的资源上，这些资源不限制任务的类型（顶点着色可以并行于像素着色）。</p>
+
+<p>考虑一条扇出的河流。并行管线流，每个流是相互独立，并且每个流有他自己的时间线，其中一些可能还有分支。</p>
+
+<h2 id="gpu-architecture">GPU architecture</h2>
+
+<p>Fermi 有一个类似原理的架构。有一个Giga Thread Engine用于管理所有进行中的工作。GPU被分为多个GPC(Graphics Processing Cluster), 每一个多个SMs(Streaming Multiprocessor)和一个Raster Engine. 在这种工艺下有许多interconnect, 最值得注意的是一个Crossbar，它允许跨GPC或其他功能单元，如ROP(Render Output Unit)子系统进行工作迁移。程序员关心的shader程序的执行是在SM上完成的。它包含多个Cores，这些Core完成线程的数学操作。一个线程可能是一个顶点或像素着色器调用。这些Cores和其他单元由Warp Scheduler来驱动，其管理一个有32个线程组成的名叫warp的group并且传递指令到Dispatch Units去执行。</p>
+
+<p>GPU上真正有多少个这些单元依赖于芯片配置。SM自身的设计（比如core的数量，指令单元，调度器等）也在随着一代一代不断的变化以帮助芯片高效的扩展适配从高端的桌面机到手机。</p>
+
+<p><img src="/assets/snip-images/fermipipeline_maxwell_gpu.png" alt="fermipipeline_maxwell_gpu"></p>
+
+<h2 id="the-logical-pipeline">The logical pipeline</h2>
+
+<p>我们假设drawcall引用一些索引和vertexbuffer，已经填充了数据并且存在于GPU的DRAM中，并且只用于vertex-和pixelshader(GL: fragmentshader)。</p>
+
+<p><img src="/assets/snip-images/fermipipeline_begin.png" alt="fermipipeline_begin"></p>
+
+<ol>
+  <li>程序通过图形API触发一个drawcall。到达驱动后再某些点上做一些合法性检查，如果是合法的则以GPU可识别的编码形式插入命令到pushbuffer内。许多瓶颈发生在CPU侧，这也是为什么程序员用好API很重要</li>
+  <li>经过一会儿或者一个显示的flush调用，驱动已经buffer了足够的工作在pushbuffer中，并且发送到GPU去处理。GPU侧的主机接口挑选出能够被前端处理的命令</li>
+  <li>我们开始Primitive Distributor中的工作分配，通过处理indexbuffer中的索引并且生成发送给多个GPC的三角形batch</li>
+  <li>在一个GPC内，SM的Poly Morph Engine负责根据三角形顶点索引拉取顶点数据(Vertex Fetch)</li>
+  <li>拿到顶点数据后，32个线程的warp被在SM内调度并且工作在这些顶点上</li>
+  <li>SM的warp scheduler按顺序发射整个warp的指令。线程以lock-step的形式运行每条指令并且如果它们不应该被真正执行的时候能够被单独masked out。可能有多个原因需要masking，比如当前指令是if(true)分支并且线程具体数据评估为false，或者一个loop结束退出的时候，一个线程达到退出条件，另一个还没有。所以shader中有过多branch divergence的情况下，将增加一个warp中所有线程的耗时。线程不能单独提前，only as a warp！但是warp之间是独立的
+<img src="/assets/snip-images/fermipipeline_sm.png" alt="fermipipeline_sm">
+</li>
+  <li>warp的指令可能被一次就完成或者花费多轮dispatch。例如SM相比基础数学操作有较少的load/store单元</li>
+  <li>一些指令相比其他指令可能花费更长的时间，尤其memory load操作的时候，warp scheduler可能会简单的切到另一个不等待memory操作的warp。<strong>这是一个关键的概念，GPU怎么克服memory多些的latency，它只是简单的通过切出一组激活的线程。</strong> 为了快速切换，由scheduler管理的所有线程在寄存器文件中有它们自己的寄存器。一个shader需要的寄存器越多，支持的线程或warp就越少。能够切换的warp越少，等待指令完成时能够用于切换的warp就越少。</li>
+  <li>一旦warp完成了所有vertex-shader的指令，它的结果将被Viewport Transform处理。三角形将被clipspace volume进行裁剪，并且做好了光栅化前的准备。我们用L1和L2 Cache做这种夸任务的数据交换
+<img src="/assets/snip-images/fermipipeline_memoryflow.png" alt="fermipipeline_memoryflow">
+</li>
+  <li>现在到了有意思的地方，我们的三角形即将被分割并将离开当前生存的GPC。三角形的bounding box用于决定那个raster engines需要去工作，每个引擎覆盖多个屏幕上的tiles。它通过Work Distribution Crossbar发送三角形到一个或多个GPC。现在有效的将三角形拆分为了多个小任务。
+<img src="/assets/snip-images/fermipipeline_raster.png" alt="fermipipeline_raster">
+</li>
+  <li>Attribue Setup确保顶点着色器产生的输出是对像素着色器友好的格式
+<img src="/assets/snip-images/fermipipeline_mid.png" alt="fermipipeline_mid">
+</li>
+  <li>GPC的Raster Engine工作在它接收的三角形上，并且生成像素信息</li>
+  <li>再一次我们将32个像素线程作为一个batch，或者更好的说法是8个2x2的pixel quads，这是工作在pixel shader上的最小单位。这个2x2的quad允许我们去计算纹理mip map filtering的导数</li>
+  <li>在vertex-shader阶段的warp scheduler同样现在作用于pixel-shader线程。在这里锁步处理会非常方便，因为我们能几乎能自由的访问一个pixel quad里的所有值，同时所有的线程也能保证它们的数据在相同的指令点上计算<a href="https://registry.khronos.org/OpenGL/extensions/NV/NV_shader_thread_group.txt">(NV_shader_thread_group)
+</a>
+<img src="/assets/snip-images/fermipipeline_end.png" alt="crossbar">
+</li>
+  <li>到这里，我们的像素着色器已经完成了颜色的计算，并且也已经有了depth的值。在这里，我处理hand over数据给某一个ROP之前，我们不得不携带三角形的原始API顺序。在这一步，深度测试，blending等基于frambuffer执行，这些操作需要原子操作以确保一个三角形的颜色和另一个三角形的深度不会同时出现在一个同一个像素上</li>
+</ol>
+
+<p>Ohoo! 咱们已经完成了，我们已经写了一些像素到渲染目标。希望这些信息能够帮助理解一些GPU内的work/data flow。可能也能帮助我们理解GPU的另一面为什么同步是如此负面的影响。一方面不得等待直到所有的事情都被完成并且没有新的任务被提交，也就意味着发送新work的时候，需要等待一会直到所有的阶段都重新有了load，尤其在打的GPU中。简单说，有些阶段可以并行处理，有些地方必须按顺序处理，这就要求必须以更高协作能力来达到更高的效率。</p>
+
+<h2 id="reference">Reference</h2>
+
+<p><a href="https://developer.nvidia.com/content/life-triangle-nvidias-logical-pipeline">https://developer.nvidia.com/content/life-triangle-nvidias-logical-pipeline</a></p>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/05/17/a-life-of-triangle.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/05/17/a-life-of-triangle.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/05/17/a-life-of-triangle.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

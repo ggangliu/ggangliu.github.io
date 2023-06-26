@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>NVIDIA Pascal Architecture | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="NVIDIA Pascal Architecture">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Tesla P100 is the world’s first GPU architecture to support HBM2 memory.">
+<meta property="og:description" content="Tesla P100 is the world’s first GPU architecture to support HBM2 memory.">
+<link rel="canonical" href="https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-25T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="NVIDIA Pascal Architecture">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-25T00:00:00+00:00","datePublished":"2023-05-25T00:00:00+00:00","description":"Tesla P100 is the world’s first GPU architecture to support HBM2 memory.","headline":"NVIDIA Pascal Architecture","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html"},"url":"https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">NVIDIA Pascal Architecture</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-05-25T00:00:00+00:00" itemprop="datePublished">
+        2023-05-25
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Tesla P100 is the world’s first GPU architecture to support HBM2 memory.</p>
+
+<p>GP100 is the first NVIDIA GPU to support hardware page faulting, and when combined with new 49-bit (512 TB) virtual addressing, allows transparent migration of data between the full virtual address spaces of both the GPU and CPU.</p>
+
+<h2 id="gp100-gpu-hardware-architecture-in-depth">GP100 GPU Hardware Architecture In-Depth</h2>
+
+<p>A full GP100 consists of six GPCs, 60 Pascal SMs, 30 TPCs (each including two SMs), and eight 512-bit memory controllers (4096 bits total).
+Each GPC inside GP100 has ten SMs. Each SM has <strong>64 CUDA Cores</strong> and four texture units.  With 60 SMs, GP100 has a total of 3840 single precision CUDA Cores and 240 texture units. Each memory controller is attached to 512 KB of L2 cache, and each HBM2 DRAM stack is controlled by a pair of memory controllers. The full GPU includes a total of 4096 KB of L2 cache.</p>
+
+<p><img src="/assets/snip-images/pascal.png" alt="pascal"></p>
+
+<p><img src="/assets/snip-images/2023-05-24_161254.png" alt="compared"></p>
+
+<h2 id="pascal-streaming-multiprocessor">Pascal Streaming Multiprocessor</h2>
+
+<p>The GP100 SM is partitioned into two processing blocks, each having 32 single-precision CUDA Cores, an instruction buffer, a warp cheduler, and two dispatch units.</p>
+
+<blockquote>
+  <p>相比Maxwell的SM，Pascal的cuda核数量只有其一半，但保留了相同大小的寄存器文件size. 但是Pascal的SM数量增加了，也就意味相比前一代能支持更多的线程，warp和线程块</p>
+</blockquote>
+
+<p>每个SM有32 double precision（FP64）CUDA Cores，数量是FP32 single precision CUDA Cores的一半。一个全GP100 GPU有1920 FP64 CUDA Cores。GP100支持full IEEE 754-2008兼容单精度和双精度，包括支持Fused Multiply-Add(FMA)操作。所以在计算算力的时候，每个core的一个clock内可以执行2个操作，一个乘法和一个加法。</p>
+
+<p>Each warp scheduler (one per processing block) is capable of dispatching two warp instructions per clock.</p>
+
+<p><img src="/assets/snip-images/pascal-sm.png" alt="pascal sm"></p>
+
+<h3 id="support-for-fp16-arithmetic-speeds-up-deep-learning">Support for FP16 Arithmetic Speeds Up Deep Learning</h3>
+
+<p>Deep learning is one of the fastest growing fields of computing.</p>
+
+<h3 id="better-atomics">Better Atomics</h3>
+
+<p>Atomic memory operations are important in parallel programming, allowing concurrent threads to correctly perform read-modify-write operations on shared data structures.</p>
+
+<h3 id="l1l2-cache-changes-in-gp100">L1/L2 Cache Changes in GP100</h3>
+
+<p>The GP100 SM has its own dedicated pool of shared memory (64 KB/SM) and an L1 cache that can also serve as a texture cache depending on workload. The unified L1/texture cache acts as a coalescing buffer for memory accesses, gathering up the data requested by the threads of a warp prior to delivery of that data to the warp.</p>
+
+<p>GP100 features a unified 4096 KB L2 cache that provides efficient, high speed data sharing <strong>across the GPU</strong>.</p>
+
+<h2 id="nvlink-high-speed-interconnect">NVLink High Speed Interconnect</h2>
+
+<p>NVLink is NVIDIA’s new high-speed interconnect technology for GPU-accelerated computing.
+用NVLink连接的GPU，程序能直接运行在其他GPU的memory，跟运行在local memory上一样，并且memory operation能保持正确性(例如提供atomic操作的支持)</p>
+
+<h2 id="unified-memory">Unified Memory</h2>
+
+<h3 id="unified-memory-history">Unified Memory History</h3>
+
+<ul>
+  <li>The NVIDIA Fermi GPU architecture, introduced in 2009, implemented a unified GPU address space spanning the three main GPU memory spaces (thread private local memory, thread block shared memory, and global memory).</li>
+  <li>In 2011, CUDA 4 introduced Unified Virtual Addressing (UVA) to provide a single virtual memory address space for both CPU and GPU memory</li>
+  <li>CUDA 6 introduced Unified Memory, which creates a pool of managed memory that is shared between the CPU and GPU, bridging the CPU-GPU divide. Managed memory is accessible to both the CPU and GPU using a single pointer.</li>
+</ul>
+
+<h3 id="pascal-gp100-unified-memory">Pascal GP100 Unified Memory</h3>
+
+<p>Two main hardware features enable these improvements: support for large address spaces and page faulting capability</p>
+
+<p>GP100 extends GPU addressing capabilities to enable 49-bit virtual addressing. This is large enough to cover the 48-bit virtual address spaces of modern CPUs, as well as the GPU’s own memory.</p>
+
+<h2 id="compute-preemption">Compute Preemption</h2>
+
+<p>The new Pascal GP100 Compute Preemption feature allows compute tasks running on the GPU to be interrupted at instruction-level granularity, and their context swapped to GPU DRAM.</p>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/05/25/nvidia-pascal-architecture.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

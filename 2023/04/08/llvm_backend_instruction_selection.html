@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>LLVM IR -&gt; Lower IR before instruction selection | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="LLVM IR -&gt; Lower IR before instruction selection">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="LLVM后端主要流程">
+<meta property="og:description" content="LLVM后端主要流程">
+<link rel="canonical" href="https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-08T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="LLVM IR -&gt; Lower IR before instruction selection">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-04-08T00:00:00+00:00","datePublished":"2023-04-08T00:00:00+00:00","description":"LLVM后端主要流程","headline":"LLVM IR -&gt; Lower IR before instruction selection","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html"},"url":"https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">LLVM IR -&gt; Lower IR before instruction selection</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-04-08T00:00:00+00:00" itemprop="datePublished">
+        2023-04-08
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>LLVM后端主要流程</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbkExW0xMVk0gSVJdIC0tPiBCMVtQYXNzXSAtLT4gQTJbU2VsZWN0aW9uREFHXSAtLT4gQTNb5oyH5Luk6LCD5bqmXSAtLT4gQjJbUGFzc10gLS0-IEE0W-WvhOWtmOWZqOWIhumFjV0gLS0-IEIzW1Bhc3NdO1xuQjNbUGFzc10gLS0-IEE1W-aMh-S7pOiwg-W6pl0gLS0-IEI0W1Bhc3NdIC0tPiBBNlvku6PnoIHlr7zlh7pdO1xuQTZb5Luj56CB5a-85Ye6XSAtLT4gQTdb5rGH57yW5Luj56CBXSAmIEE4W-ebruagh-S7o-eggV07IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0"></p>
+
+<p>LLVM IR到指令选择之间的一些主要流程及各阶段中的存在形式</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Steps</th>
+      <th style="text-align: left">Represent</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: left">LLVM IR</td>
+      <td style="text-align: left">IR Phase</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2</td>
+      <td style="text-align: left">SelectionDAG</td>
+      <td style="text-align: left">
+<ul>
+  <li>SelectionDAGBuilder映射IR指令至SelectionDAG节点，产生输出selectionDAG之后必须经过其他转换才能进行指令选择 <br> - it represents a basic block</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">3</td>
+      <td style="text-align: left">DAG2DAG</td>
+      <td style="text-align: left">
+<ul>
+  <li>通用的DAG合并在lib/CodeGen/SelectionDAG/DAGCombiner.cpp <br> - 特定与目标的合并一般在lib/Target/<target_name>/<target>ISelLowering.cpp <br> - DAG合并为了最小化SelectionDAG的冗余，此外DAG合并知道其当下在编译器所处的阶段，这使得合并过程可以更加的精确</target></target_name>
+</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">4</td>
+      <td style="text-align: left">DAG2DAG</td>
+      <td style="text-align: left">
+<ul>
+  <li>类型合法化流程保证指令选择阶段只需要处理合法的类型，”合法类型”指的是编译目标原生支持的类型 <br> - 对于仅支持i32类型的目标，操作数为i64的加法操作是非法的。这种情况，类型合法化工具integer expansion会将i64操作数拆分成两个i32操作数，同时插入适当的处理节点 - 具体而言，编译目标会事先定义好寄存器类与每个类型的对于关系，明确声明支持的类型。在此基础上编译器必须检测和处理非法类型：标量类型可以提升或扩展，矢量类型可以被分割、标量化或者填充 - 编译目标也可以自定义方法来合法化类型</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5</td>
+      <td style="text-align: left">SelectionDAG</td>
+      <td style="text-align: left">
+<ul>
+  <li>DAG到DAG指令选择的目的是通过使用模式匹配将目标无关节点转换成目标相关节点 <br> - 指令选择是一个局部算法，每次在SelectionDAG(basic block)实例上执行 <br> - 指令选择完成之后仍然是SelectionDAG结构 <br> - 在指令选择阶段之后，ISD::ADD节点被转换为X86指令ADD32ri8 <br> - 同一个DAG中可能出现3种不同的指令表示形式共存的情况，比如LLVM ISD节点，特定于目标的X86ISD和X86的目标实际指令节点</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">6</td>
+      <td style="text-align: left">SDNode</td>
+      <td style="text-align: left">
+<ul>
+  <li>SDNode represents one node in the SelectionDAG <br> - <a href="#%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D">模式匹配</a>
+</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">7</td>
+      <td style="text-align: left">SelectionDAG</td>
+      <td style="text-align: left">
+<ul>
+  <li>指令选择后该结构具有代表实际指令的节点，这些指令能直接运行在目标处理器上 <br> - 对SelectionDAG的节点SDNode进行寄存器预分配<a href="#%E8%B0%83%E5%BA%A6%E5%99%A8">调度</a> <br> - SUnit类在指令调度期间将底层指令表示抽象为调度单元 <br> - llc工具使用-view-sunit-dags来打印调度单元</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">8.机器指令</td>
+      <td style="text-align: left">MachineInstr</td>
+      <td style="text-align: left">
+<ul>
+  <li>在指令调度之后运行的InstrEmitter流程将SDNode格式转换为MachineInstr格式 <br> - SDNode指令表示形式仅在寄存器分配之前可用，寄存器分配器的处理对象是由MachineInst类提供的指令表示形式 <br> -顾名思义，这个表示比IR更接近实际的目标指令。与SDNode格式及其DAG形式不同，MI格式是程序的三地址表示，是指令序列而不是DAG图 <br> -每个MI都包含有一个操作码号码和一个操作数列表，其中操作码是一个只对特定后端有意义的数字 <br> - 通过-print-machineinstrs选项可以打印已注册流程</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">9.寄存器分配</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">
+<ul>
+  <li>将数量不限的虚拟寄存器转换为有限的物理寄存器 <br> - 由于某些机器指令需要用到特定寄存器来存储结果，或者ABI有某些特殊规定，因此一些MI代码可能在寄存器分配之前就已经使用了物理寄存器，对于这些情况寄存器分配器需要遵循已有的分配结果 <br> - 解构IR的SSA形式</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">10.Prologue and Epilogue</td>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">
+<ul>
+  <li>sets up the stack frame and callee-saved registers FrameLowering::emitPrologue() <br> - cleans up the stack frame prior to function return FrameLowering::emitEpilogue() <br> - eliminateFrameIndex()</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">11.Machine Code Framework</td>
+      <td style="text-align: left">MCInst</td>
+      <td style="text-align: left">
+<ul>
+  <li>AsmPrinter</li>
+</ul>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="模式匹配">模式匹配</h2>
+
+<p>每个编译目标都通过名为 **<target_name>DAGToDAGGISel** 的SelectionDAGISel子类中实现 **Selection** 方法来进行指令选择（例如SPARC中的SparcDAGToDAGISel::Select()在lib/Target/Sparc/SparcISelDAGToDAG.cpp）。该方法接收一个待匹配的SDNode作为参数，并返回表示实际指令的SDNode值，否则会发生错误。</target_name></p>
+
+<p>Select()方法允许以两种方式类匹配实际指令</p>
+
+<ul>
+  <li>通过调用从TableGen模式生成的匹配代码
+    <ul>
+      <li>TableGen工具为每个编译目标生成SelectCode()方法，此代码中包含有将ISD和<target>ISD节点映射到实际指令节点的MatcherTable匹配表。该匹配表是从.td文件（通常是<target>InstrInfo.td）中的指令定义生成的。SelectCode()方法最后调用SelectCodeCommon()，后者是一个与目标相关的函数，以便通过使用之前生成的匹配表来匹配节点</target></target>
+</li>
+      <li>SelectCode()函数一般位于lib/Target/Sparc/SparcGenDAGISel.inc中</li>
+      <li>TableGen有一个专门的指令来选择后端来生成这些函数和匹配表
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>$ cd lib/Target/Sparc
+$ llvm-tblgen -gen-da-isel Sparc.td -I ../../../include
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>编写定制化的C++匹配逻辑实现
+    <ul>
+      <li>在调用SelectCode之前在Select()中提供定制化的匹配代码</li>
+    </ul>
+  </li>
+</ul>
+
+<p>指令选择过程可视化，llc工具中存在几个对SelectionDAG类在指令选择的不同阶段进行可视化的选项。可以使用这些选项生成一个.dot图结构
+  |llc选项 |阶段 |
+  |:——|:—|
+  |-view-isel-dags |指令选择之前|
+  |-view-sched-dags |指令选择之后和调度之前|</p>
+
+<h2 id="调度器">调度器</h2>
+
+<p>代码生成器中有三个不同的调度程序执行方式：两个在寄存器分配之前，一个在寄存器分配之后。第一个在SelectionDAG节点执行，另外两个对机器指令执行</p>
+
+<h3 id="指令执行进程表">指令执行进程表</h3>
+
+<p>某些目标机器提供包括指令延迟和硬件流程信息的指令执行进程表(Instruction Itinerary)。调度程序在调度决策期间使用这些属性来最大化吞吐量并避免性能损失。这些信息在每个目标目录下的TableGen文件中进行描述，其文件名通常为<target>Schedule.td(例如X86Schedule.td)
+  编译目标可以为单一处理器架构或处理器系列定义指令的执行进程表。为此，编译目标必须提供关于执行单元（FuncUnit）、管道旁路（Bypass）和指令执行进程数据（InstrItinData）的列表。</target></p>
+
+<h3 id="竞争检测">竞争检测</h3>
+
+<p>竞争识别器通过使用处理器的指令执行进度表中的信息计算竞争关系。ScheduleHazardRecognizer类型实现竞争识别器的接口，而ScoreboardHazardRecognizer子类实现了基于记分板的竞争识别器，也是LLVM默认的竞争识别器</p>
+
+<h2 id="寄存器分配">寄存器分配</h2>
+
+<p>寄存器分配的主要任务是将数量无限的虚拟寄存器转换为物理（有限）寄存器。由于编译目标的物理寄存器数量有限，因此需要为一些虚拟寄存器分配对应的内存地址，即溢出地址(spill slots)。但是有些机器指令需要用到特定寄存器来存储结果，或者ABI有某些特殊的规定，因此一些MI代码可能在寄存器分配之前就已经使用了物理寄存器。LLVM寄存器分配有4个实现，可以使用lcc的-regalloc=<regalloc_name>选择使用&lt;pbqp, greedy, basic, fast&gt;。寄存器分配的主要流程如下所示：</regalloc_name></p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbkExW-acuuWZqOaMh-S7pOexu01hY2hpbmVJbnN0cl0gLS3omZrmi5_lr4TlrZjlmagtLT4gQjFb5rWB56iLXSAtLT4gQTJb5a-E5a2Y5Zmo5ZCI5bm25ZmoXSAtLT4gQjJb5rWB56iLXSAtLT4gQTNb5a-E5a2Y5Zmo5YiG6YWNXTtcbkEzW-WvhOWtmOWZqOWIhumFjV0gLS0-IEIzW-a1geeoi10gLS0-IEE0W-iZmuaLn-WvhOWtmOWZqOmHjeWGmV0gLS3niannkIblr4TlrZjlmagtLT4gQTVb5py65Zmo5oyH5Luk57G7TWFjaGluZUluc3RyXTsiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ"></p>
+
+<h3 id="寄存器合并器">寄存器合并器</h3>
+
+<p>寄存器合并器通过合并代码区间来删除多余的复制指令(COPY)。</p>
+
+<h3 id="虚拟寄存器重写">虚拟寄存器重写</h3>
+
+<p>寄存器分配流程为每个虚拟寄存器选择物理寄存器。之后，VirtRegMap负责保存寄存器分配的结果，因此它包含从虚拟寄存器到物理寄存器的映射。接下来虚拟寄存器重写流程（/lib/CodeGen/VirtRegMap.cpp中VirtRegRewriter类）使用VirtRegMap并将虚拟寄存器引用替换为物理寄存器引用，同时生成相应的溢出代码。此外 reg = COPY reg的剩余自身拷贝也被删除。</p>
+
+<h3 id="target-hooks">Target hooks</h3>
+
+<ul>
+  <li>isLoadFromStackSlot() and isStoreToStackSlot()</li>
+  <li>storeRegToStackSlot() and loadRegFromStackSlot()</li>
+  <li>copyPhyReg() method is used to generate a target-specific register copy</li>
+  <li>BuildMI() method is used everywhere in the code generator to generate machine instructions</li>
+</ul>
+
+<h2 id="understanding-the-machine-code-framework">Understanding the machine code framework</h2>
+
+<h3 id="code-emission">Code emission</h3>
+
+<p><img src="/assets/machine-code-framework.png" alt="Code emission"></p>
+
+<p>All the steps from an MI instruction to MCInst</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbkExW01hY2hpbmVJbnN0cl0gLS0tPiBCMVtBc21QcmludGVyXSAtLS0-IEEyW01DSW5zdF0gLS0tPiBCMltNQ1N0cmVhbWVyXVxuQjJbTUNTdHJlYW1lcl0gLS4tPiBBNltNQ0FzbVN0cmVhbWVyXSAtLS0-IEEzW01DSW5zdFByaW50ZXJdIC0tLT4gQjNbQXNzZW1ibHkgaW5zdHJ1Y3Rpb25dXG5CMltNQ1N0cmVhbWVyXSAtLi0-IEE3W01DT2JqZWN0U3RyZWFtZXJdIC0tLT4gQTRbQXNzZW1ibGVyXSAtLS0-IEE1W01DQ29kZUVtaXR0ZXJdIC0tLT4gQjRbQmluYXJ5IGluc3RydWN0aW9uXVxuQjFbQXNtUHJpbnRlcl0gPC0uLT4gQjVbTUNJbnN0TG93ZXJpbmcubG93ZXJdXG4lJS0iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ"></p>
+
+<pre><code class="language-#!/bash/sh">  $
+  $ llc sum.bc -march=x86-64 -show-mc-inst -o -
+  $ llc sum.bc -march=x86-64 -show-mc-encoding -o -
+  $ echo "movq 48879(, %riz), %rax" | llvm-mc -triple=x86_64 --show-encoding
+  $ echo "0x8d 0x4c 0x24 0x04" | llvm-mc --disassemble -show-inst -triple=x86_64
+</code></pre>
+
+<h2 id="writing-your-own-machine-pass">Writing your own machine pass</h2>
+
+<ul>
+  <li>SparcPassConfig</li>
+</ul>
+
+<h2 id="调试">调试</h2>
+
+<blockquote>
+  <p>📝: <strong>Notes</strong></p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>llc程序选项 -debug或者-debug-only=&lt;name&gt;仅在LLVM以调试模式（配置时使用–disable-optimized）编译是才可用</p>
+  </li>
+  <li>
+    <p>可以使用-debug-only选项为特定的LLVM流程或组件启用内部调试信息。若要寻找某个要调试的组件，在LLVM源代码文件夹中运行grep -r “DEBUG_TYPE” *。  DEBUG_TYPE宏定义了可以激活当前文件的调试消息的标志选项</p>
+  </li>
+</ul>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/04/08/llvm_backend_instruction_selection.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/04/08/llvm_backend_instruction_selection.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

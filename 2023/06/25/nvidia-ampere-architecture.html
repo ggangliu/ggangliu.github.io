@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>NVIDIA Ampere Architecture | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="NVIDIA Ampere Architecture">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Introducing the NVIDIA A100 Tensor Core GPU">
+<meta property="og:description" content="Introducing the NVIDIA A100 Tensor Core GPU">
+<link rel="canonical" href="https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-06-25T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="NVIDIA Ampere Architecture">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-06-25T00:00:00+00:00","datePublished":"2023-06-25T00:00:00+00:00","description":"Introducing the NVIDIA A100 Tensor Core GPU","headline":"NVIDIA Ampere Architecture","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html"},"url":"https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">NVIDIA Ampere Architecture</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-06-25T00:00:00+00:00" itemprop="datePublished">
+        2023-06-25
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="introducing-the-nvidia-a100-tensor-core-gpu">Introducing the NVIDIA A100 Tensor Core GPU</h2>
+
+<p>Fabricated on the TSMC 7nm N7 manufacturing process, the NVIDIA Ampere architecture-based GA100 GPU that powers A100 includes 54.2 billion transistors with a die size of 826 mm2.</p>
+
+<h3 id="a100-gpu-streaming-multiprocessor">A100 GPU Streaming Multiprocessor</h3>
+
+<p>The larger and faster L1 cache and shared memory unit in A100 provides 1.5x the aggregate capacity per SM compared to V100 (192 KB vs. 128 KB per SM)</p>
+
+<h3 id="40-gb-hbm2-and-40-mb-l2-cache">40 GB HBM2 and 40 MB L2 cache</h3>
+
+<p>To feed its massive computational throughput, the NVIDIA A100 GPU has 40 GB of high-speed HBM2 memory with a class-leading 1555 GB/sec of memory bandwidth—a 73% increase compared to Tesla V100. In addition, the A100 GPU has significantly more on-chip memory including a 40 MB Level 2 (L2) cache—nearly 7x larger than V100—to maximize compute performance.</p>
+
+<p>A100 L2 cache provides <strong>2.3x the L2 cache read bandwidth of V100</strong>.</p>
+
+<h3 id="third-generation-nvidia-nvlink">Third-generation NVIDIA NVLink</h3>
+
+<p>Third-generation NVLink has a data rate of 50 Gbit/sec per signal pair, nearly doubling the 25.78 Gbits/sec rate in V100. The total number of links is increased to 12 in A100, vs. 6 in V100, yielding 600 GB/sec total bandwidth vs. 300 GB/sec for V100.</p>
+
+<h2 id="a100-gpu-hardware-architecture">A100 GPU hardware architecture</h2>
+
+<p>The NVIDIA GA100 GPU is composed of multiple GPU processing clusters (GPCs), texture processing clusters (TPCs), streaming multiprocessors (SMs), and HBM2 memory controllers.</p>
+
+<p>The full implementation of the GA100 GPU includes the following units:</p>
+
+<ul>
+  <li>8 GPCs, 8 TPCs/GPC, 2 SMs/TPC, 16 SMs/GPC, 128 SMs per full GPU</li>
+  <li>64 FP32 CUDA Cores/SM, 8192 FP32 CUDA Cores per full GPU</li>
+  <li>4 third-generation Tensor Cores/SM, 512 third-generation Tensor Cores per full GPU</li>
+  <li>6 HBM2 stacks, 12 512-bit memory controllers</li>
+</ul>
+
+<p><img src="/assets/snip-images/GA100.png" alt="GA100"></p>
+
+<h3 id="a100-sm-architecture">A100 SM architecture</h3>
+
+<p>The A100 SM includes new third-generation Tensor Cores that each perform 256 FP16/FP32 FMA operations per clock. A100 has four Tensor Cores per SM, which together deliver 1024 dense FP16/FP32 FMA operations per clock.</p>
+
+<ul>
+  <li>Third-generation Tensor Cores:
+    <ul>
+      <li>Acceleration for all data types, including FP16, BF16, TF32, FP64, INT8, INT4, and Binary</li>
+      <li>TF32 Tensor Core operations in A100 provide an easy path to accelerate FP32 input/output data in DL frameworks and HPC, running 10x faster than V100 FP32 FMA operations</li>
+      <li>FP16/FP32 mixed-precision Tensor Core operations deliver unprecedented processing power for DL, running 2.5x faster than V100 Tensor Core operations</li>
+      <li>BF16/FP32 mixed-precision Tensor Core operations run at the same rate as FP16/FP32 mixed-precision</li>
+      <li>FP64 Tensor Core operations deliver unprecedented double-precision processing power for HPC, running 2.5x faster than V100 FP64 DFMA operations</li>
+      <li>INT8 Tensor Core operations with sparsity deliver unprecedented processing power for DL inference, running 20x faster than V100 INT8 operations</li>
+    </ul>
+  </li>
+  <li>192 KB of combined shared memory and L1 data cache, 1.5x larger than V100 SM</li>
+  <li>New asynchronous copy instruction loads data directly from global memory into shared memory</li>
+  <li>New shared-memory-based barrier unit (asynchronous barriers) for use with the new asynchronous copy instruction</li>
+  <li>New instructions for L2 cache management and residency controls</li>
+</ul>
+
+<p><img src="/assets/snip-images/A100-SM.png" alt="A100-SM"></p>
+
+<p>Below compares V100 and A100 FP16 Tensor Core operations, and also compares V100 FP32, FP64, and INT8 standard operations to respective A100 TF32, FP64, and INT8 Tensor Core operations. Throughputs are aggregate per GPU, with A100 using sparse Tensor Core operations for FP16, TF32, and INT8.</p>
+
+<p><img src="/assets/snip-images/Sparse-Tensor-Core-Quad-White-1024x576.png" alt="A100 Tensor Core operations compared to V100 Tensor Core">
+<img src="/assets/snip-images/TensorFloat32-TF32.jpg" alt="tensorfloat32"></p>
+
+<h3 id="a100-tensor-cores-accelerate-hpc">A100 Tensor Cores accelerate HPC</h3>
+
+<p>The new double precision matrix multiply-add instruction on A100 replaces eight DFMA instructions on V100, reducing instruction fetches, scheduling overhead, register reads, datapath power, and shared memory read bandwidth.</p>
+
+<p>Each SM in A100 computes a total of 64 FP64 FMA operations/clock (or 128 FP64 operations/clock), which is twice the throughput of Tesla V100.</p>
+
+<h3 id="a100-introduces-fine-grained-structured-sparsity">A100 introduces fine-grained structured sparsity</h3>
+
+<h4 id="sparse-matrix-definition">Sparse matrix definition</h4>
+
+<p>Structure is enforced through a new 2:4 sparse matrix definition that allows two non-zero values in every four-entry vector. A100 supports 2:4 structured sparsity on rows, as shown below.</p>
+
+<p><img src="/assets/snip-images/New_Sparsity_Diag_White_is_Zero-625x336.jpg" alt="sparsity"></p>
+
+<p>The A100 Tensor Core GPU includes new Sparse Tensor Core instructions that skip the compute on entries with zero values, resulting in a doubling of the Tensor Core compute throughput.</p>
+
+<h3 id="combined-l1-data-cache-and-shared-memory">Combined L1 data cache and shared memory</h3>
+
+<p>The combined capacity of the L1 data cache and shared memory is 192 KB/SM in A100 vs. 128 KB/SM in V100.</p>
+
+<h3 id="simultaneous-execution-of-fp32-and-int32-operations">Simultaneous execution of FP32 and INT32 operations</h3>
+
+<p>A100 SM also includes separate FP32 and INT32 cores, allowing simultaneous execution of FP32 and INT32 operations at full throughput</p>
+
+<h2 id="a100-hbm2-dram-subsystem">A100 HBM2 DRAM subsystem</h2>
+
+<p>Tesla P100 was the world’s first GPU architecture to support the high-bandwidth HBM2 memory technology, while Tesla V100 provided a faster, more efficient, and higher capacity HBM2 implementation. A100 raises the bar yet again on HBM2 performance and capacity.</p>
+
+<h3 id="a100-l2-cache">A100 L2 cache</h3>
+
+<p>The A100 GPU includes 40 MB of L2 cache, which is 6.7x larger than V100 L2 cache. The L2 cache is divided into two partitions to enable higher bandwidth and lower latency memory access.</p>
+
+<p>Each L2 cache partition is divided into 40 L2 cache slices. Eight 512 KB L2 slices are associated with each memory controller. As mentioned in the MIG section below, an L2 slice group composed of 10 L2 cache slices is included in each GPU slice in a GPU Instance of a MIG configuration. <strong>The A100 L2 read bandwidth is 5120 Bytes/clk</strong>, compared to V100 L2 cache read bandwidth of 2048 Bytes/clk.</p>
+
+<p>The NVIDIA Ampere architecture provides L2 cache residency controls for the programmer to manage data to keep or evict from the cache (see the CUDA Advances for NVIDIA Ampere Architecture GPUs section below for more details).</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://developer.nvidia.com/blog/nvidia-ampere-architecture-in-depth">NVIDIA Ampere Architecture In-Depth</a></li>
+</ul>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/06/25/nvidia-ampere-architecture.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

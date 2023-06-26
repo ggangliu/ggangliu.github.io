@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>
+<h1 id="gitstats---git-history-statistics-generator">GitStats - git history statistics generator</h1>
+
+<h2 id="about">About</h2>
+
+<p>GitStats is a statistics generator for git (a distributed revision control system) repositories. It examines the repository and produces some interesting statistics from the history of it.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+  <li>Python (&gt;= 2.6.0)</li>
+  <li>Git (&gt;= 1.5.2.4)</li>
+  <li>
+    <p>Gnuplot (&gt;= 4.0.0)</p>
+
+    <div class="language-bat highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kd">sudo</span> <span class="kd">apt</span><span class="na">-get </span><span class="kd">install</span> <span class="kd">gnuplot</span>
+</code></pre></div>    </div>
+  </li>
+  <li>a git repository (bare clone will work as well)</li>
+</ul>
+
+<h2 id="install-by-distribution">Install by distribution</h2>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">apt</span><span class="na">-get </span><span class="kd">install</span> <span class="kd">gitstats</span>
+</code></pre></div></div>
+
+<h2 id="install-by-source-code">Install by source code</h2>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ <span class="kd">git</span> <span class="kd">clone</span> <span class="kd">git</span>://github.com/hoxu/gitstats.git
+$ <span class="nb">cd</span> <span class="kd">gitstats</span>
+$ <span class="kd">sudo</span> <span class="kd">make</span> <span class="kd">install</span>
+$ <span class="kd">gitstats</span> 
+
+<span class="kd">Usage</span>: <span class="kd">gitstats</span> <span class="o">[</span><span class="kd">options</span><span class="o">]</span> <span class="o">&lt;</span><span class="kd">gitpath</span>..&gt; <span class="o">&lt;</span><span class="kd">outputpath</span><span class="o">&gt;</span>
+
+<span class="kd">Options</span>:
+<span class="na">-c </span><span class="kd">key</span><span class="o">=</span><span class="kd">value</span>     <span class="kd">Override</span> <span class="kd">configuration</span> <span class="kd">value</span>
+
+<span class="kd">Default</span> <span class="kd">config</span> <span class="kd">values</span>:
+<span class="o">{</span><span class="s1">'project_name'</span>: <span class="s1">''</span><span class="o">,</span> <span class="s1">'processes'</span>: <span class="m">8</span><span class="o">,</span> <span class="s1">'max_domains'</span>: <span class="m">10</span><span class="o">,</span> <span class="s1">'commit_begin'</span>: <span class="s1">''</span><span class="o">,</span> <span class="s1">'max_ext_length'</span>: <span class="m">10</span><span class="o">,</span> <span class="s1">'commit_end'</span>: <span class="s1">'HEAD'</span><span class="o">,</span> <span class="s1">'linear_linestats'</span>: <span class="m">1</span><span class="o">,</span> <span class="s1">'style'</span>: <span class="s1">'gitstats.css'</span><span class="o">,</span> <span class="s1">'max_authors'</span>: <span class="m">20</span><span class="o">,</span> <span class="s1">'authors_top'</span>: <span class="m">5</span><span class="o">,</span> <span class="s1">'start_date'</span>: <span class="s1">''</span><span class="o">}</span>
+
+<span class="kd">Please</span> <span class="kd">see</span> <span class="kd">the</span> <span class="kd">manual</span> <span class="kd">page</span> <span class="k">for</span> <span class="nb">more</span> <span class="kd">details</span>.
+</code></pre></div></div>
+
+<p>Follow the usage, you can type as below</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ <span class="kd">gitstats</span> <span class="na">-c </span><span class="kd">commit_begin</span><span class="o">=</span><span class="m">202205</span> <span class="o">~</span><span class="na">/git-repo </span>./output
+</code></pre></div></div>
+
+<p>Final you will see below info output:</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="kd">Generating</span> <span class="kd">graphs</span>...
+<span class="o">[</span><span class="m">0</span>.69085<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/files_by_date.plot"</span>
+<span class="o">[</span><span class="m">0</span>.13818<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/day_of_week.plot"</span>
+<span class="o">[</span><span class="m">0</span>.09828<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/lines_of_code.plot"</span>
+<span class="o">[</span><span class="m">0</span>.19437<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/commits_by_author.plot"</span>
+<span class="o">[</span><span class="m">0</span>.23268<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/lines_of_code_by_author.plot"</span>
+<span class="o">[</span><span class="m">0</span>.12541<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/hour_of_day.plot"</span>
+<span class="o">[</span><span class="m">0</span>.13389<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/commits_by_year_month.plot"</span>
+<span class="o">[</span><span class="m">0</span>.06397<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/domains.plot"</span>
+<span class="o">[</span><span class="m">0</span>.09230<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/commits_by_year.plot"</span>
+<span class="o">[</span><span class="m">0</span>.08237<span class="o">]</span> <span class="o">&gt;&gt;</span> <span class="kd">gnuplot</span> <span class="s2">"/home/ggangliu/gitstats/output/mvpgpu-sim/month_of_year.plot"</span>
+<span class="kd">Execution</span> <span class="nb">time</span> <span class="m">34</span>.62499 <span class="kd">secs</span><span class="o">,</span> <span class="m">20</span>.27449 <span class="kd">secs</span> <span class="o">(</span><span class="m">58</span>.55 <span class="err">%</span><span class="o">)</span> <span class="k">in</span> <span class="kd">external</span> <span class="kd">commands</span><span class="o">)</span>
+<span class="kd">You</span> <span class="kd">may</span> <span class="nb">now</span> <span class="nb">run</span>:
+
+   <span class="kd">sensible</span><span class="na">-browser </span><span class="s1">'/home/ggangliu/gitstats/output/mvpgpu-sim/index.html'</span>
+</code></pre></div></div>
+
+<p>Open the above link in browser, will show:</p>
+
+<p><img src="/assets/snip-images/2023-06-26_111521.png" alt="output"></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://gitstats.sourceforge.net/">https://gitstats.sourceforge.net/</a></li>
+</ul>
+</body></html>

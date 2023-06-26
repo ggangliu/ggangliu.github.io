@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>How to start CMake build system with CMakeLists.txt | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="How to start CMake build system with CMakeLists.txt">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Project structure">
+<meta property="og:description" content="Project structure">
+<link rel="canonical" href="https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-25T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="How to start CMake build system with CMakeLists.txt">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-04-25T00:00:00+00:00","datePublished":"2023-04-25T00:00:00+00:00","description":"Project structure","headline":"How to start CMake build system with CMakeLists.txt","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html"},"url":"https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">How to start CMake build system with CMakeLists.txt</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-04-25T00:00:00+00:00" itemprop="datePublished">
+        2023-04-25
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="project-structure">Project structure</h2>
+
+<p>A project can have multiple CMakeLists.txt, but only one in each directory.</p>
+
+<p>For the one in the top level of directory of the project, the following must be present at the top of the file.</p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cmake_minimum_required</span><span class="p">(</span>VERSION 3.6<span class="p">)</span> 
+<span class="nb">project</span><span class="p">(</span>foo<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s take a look at a sample project layout below:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="s">CMakeLists.txt</span>
+<span class="pi">-</span> <span class="s">some.h</span>
+<span class="pi">-</span> <span class="s">some.cpp</span>
+<span class="pi">-</span> <span class="s">main.cpp</span>
+</code></pre></div></div>
+
+<h2 id="building-the-library">Building the library</h2>
+
+<p>Variables are created and destroyed using the set() and unset() functions.</p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set</span><span class="p">(</span>some_var <span class="s2">"a"</span> <span class="s2">"b"</span> <span class="s2">"c"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s2">"</span><span class="si">${</span><span class="nv">some_var</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now, to build our library, we must add the following to the build file, CMakeLists.txt:</p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set</span><span class="p">(</span>FOO_SOURCES some.cpp<span class="p">)</span>
+<span class="c1"># To get recursive behavior specify the keyword RECURSIVE</span>
+<span class="c1"># target_sources(foobar RECURSE PRIVATE *.cpp *.h)</span>
+<span class="nb">add_library</span><span class="p">(</span>foos STATIC <span class="s2">"</span><span class="si">${</span><span class="nv">FOO_SOURCES</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In the call to add_library(), the STATIC/SHARED tells CMake whether we want a static library or shared library.</p>
+
+<h2 id="adding-the-executable">Adding the executable</h2>
+
+<p>Let’s make up a sample C++ file, <em>main.cpp</em>, that calls a function from our library:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"some.h"</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="k">const</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="n">someFunc</span><span class="p">();</span> <span class="c1">// defined in some.cpp</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then, we can add to the build file the following:</p>
+
+<div class="language-cmake highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">add_executable</span><span class="p">(</span>foot main.cpp<span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span>foot foos<span class="p">)</span>
+</code></pre></div></div>
+
+<p>The <em>target_link_libraries</em> function takes a target as the first argument, and then a list of other targets that must be libraries, to like to the first argument.</p>
+
+<h2 id="putting-it-all-together">Putting it all together</h2>
+
+<p>If one is currently in the directory of the project, these commands are often used:</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="kd">build</span>
+<span class="nb">cd</span> <span class="kd">build</span>
+<span class="kd">cmake</span> ..
+<span class="kd">make</span>
+</code></pre></div></div>
+
+<p>This will run CMake, and get it to produce build files in the current directory.</p>
+
+<h2 id="understanding-the-cmakeliststxt-files">Understanding the CMakeLists.txt Files</h2>
+
+<ul>
+  <li>
+<em>include_directories</em> command add a directory for the compiler to search in for your header(.h) files</li>
+  <li>
+<em>add_subdirectory</em> commands instructs CMake to go into a subdirectory and look for another <em>CMakeLists.txt</em> to run</li>
+</ul>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://www.jetbrains.com/help/clion/cmakelists-txt-file.html">CMakeLists.txt</a></li>
+  <li><a href="https://cmake.org/cmake/help/latest/guide/tutorial/index.html">CMake Tutorial</a></li>
+  <li><a href="https://cmake.org/cmake/help/latest/guide/tutorial/Adding%20a%20Custom%20Command%20and%20Generated%20File.html">Adding a Custom Command and Generated File</a></li>
+</ul>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/04/25/how-to-start-with-cmakelists-txt.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/04/25/how-to-start-with-cmakelists-txt.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

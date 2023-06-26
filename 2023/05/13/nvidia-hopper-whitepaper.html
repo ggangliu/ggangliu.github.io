@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>NVIDIA Hopper Architecture | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="NVIDIA Hopper Architecture">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="H100 implemented using TSMC’s 4N process customized for NVIDIA with 80 billion transistors,a die size of 814 mm2, and higher frequency design.">
+<meta property="og:description" content="H100 implemented using TSMC’s 4N process customized for NVIDIA with 80 billion transistors,a die size of 814 mm2, and higher frequency design.">
+<link rel="canonical" href="https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-13T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="NVIDIA Hopper Architecture">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-13T00:00:00+00:00","datePublished":"2023-05-13T00:00:00+00:00","description":"H100 implemented using TSMC’s 4N process customized for NVIDIA with 80 billion transistors,a die size of 814 mm2, and higher frequency design.","headline":"NVIDIA Hopper Architecture","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html"},"url":"https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">NVIDIA Hopper Architecture</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-05-13T00:00:00+00:00" itemprop="datePublished">
+        2023-05-13
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>H100 implemented using <strong>TSMC’s 4N</strong> process customized for NVIDIA with <strong>80 billion transistors</strong>,a die size of <strong>814 mm2</strong>, and <strong>higher frequency</strong> design.</p>
+
+<p><img src="/assets/snip-images/SXM5-White-4-NEW-FINAL.jpg" alt="SXM5-White" title="NVIDIA H100 GPU on new SXM5 Module"></p>
+
+<h2 id="nvidia-h100-tensor-core-gpu-overview">NVIDIA H100 Tensor Core GPU Overview</h2>
+
+<p>H100 with InfiniBand interconnect delivers up to 30 times the performance of A100.</p>
+
+<h3 id="nvidia-h100-gpu-key-feature-summary">NVIDIA H100 GPU Key Feature Summary</h3>
+
+<ul>
+  <li>New Streaming Multiprocessor
+    <ul>
+      <li>New fourth-generation Tensor Cores</li>
+      <li>New DPX Instructions accelerate Dynamic Programming algorithms by up to 7x over the A100 GPU</li>
+      <li>3x faster IEEE FP64 and F32</li>
+      <li>New Thread Block Cluster feature
+        <ul>
+          <li>Threads, Thread Blocks, Thread Block Clusters, and Grids</li>
+        </ul>
+      </li>
+      <li>New Asynchronous Execution features
+        <ul>
+          <li>Tensor Memory Accelerator (TMA) unit that can transfer large blocks of data very efficiently between global memory and shared memory</li>
+          <li>TMA also supports asynchronous copies between Thread Blocks in a Cluster</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>New Transformer Engine</li>
+  <li>HBM3 memory subsystem
+    <ul>
+      <li>provides nearly a 2x bandwidth increase over the previous generation</li>
+      <li>The H100 SXM5 GPU is the world’s first GPU with HBM3 memory deliveringa class-leading 3 TB/sec of memory bandwidth</li>
+    </ul>
+  </li>
+  <li>50 MB L2 cache architecture</li>
+  <li>Second-generation Multi-Instance GPU (MIG) technology</li>
+  <li>New Confidential Computing support</li>
+  <li>Fourth-generation NVIDIA NVLink</li>
+  <li>Third-generation NVSwitch</li>
+  <li>
+<strong>PCIe Gen 5</strong> provides 128 GB/sec total bandwidth (64 GB/sec in each direction)</li>
+</ul>
+
+<h2 id="nvidia-h100-gpu-architecture-in-depth">NVIDIA H100 GPU Architecture In-Depth</h2>
+
+<p>H100 GPU based on Hopper architecture features multiple innovations:</p>
+
+<ul>
+  <li>New 4th Tensor Cores perform faster matrix computation</li>
+  <li>
+<strong>New tranformer engine</strong> enables H100 to deliver up to 9x faster AI training and up to 30x faster AI inference on large language models</li>
+  <li>New NVLink network interconnect enables GPU-to-GPU</li>
+</ul>
+
+<table>
+  <tr>
+    <td bgcolor="orange">
+<u>NVIDIA H100 is the first truly asynchronous GPU.</u> H100 extends A100’s global-to-shared asynchronous transfers across all address spaces and adds support for tensor memory access patterns. It enables applications to build end-to-end asynchronous pipelines that move data into and off the chip, completely overlapping and hiding data movement with computation</td>
+  </tr>
+</table>
+
+<p>Only small number of CUDA threads are now required to manage the full memory bandwidth of H100, most other CUDA threads can be focused on general-purpose computations.</p>
+
+<p>H100 grows the CUDA thread group hierarchy with a new level called the <strong>thread block cluster</strong>. A cluster is a group of thread blocks that are guaranteed to be concurrently scheduled, and enable efficient cooperation and data sharing for threads across multiple SMs.</p>
+
+<font color="#f00">All these new features enable every user and application to use all units of their H100 GPUs fully at all times.</font>
+
+<p>The full implementation of the <strong>GH100</strong> GPU includes the following units:</p>
+
+<ul>
+  <li>8 GPCs, 72 TPCs (9 TPCs/GPC), 2 SMs/TPC, 144 SMs per full GPU</li>
+  <li>128 FP32 CUDA Cores per SM, 18432 FP32 CUDA Cores per full GPU</li>
+  <li>4 fourth-generation Tensor Cores per SM, 576 per full GPU</li>
+  <li>6 HBM3 or HBM2e stacks, 12 512-bit memory controllers</li>
+  <li>60 MB L2 cache</li>
+  <li>Fourth-generation NVLink and PCIe Gen 5</li>
+</ul>
+
+<p>Below figure shows a full GH100 GPU which is for AI, HPC, and data analytics, but not graphics processing. Only two TPCs in both the SXM5 and PCIe H100 GPUs are graphics-capable (that is, they can run vertex, geometry, and pixel shaders).
+<img src="/assets/snip-images/Full-H100-GPU-with-144-SMs-1024x457.png" alt="GH100 Full GPU with 144 SMs"></p>
+
+<h3 id="h100-sm-architecture">H100 SM Architecture</h3>
+
+<p><img src="/assets/snip-images/H100-Streaming-Multiprocessor-SM-1104x1536.png" alt="GH100 streaming multiprocessor" title="GH100 streaming multiprocessor"></p>
+
+<h4 id="h100-sm-key-feature-summary">H100 SM key feature summary</h4>
+
+<ul>
+  <li>Fourth-generation tensor Cores deliver 2x the MMA (Matrix Multiply-Accumulate) computational rates of the A100 SM</li>
+  <li>New <strong>DPX instructions</strong><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> accelerate dynamic programming algorithms</li>
+  <li>3x faster IEEE FP64 and FP32 processing rates</li>
+  <li>256 KB of combined shared memory and L1 data cache, 1.33x larger than A100</li>
+  <li>asynchronous execution</li>
+  <li>New thread block cluster</li>
+  <li>Distributed shared memory enables direct SM-to-SM communications for loads, stores, and atomics across multiple SM shared memory blocks</li>
+</ul>
+
+<h4 id="h100-tensor-core-architecture">H100 Tensor Core architecture</h4>
+
+<p>The FP8, FP16, BF16, TF32, FP64, and INT8 MMA data types are supported. The new Tensor Cores also have more efficient data management, saving up to 30% operand delivery power.</p>
+
+<p><img src="/assets/snip-images/A100-FP16-vs-H100-FP16.png" alt="A100-FP16-vs-H100-FP16"></p>
+
+<h4 id="nvidia-hopper-fp8-data-format">NVIDIA Hopper FP8 data format</h4>
+
+<p>The H100 GPU adds FP8 Tensor Cores to accelerate both AI training and inference.</p>
+
+<p><img src="/assets/snip-images/TF32-FP64-INT8-Combo-1536x862.png" alt="TF32-FP64-INT8-Combo-1536x862"></p>
+
+<h4 id="new-dpx-instructions-for-accelerated-dynamic-programming">New DPX instructions for accelerated dynamic programming</h4>
+
+<p>These new instructions provide support for advanced fused operands for the inner loop of many DP algorithms.</p>
+
+<h3 id="h100-gpu-hierarchy-and-asynchrony-improvements">H100 GPU Hierarchy and Asynchrony Improvements</h3>
+
+<h4 id="thread-block-clusters">Thread block clusters</h4>
+
+<p>H100 introduces a new thread block cluster architecture that exposes control of locality at a granularity larger than a single thread block on a single SM.</p>
+
+<p>A cluster is a group of thread blocks that are guaranteed to be concurrently scheduled onto a group of SMs, where the goal is to enable efficient cooperation of threads across multiple SMs. The clusters in H100 run concurrently across SMs within a GPC.</p>
+
+<p><img src="/assets/snip-images/Thread-Block-Clusters-and-Grids-with-Clusters.jpg" alt="Thread-Block-Clusters-and-Grids-with-Clusters"></p>
+
+<p><img src="/assets/snip-images/2023-05-29_135411.png" alt="Thread block cluster"></p>
+
+<h4 id="distributed-shared-memory">Distributed shared memory</h4>
+
+<p>With clusters, it is possible for all the threads to directly access other SM’s shared memory with load, store, and atomic operations. This feature is called distributed shared memory (DSMEM) because shared memory virtual address space is logically distributed across all the blocks in the cluster. The dedicated SM-to-SM network for clusters ensures fast, low latency access to remote DSMEM.</p>
+
+<p><img src="/assets/snip-images/Thread-Block-to-Thread-Block-data-exchange-A100-vs-H100-with-Clusters-1536x331.jpg" alt="Thread-Block-to-Thread-Block-data-exchange-A100-vs-H100-with-Clusters-1536x331"></p>
+
+<h4 id="asynchronous-execution">Asynchronous execution</h4>
+
+<p>Asynchronous execution capabilities to enable more overlap of data movement, computation, and synchronization.</p>
+
+<p><img src="/assets/snip-images/Asynchronous-Execution-Concurrency-and-Enhancements-in-Hopper-1536x631.jpg" alt="Asynchronous-Execution-Concurrency-and-Enhancements-in-Hopper-1536x631"></p>
+
+<dl>
+  <dt>Tensor Memory Accelerator</dt>
+  <dd>transfer large blocks of data and multidimensional tensors from global memory to shared memory and back again</dd>
+</dl>
+
+<p>A key advantage of TMA is that it frees the threads to execute other independent work.</p>
+
+<p>A100的异步memory copy由一个特殊的loadGlobalStoreShared指令执行，所以线程负责产生所有的地址和looping。而在Hopper中，TMA接管所有事情，启动TMA之前，一个线程创建一个copy descriptor，之后所有的地址生成和数据移动都被硬件处理。如下图所示：</p>
+
+<p><img src="/assets/snip-images/Asynchronous-Memory-Copy-with-TMA-on-H100-vs-LDGSTS-Instruction-on-A100.jpg" alt="Asynchronous-Memory-Copy-with-TMA-on-H100-vs-LDGSTS-Instruction-on-A100"></p>
+
+<dl>
+  <dt>Asynchronous transaction barrier</dt>
+  <dd>Consider an example where a set of threads are producing data that they all consume after a barrier. Asynchronous barriers split the synchronization process into two steps.</dd>
+  <dd>
+    <ul>
+      <li>First, threads signal Arrive when they are done producing their portion of the shared data. This <strong>Arrive</strong> is non-blocking so that the threads are free to execute other independent work.</li>
+    </ul>
+  </dd>
+  <dd>
+    <ul>
+      <li>Eventually, the threads need the data produced by all the other threads. At this point, they do a <strong>Wait</strong>, which blocks them until every thread has signaled Arrive.</li>
+    </ul>
+  </dd>
+</dl>
+
+<p><img src="/assets/snip-images/Asynchronous-Barrier-in-Ampere-vs-Asynchronous-Transaction-Barrier-in-Hopper-1536x527.jpg" alt="Asynchronous-Barrier-in-Ampere-vs-Asynchronous-Transaction-Barrier-in-Hopper-1536x527"></p>
+
+<h3 id="h100-hbm-and-l2-cache-memory-architectures">H100 HBM and L2 Cache Memory Architectures</h3>
+
+<p>Many memory subsystems exist in a GPU, from the large complement of off-chip DRAM (frame buffer) device memory and varying levels and types of on-chip memories to the register files used in computations in the SM</p>
+
+<h4 id="h100-hbm3-and-hbm2e-dram-subsystems">H100 HBM3 and HBM2e DRAM subsystems</h4>
+
+<ul>
+  <li>The H100 SXM5 GPU raises the bar considerably by supporting 80 GB (five stacks) of fast HBM3 memory, delivering over 3 TB/sec of memory bandwidth</li>
+  <li>The PCIe H100 provides 80 GB of fast HBM2e with over 2 TB/sec of memory bandwidth</li>
+</ul>
+
+<h4 id="h100-l2-cache">H100 L2 cache</h4>
+
+<p>A 50 MB L2 cache in H100 is 1.25x larger than the A100 40 MB L2</p>
+
+<p>Using a partitioned crossbar structure, the L2 cache localizes and caches data for memory accesses from SMs in GPCs directly connected to the partition
+<img src="/assets/snip-images/2023-05-23_161656.png" alt="2023-05-23_161656.png"></p>
+
+<h4 id="transformer-engine">Transformer engine</h4>
+
+<p>Transformer models are the backbone of language models used widely today from BERT to GPT-3.</p>
+
+<p>H100 includes a new transformer engine that uses software and custom NVIDIA Hopper Tensor Core technology to dramatically accelerate the AI calculations for transformers.</p>
+
+<p><img src="/assets/snip-images/Transformer-Engine-Conceptual-Operation.png" alt="Transformer-Engine-Conceptual-Operation"></p>
+
+<h3 id="pcie-gen-5">PCIe Gen 5</h3>
+
+<p>H100 incorporates a PCI Express Gen 5 x16 lane interface, providing 128 GB/sec total bandwidth (64 GB/sec in each direction)</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>The major reason how H100 has higher performance for A100. There are following consideration:</p>
+
+<ol>
+  <li>Clock-for-clock performance per SM</li>
+</ol>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://developer.nvidia.com/blog/nvidia-hopper-architecture-in-depth/">NVIDIA Hopper Architecture In-Depth</a></li>
+</ul>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://developer.nvidia.com/blog/boosting-dynamic-programming-performance-using-nvidia-hopper-gpu-dpx-instructions/">Boosting Dynamic Programming Performance Using NVIDIA Hopper GPU DPX Instructions</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/05/13/nvidia-hopper-whitepaper.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/05/13/nvidia-hopper-whitepaper.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

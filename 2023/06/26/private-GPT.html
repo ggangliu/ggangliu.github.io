@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>如何部署一个私有的，不需要联网的ChatGPT | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="如何部署一个私有的，不需要联网的ChatGPT">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="想打造一个自己私有的、不联网的ChatGPT吗？本文将介绍并记录如何利用开源项目privateGPT来打造一个私有的ChatGPT">
+<meta property="og:description" content="想打造一个自己私有的、不联网的ChatGPT吗？本文将介绍并记录如何利用开源项目privateGPT来打造一个私有的ChatGPT">
+<link rel="canonical" href="https://ggangliu.cn//2023/06/26/private-GPT.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/06/26/private-GPT.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-06-26T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="如何部署一个私有的，不需要联网的ChatGPT">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-06-26T00:00:00+00:00","datePublished":"2023-06-26T00:00:00+00:00","description":"想打造一个自己私有的、不联网的ChatGPT吗？本文将介绍并记录如何利用开源项目privateGPT来打造一个私有的ChatGPT","headline":"如何部署一个私有的，不需要联网的ChatGPT","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/06/26/private-GPT.html"},"url":"https://ggangliu.cn//2023/06/26/private-GPT.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">如何部署一个私有的，不需要联网的ChatGPT</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-06-26T00:00:00+00:00" itemprop="datePublished">
+        2023-06-26
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>想打造一个自己私有的、不联网的ChatGPT吗？本文将介绍并记录如何利用开源项目privateGPT来打造一个私有的ChatGPT</p>
+
+<hr>
+
+<p>通常我们可能有一些私有的数据为自己所用，不希望其他人拿到这些数据，但数据量也比较大，每次查找起来不是很快速，那么搭建一个自己私有的ChatGPT就能够向这些文档提问，用起来也是很方便且酷酷的。</p>
+
+<h2 id="privategpt">privateGPT</h2>
+
+<p>利用大语言模型的能力，向你的文档提问。100%的私有，在任何时候都不会有数据离开你的运行环境，因为不联网也可以用。</p>
+
+<h2 id="环境安装">环境安装</h2>
+
+<ol>
+  <li>
+    <p>为了让你的环境能够运行代码，首先安装所有需要的依赖。</p>
+
+    <div class="language-bat highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="kd">pip3</span> <span class="kd">install</span> <span class="na">-r </span><span class="kd">requirements</span>.txt
+</code></pre></div>    </div>
+  </li>
+  <li>下载LLM模型并且放在自己选择的目录下
+ 默认是<a href="https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin">ggml-gpt4all-j-v1.3-groovy.bin</a>
+</li>
+  <li>
+    <p>复制example.env模板为.env</p>
+
+    <div class="language-bat highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="kd">cp</span> <span class="kd">example</span>.env .env
+</code></pre></div>    </div>
+
+    <p>并且编辑.env文件中相关的变量</p>
+
+    <div class="language-bat highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> <span class="kd">MODEL_TYPE</span>: <span class="kd">supports</span> <span class="kd">LlamaCpp</span> <span class="kd">or</span> <span class="kd">GPT4All</span>
+ <span class="kd">PERSIST_DIRECTORY</span>: <span class="kd">is</span> <span class="kd">the</span> <span class="kd">folder</span> <span class="kd">you</span> <span class="kd">want</span> <span class="kd">your</span> <span class="kd">vectorstore</span> <span class="k">in</span>
+ <span class="kd">MODEL_PATH</span>: <span class="kd">Path</span> <span class="kd">to</span> <span class="kd">your</span> <span class="kd">GPT4All</span> <span class="kd">or</span> <span class="kd">LlamaCpp</span> <span class="kd">supported</span> <span class="kd">LLM</span>
+ <span class="kd">MODEL_N_CTX</span>: <span class="kd">Maximum</span> <span class="kd">token</span> <span class="kd">limit</span> <span class="k">for</span> <span class="kd">the</span> <span class="kd">LLM</span> <span class="kd">model</span>
+ <span class="kd">MODEL_N_BATCH</span>: <span class="kd">Number</span> <span class="kd">of</span> <span class="kd">tokens</span> <span class="k">in</span> <span class="kd">the</span> <span class="nb">prompt</span> <span class="kd">that</span> <span class="kd">are</span> <span class="kd">fed</span> <span class="kd">into</span> <span class="kd">the</span> <span class="kd">model</span> <span class="nb">at</span> <span class="kd">a</span> <span class="nb">time</span>. <span class="kd">Optimal</span> <span class="kd">value</span> <span class="kd">differs</span> <span class="kd">a</span> <span class="kd">lot</span> <span class="kd">depending</span> <span class="na">on</span> <span class="kd">the</span> <span class="kd">model</span> <span class="o">(</span><span class="m">8</span> <span class="kd">works</span> <span class="kd">well</span> <span class="k">for</span> <span class="kd">GPT4All</span><span class="o">,</span> <span class="kd">and</span> <span class="m">1024</span> <span class="kd">is</span> <span class="kd">better</span> <span class="k">for</span> <span class="kd">LlamaCpp</span><span class="o">)</span>
+ <span class="kd">EMBEDDINGS_MODEL_NAME</span>: <span class="kd">SentenceTransformers</span> <span class="kd">embeddings</span> <span class="kd">model</span> <span class="kd">name</span> <span class="o">(</span><span class="kd">see</span> <span class="kd">https</span>://www.sbert.net/docs/pretrained_models.html<span class="o">)</span>
+ <span class="kd">TARGET_SOURCE_CHUNKS</span>: <span class="kd">The</span> <span class="kd">amount</span> <span class="kd">of</span> <span class="kd">chunks</span> <span class="o">(</span><span class="kd">sources</span><span class="o">)</span> <span class="kd">that</span> <span class="kd">will</span> <span class="kd">be</span> <span class="kd">used</span> <span class="kd">to</span> <span class="kd">answer</span> <span class="kd">a</span> <span class="kd">question</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><strong>注意</strong>：由于langchain加载SentenceTransformers，所以第一次运行脚本的时候将要求联网去下载这个embeddeding模型自己。</p>
+
+<h2 id="测试数据集">测试数据集</h2>
+
+<p>这个库有一个<a href="https://github.com/imartinez/privateGPT/blob/main/source_documents/state_of_the_union.txt">state of the union transcript</a>作为例子</p>
+
+<h2 id="导入自己的数据集">导入自己的数据集</h2>
+
+<p>测试没问题的话，就可以导入我们自己的数据集了。需要将所有你的文件放入source_documents目录中</p>
+
+<p>支持的文件扩展名如下：</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.csv: <span class="kd">CSV</span><span class="o">,</span>
+.docx: <span class="kd">Word</span> <span class="kd">Document</span><span class="o">,</span>
+.doc: <span class="kd">Word</span> <span class="kd">Document</span><span class="o">,</span>
+.enex: <span class="kd">EverNote</span><span class="o">,</span>
+.eml: <span class="kd">Email</span><span class="o">,</span>
+.epub: <span class="kd">EPub</span><span class="o">,</span>
+.html: <span class="kd">HTML</span> <span class="kd">File</span><span class="o">,</span>
+.md: <span class="kd">Markdown</span><span class="o">,</span>
+.msg: <span class="kd">Outlook</span> <span class="kd">Message</span><span class="o">,</span>
+.odt: <span class="kd">Open</span> <span class="kd">Document</span> <span class="kd">Text</span><span class="o">,</span>
+.pdf: <span class="kd">Portable</span> <span class="kd">Document</span> <span class="kd">Format</span> <span class="o">(</span><span class="kd">PDF</span><span class="o">),</span>
+.pptx : <span class="kd">PowerPoint</span> <span class="kd">Document</span><span class="o">,</span>
+.ppt : <span class="kd">PowerPoint</span> <span class="kd">Document</span><span class="o">,</span>
+.txt: <span class="kd">Text</span> <span class="kd">file</span> <span class="o">(</span><span class="kd">UTF</span><span class="o">-</span><span class="m">8</span><span class="o">),</span>
+</code></pre></div></div>
+
+<p>运行下面的命令导入所有的数据</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">python</span> <span class="kd">ingest</span>.py
+</code></pre></div></div>
+
+<p>输出应该如下所示：</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">Creating</span> <span class="err">new</span> <span class="err">vectorstore</span>
+<span class="err">Loading</span> <span class="err">documents</span> <span class="err">from</span> <span class="err">source_documents</span>
+<span class="err">Loading</span> <span class="err">new</span> <span class="err">documents:</span> <span class="err">100%|██████████████████████|</span> <span class="err">1/1</span> <span class="nn">[00:01&lt;00:00,  1.73s/it]</span>
+<span class="err">Loaded</span> <span class="err">1</span> <span class="err">new</span> <span class="err">documents</span> <span class="err">from</span> <span class="err">source_documents</span>
+<span class="err">Split</span> <span class="err">into</span> <span class="err">90</span> <span class="err">chunks</span> <span class="err">of</span> <span class="err">text</span> <span class="err">(max.</span> <span class="err">500</span> <span class="err">tokens</span> <span class="err">each)</span>
+<span class="err">Creating</span> <span class="err">embeddings.</span> <span class="err">May</span> <span class="err">take</span> <span class="err">some</span> <span class="err">minutes...</span>
+<span class="err">Using</span> <span class="err">embedded</span> <span class="err">DuckDB</span> <span class="err">with</span> <span class="err">persistence:</span> <span class="err">data</span> <span class="err">will</span> <span class="err">be</span> <span class="err">stored</span> <span class="err">in:</span> <span class="err">db</span>
+<span class="err">Ingestion</span> <span class="err">complete!</span> <span class="err">You</span> <span class="err">can</span> <span class="err">now</span> <span class="err">run</span> <span class="err">privateGPT.py</span> <span class="err">to</span> <span class="err">query</span> <span class="err">your</span> <span class="err">documents</span>
+</code></pre></div></div>
+
+<p>这个过程中将创建一个db目录存放本地的数据。每个文档大概需要20-30秒，具体时间跟文档大小相关。你可以导入尽可能多你想要的文档，并且将被累积在本地的数据库中。如果你想从一个空的数据开始，删除db目录即可。</p>
+
+<p><strong>注意</strong>：在你导入的过程中，没有数据会离开你的本地环境。你可以在没联网的情况下导入，除了第一次运行ingest脚本的时候，因为第一次需要下载一个内置模型。</p>
+
+<h2 id="在本地向你的文档提问">在本地向你的文档提问</h2>
+
+<p>为了提问，运行如下命令：</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">python</span> <span class="kd">privateGPT</span>.py
+</code></pre></div></div>
+
+<p>并等待脚本让你输入问题</p>
+
+<div class="language-bat highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="kd">Enter</span> <span class="kd">a</span> <span class="nb">query</span>:
+</code></pre></div></div>
+
+<p>输入完问题，按下回车键后，你可能需要等待20-30秒（跟电脑的性能也相关），LLM模型需要消耗时间解析你的问题并且准备答案。一旦完成，它将输出答案及作为文档上下文使用的4个来源。你能够持续提问，不需要重新运行脚本，仅仅是再一次等待。</p>
+
+<p><strong>注意</strong>：即使你关闭网络，脚本的推理任然可以工作，没有数据能够离开你的电脑。</p>
+
+<p>输入exit退出脚本。</p>
+
+<h2 id="它是怎么工作的呢">它是怎么工作的呢？</h2>
+
+<p>选择正确的本地模型和LangChain能力，你能在本地运行整个管线，且没有任何数据泄露的风险，并且有着比较合理的性能。</p>
+
+<ul>
+  <li>ingest.py uses LangChain tools to parse the document and create embeddings locally using HuggingFaceEmbeddings (SentenceTransformers). It then stores the result in a local vector database using Chroma vector store.</li>
+  <li>privateGPT.py uses a local LLM based on GPT4All-J or LlamaCpp to understand questions and create answers. The context for the answers is extracted from the local vector store using a similarity search to locate the right piece of context from the docs.</li>
+  <li>GPT4All-J wrapper was introduced in LangChain 0.0.162.</li>
+</ul>
+
+<h2 id="写在最后">写在最后</h2>
+
+<p>该项目的官方源码地址<a href="https://github.com/imartinez/privateGPT">https://github.com/imartinez/privateGPT</a>，有能力的可以自行研究。</p>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/06/26/private-GPT.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/06/26/private-GPT.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/06/26/private-GPT.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

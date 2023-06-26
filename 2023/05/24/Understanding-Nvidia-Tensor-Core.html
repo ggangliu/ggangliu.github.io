@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Understanding Nvidia Tensor Core | Chips and Freedom</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Understanding Nvidia Tensor Core">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="对HPC和AI前所未有的加速">
+<meta property="og:description" content="对HPC和AI前所未有的加速">
+<link rel="canonical" href="https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html">
+<meta property="og:url" content="https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html">
+<meta property="og:site_name" content="Chips and Freedom">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-24T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Understanding Nvidia Tensor Core">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-24T00:00:00+00:00","datePublished":"2023-05-24T00:00:00+00:00","description":"对HPC和AI前所未有的加速","headline":"Understanding Nvidia Tensor Core","mainEntityOfPage":{"@type":"WebPage","@id":"https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html"},"url":"https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css">
+<link type="application/atom+xml" rel="alternate" href="https://ggangliu.cn//feed.xml" title="Chips and Freedom">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/logo/favicon-16x16.png">
+<link rel="manifest" href="/assets/logo/site.webmanifest">
+<link rel="mask-icon" href="/assets/logo/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/">Chips and Freedom</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/Architecture/">Architecture</a><a class="page-link" href="/Amaranth/">Amaranth</a><a class="page-link" href="/RISCV/">RISCV</a><a class="page-link" href="/Software/">Software</a><a class="page-link" href="/Chips/">Chips</a><a class="page-link" href="/Contact/">Contact</a>
+</div>
+      </nav><a href="/"><img src="/assets/header.png"></a>
+  </div>
+
+
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Understanding Nvidia Tensor Core</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2023-05-24T00:00:00+00:00" itemprop="datePublished">
+        2023-05-24
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="对hpc和ai前所未有的加速">对HPC和AI前所未有的加速</h2>
+
+<p>Tensor Core能够进行mixed-precision计算，能在保证准确度的情况动态调整计算精度增加吞吐量。</p>
+
+<ul>
+  <li>Revoluinary AI Training</li>
+  <li>Breakthrough AI Inference</li>
+  <li>Advanced HPC</li>
+</ul>
+
+<h2 id="understanding-tensor-core">Understanding Tensor Core</h2>
+
+<h3 id="what-are-cuda-cores">What are CUDA cores?</h3>
+
+<p><img src="/assets/snip-images/CUDA_processing_flow_(En).png" alt="CUDA_processing_flow"></p>
+
+<h3 id="what-are-tensor-cores">What are Tensor Cores?</h3>
+
+<p>Tensor Core是一个能够进行混合精度训练的特殊核。这个特殊核的第一代通过一个融合的乘加计算，允许两个4x4 FP16矩阵相乘并加到一个4x4的FP16或者FP32矩阵。之所以称为mixed precision computation是因为输入的矩阵可能是低精度的FP16，而最终输出是FP32(只有很少的精度损失)</p>
+
+<h3 id="how-do-tensor-cores-work">How do Tensor Cores work?</h3>
+
+<p>The basic role of a tensor core is to perform the following operation on 4x4 matrices:</p>
+<blockquote>
+  <p>D = A×B + C</p>
+</blockquote>
+
+<p><img src="/assets/snip-images/2023-06-22_153510.png" alt="matrix multiplication">
+<img src="/assets/snip-images/TensorCoreOps.png" alt="TensorCoreOps"></p>
+
+<p>两个矩阵A和B相乘，如下图所示，两个矩阵在中间立方体的外侧（注意，在左侧的矩阵A是转置矩阵）。立方体自身代表生成完整4x4输出矩阵的64个元素。想象一下，立方体内所有64个blocks一旦被点亮，水平层根据输入瞬间一起完成乘法，接下来，垂直线瞬间求和，一个完整的生成矩阵就掉下来了，然后与下面白色线框内的矩阵C(转置矩阵)求和，变成下一个输出矩阵D，并被push进结果栈。</p>
+
+<p><img src="/assets/snip-images/image11.png" alt="matrix multiply"></p>
+
+<p>张量核心如何工作的实现无疑比图解所显示的要复杂得多。它可能涉及一个多层次的FMA管道，一层一层向下发展。然后设想连续的C矩阵从顶部下降，累积每层乘积的部分和。</p>
+
+<p><img src="/assets/snip-images/TensorCoreVolta.png" alt="TensorCoreVolta"></p>
+
+<iframe width="620" height="315" src="https://vdn6.vzuu.com/SD/9bcd01ac-2383-11eb-bb0b-de553f2879c1.mp4?pkey=AAXMPi3g3MLAqMbiW8KkdXyEpSgkT14QXHKR8uFO24IgjOq998rsshjP72Gs1tRi6y4AwA_dha9hLB1hzkaYSqzN&c=avc.0.0&f=mp4&pu=078babd7&bu=078babd7&expiration=1687070400&v=ks6" frameborder="0" allowfullscreen=""></iframe>
+
+<p><img src="/assets/snip-images/2023-05-24_141810.png" alt="legacy and current programming interface"></p>
+
+<p><img src="/assets/snip-images/2023-05-24_142303.png" alt="mma instruction"></p>
+
+<h4 id="nvidia-volta-tensor-cores-1th">NVIDIA Volta Tensor Cores (1th)</h4>
+
+<p>第一代Tensor Core是来自于Volta GPU微架构。
+Designed specifically for deep learning, the first-generation Tensor Cores in NVIDIA Volta™ deliver groundbreaking performance with mixed-precision matrix multiply in FP16 and FP32, up to 12X higher peak teraFLOPS (TFLOPS) for training and 6X higher peak TFLOPS for inference over NVIDIA Pascal.</p>
+
+<p>The Tesla V100 GPU contains 640 Tensor Cores: eight (8) per SM and two (2) per each processing block (partition) within an SM. In Volta GV100, each Tensor Core performs 64 floating point FMA operations per clock, and eight Tensor Cores in an SM perform a total of 512 FMA operations (or 1024 individual floating point operations) per clock. Tesla V100’s Tensor Cores deliver up to 125 Tensor TFLOPS for training and inference applications.</p>
+
+<p><img src="/assets/snip-images/Volta-Tensor-Core_30fps_FINAL_994x559.gif" alt="Volta-Tensor-Core_30fps_FINAL_994x559"></p>
+
+<h4 id="nvidia-turing-tensor-cores-2th">NVIDIA Turing Tensor Cores (2th)</h4>
+
+<p>NVIDIA Turing™ Tensor Core technology features multi-precision computing for efficient AI inference. Turing Tensor Cores provide a range of precisions for deep learning training and inference, from FP32 to FP16 to INT8, as well as INT4, to provide giant leaps in performance over NVIDIA Pascal™ GPUs</p>
+
+<p>除此之外，Turing架构也引入了Ray Tracing Cores用于计算图形的可视化的属性，比如3D环境中的光和声音。</p>
+
+<p><img src="/assets/snip-images/Turing-Tensor-Core_30fps_FINAL_736x414.gif" alt="Turing-Tensor-Core_30fps_FINAL_736x414"></p>
+
+<h4 id="nvidia-ampere-architecture-tensor-cores-3th">NVIDIA Ampere Architecture Tensor Cores (3th)</h4>
+
+<p>Ampere架构Tensor Core的构建是基于前一代的创新，仅引入了新精度的数据类型TF32和FP64来加速和简化AI的使用，并将Tensor Core的功能扩展到了HPC。
+<img src="/assets/snip-images/hopper-tensor-core-ampere-2c50-d.jpg" alt="hopper-tensor-core-ampere-2c50-d"></p>
+
+<h4 id="nvidia-h100-tensor-cores-4th">NVIDIA H100 Tensor Cores (4th)</h4>
+
+<p>自从Tensor Core技术的引入，Nvidia GPU的峰值性能已经增加了60倍。Hopper架构的第四代Tensor Core通过引入Transfor Engine用一个新的8-bit floating point精度(FP8)达到了6倍于FP16的性能提升(for trillion-parameter model training).</p>
+
+<ul>
+  <li>FP8
+Tranformer AI网络由于大和数学计算，其训练时间可能被拉长到数月。Hopper的新FP8的性能可以达到6倍于Ampere的FP16。FP8被用在Tranformer Engine中，Hopper的Tensor Core实际就是被设计用于加速Tranformer模型的加速。
+<img src="/assets/snip-images/tensorcore-gen4-fp8-2c50-d.png" alt="tensorcore-gen4-fp8-2c50-d">
+</li>
+  <li>FP16
+Hopper Tensor Core boost FP16 for deep learning.
+<img src="/assets/snip-images/tensorcore-gen4-fp16-2c50-d.png" alt="tensorcore-gen4-fp16-2c50-d">
+</li>
+  <li>TF32
+Delivering AI speedup
+<img src="/assets/snip-images/tensorcore-gen4-tf32-2c50-d.png" alt="tensorcore-gen4-tf32-2c50-d">
+</li>
+  <li>FP64
+Accelerating a whole range of HPC application that need double-precision math
+<img src="/assets/snip-images/tensorcore-gen4-fp64-2c50-d.png" alt="tensorcore-gen4-fp64-2c50-d">
+</li>
+  <li>INT8
+第一次被引入是在Turing架构中，INT8 Tensor Core大大加速了推理的吞吐量
+<img src="/assets/snip-images/tensorcore-gen4-int8-2c50-d.png" alt="tensorcore-gen4-int8-2c50-d">
+</li>
+</ul>
+
+<h2 id="the-most-powerful-end-to-end-ai-and-hpc-data-center-platform">The Most Powerful End-to-End AI and HPC Data Center Platform</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left"> </th>
+      <th style="text-align: left">Hopper</th>
+      <th style="text-align: left">Ampere</th>
+      <th style="text-align: left">Turing</th>
+      <th style="text-align: left">Volta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Supported Tensor Core precisions</td>
+      <td style="text-align: left">FP64, TF32, bfloat16, FP16, FP8, INT8</td>
+      <td style="text-align: left">FP64, TF32, bfloat16, FP16, INT8, INT4, INT1</td>
+      <td style="text-align: left">FP16, INT8, INT4, INT1</td>
+      <td style="text-align: left">FP16</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Supported CUDA® Core precisions</td>
+      <td style="text-align: left">FP64, FP32, FP16, bfloat16, INT8</td>
+      <td style="text-align: left">FP64, FP32, FP16, bfloat16, INT8</td>
+      <td style="text-align: left">FP64, FP32, FP16, INT8</td>
+      <td style="text-align: left">FP64, FP32, FP16, INT8</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://www.nvidia.com/en-us/data-center/tensor-cores/">https://www.nvidia.com/en-us/data-center/tensor-cores/</a></li>
+  <li><a href="https://blog.paperspace.com/understanding-tensor-cores/">https://blog.paperspace.com/understanding-tensor-cores/</a></li>
+  <li><a href="https://cvw.cac.cornell.edu/GPUarch/tensor_cores">https://cvw.cac.cornell.edu/GPUarch/tensor_cores</a></li>
+  <li>
+    <iframe width="853" height="480" src="https://www.youtube.com/embed/xjjN9q2ym6s" title="Analysis of a Tensor Core" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+  </li>
+</ul>
+
+  </div>
+<div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html';
+      this.page.identifier = 'https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://gganglius-blog.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+<a class="u-url" href="/2023/05/24/Understanding-Nvidia-Tensor-Core.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+<!--
+        <p class="feed-subscribe">
+          <a href="https://feeds.feedburner.com/chipsandfreedom" onclick="window.open(this.href, 'mywin',
+                    'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" >
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <p class="feed-subscribe">
+          <a href="https://ggangliu.cn//feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            <span>Subscribe</span>
+          </a>
+        </p>
+-->
+<!--
+        <form style="border:0px solid #ccc;padding:0px;text-align:left;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=chipsandfreedom', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Enter your email address:
+          </p>
+          <input type="text" style="width:140px" name="email"/>
+          <input type="hidden" value="chipsandfreedom" name="uri"/>
+          <input type="hidden" name="loc" value="en_US"/>
+          <input type="submit" value="Subscribe" />
+        </form>
+        Enter your email address:
+-->
+        <!-- Begin Mailchimp Signup Form -->
+        <form action="https://gmail.us21.list-manage.com/subscribe/post?u=d69699322692588c4ec9b0ef1&id=3ba7961b0a&f_id=00ec50e1f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <p>
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg>
+            Don't miss our articles:
+          </p>
+          <input type="hidden" name="redirect_to" value="thanks.html">
+          <input type="email" placeholder="Email*" value="" name="EMAIL" id="mce-EMAIL" required>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe">
+        </form>
+        <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+        <script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+        <!--End mc_embed_signup-->
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>ggangliu's Blog, would like to share some summary and study notes. Here may contain some chips knowledge and computer architecture related things. RISC-V also is my favorite topic.
+</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

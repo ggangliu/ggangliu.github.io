@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+     <title>Chips and Freedom</title>
+     <link href="https://ggangliu.cn/feed.xml" rel="self"/>
+     <id>https://ggangliu.cn/</id>
+     <updated>2023-06-26T08:02:21+00:00</updated>
+
+     <author>
+       <name></name>
+       <uri>https://ggangliu.cn/</uri>
+       <email></email>
+     </author>
+
+ 
+ <entry>
+   <title>Gitstats</title>
+   <link href="https://ggangliu.cn//2023/06/26/gitstats.html"/>
+   <id>https://ggangliu.cn//2023/06/26/gitstats</id>
+   <updated>2023-06-26T00:00:00+00:00</updated>
+   <content type="html">&lt;h1 id=&quot;gitstats---git-history-statistics-generator&quot;&gt;GitStats - git history statistics generator&lt;/h1&gt; &lt;h2 id=&quot;about&quot;&gt;About&lt;/h2&gt; &lt;p&gt;GitStats is a statistics generator for git (a distributed revision control system) repositories. It examines the repository and produces some interesting statistics from the history of it.&lt;/p&gt; &lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt; &lt;ul&gt; &lt;li&gt;Python (&amp;gt;= 2.6.0)&lt;/li&gt; &lt;li&gt;Git (&amp;gt;= 1.5.2.4)&lt;/li&gt; &lt;li&gt; &lt;p&gt;Gnuplot (&amp;gt;= 4.0.0)&lt;/p&gt; &lt;div...</content>
+ </entry>
+ 
+ <entry>
+   <title>如何部署一个私有的，不需要联网的ChatGPT</title>
+   <link href="https://ggangliu.cn//2023/06/26/private-GPT.html"/>
+   <id>https://ggangliu.cn//2023/06/26/private-GPT</id>
+   <updated>2023-06-26T00:00:00+00:00</updated>
+   <content type="html">&lt;p&gt;想打造一个自己私有的、不联网的ChatGPT吗？本文将介绍并记录如何利用开源项目privateGPT来打造一个私有的ChatGPT&lt;/p&gt; &lt;hr /&gt; &lt;p&gt;通常我们可能有一些私有的数据为自己所用，不希望其他人拿到这些数据，但数据量也比较大，每次查找起来不是很快速，那么搭建一个自己私有的ChatGPT就能够向这些文档提问，用起来也是很方便且酷酷的。&lt;/p&gt; &lt;h2 id=&quot;privategpt&quot;&gt;privateGPT&lt;/h2&gt; &lt;p&gt;利用大语言模型的能力，向你的文档提问。100%的私有，在任何时候都不会有数据离开你的运行环境，因为不联网也可以用。&lt;/p&gt; &lt;h2 id=&quot;环境安装&quot;&gt;环境安装&lt;/h2&gt; &lt;ol&gt; &lt;li&gt; &lt;p&gt;为了让你的环境能够运行代码，首先安装所有需要的依赖。&lt;/p&gt; &lt;div class=&quot;language-bat highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;pip3&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;-r &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;requirements&lt;/span&gt;.txt &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;/div&gt; &lt;/li&gt; &lt;li&gt;下载LLM模型并且放在自己选择的目录下 默认是&lt;a href=&quot;https://gpt4all.io/models/ggml-gpt4all-j-v1.3-groovy.bin&quot;&gt;ggml-gpt4all-j-v1.3-groovy.bin&lt;/a&gt;&lt;/li&gt; &lt;li&gt; &lt;p&gt;复制example.env模板为.env&lt;/p&gt; &lt;div class=&quot;language-bat highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;example&lt;/span&gt;.env .env &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt; &lt;/div&gt; &lt;p&gt;并且编辑.env文件中相关的变量&lt;/p&gt; &lt;div class=&quot;language-bat highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre...</content>
+ </entry>
+ 
+ <entry>
+   <title>NVIDIA Ampere Architecture</title>
+   <link href="https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture.html"/>
+   <id>https://ggangliu.cn//2023/06/25/nvidia-ampere-architecture</id>
+   <updated>2023-06-25T00:00:00+00:00</updated>
+   <content type="html">&lt;h2 id=&quot;introducing-the-nvidia-a100-tensor-core-gpu&quot;&gt;Introducing the NVIDIA A100 Tensor Core GPU&lt;/h2&gt; &lt;p&gt;Fabricated on the TSMC 7nm N7 manufacturing process, the NVIDIA Ampere architecture-based GA100 GPU that powers A100 includes 54.2 billion transistors with a die size of 826 mm2.&lt;/p&gt; &lt;h3 id=&quot;a100-gpu-streaming-multiprocessor&quot;&gt;A100 GPU Streaming Multiprocessor&lt;/h3&gt; &lt;p&gt;The larger and faster L1 cache and shared memory...</content>
+ </entry>
+ 
+ <entry>
+   <title>Br100 Architecture</title>
+   <link href="https://ggangliu.cn//2023/06/25/BR100-Architecture.html"/>
+   <id>https://ggangliu.cn//2023/06/25/BR100-Architecture</id>
+   <updated>2023-06-25T00:00:00+00:00</updated>
+   <content type="html">&lt;h1 id=&quot;br100&quot;&gt;BR100&lt;/h1&gt;
+
+&lt;h2 id=&quot;architecture-diagram&quot;&gt;Architecture Diagram&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-25_101314.png&quot; alt=&quot;BR100&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-25_101448.png&quot; alt=&quot;SPC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-25_103552.png&quot; alt=&quot;control mode&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-25_104212.png&quot; alt=&quot;TDA&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-25_111239.png&quot; alt=&quot;Summary&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>An Introduction to Compute Shaders</title>
+   <link href="https://ggangliu.cn//2023/06/13/Compute-Shaders.html"/>
+   <id>https://ggangliu.cn//2023/06/13/Compute-Shaders</id>
+   <updated>2023-06-13T00:00:00+00:00</updated>
+   <content type="html">&lt;h2 id=&quot;gpu-computing&quot;&gt;GPU Computing&lt;/h2&gt; &lt;p&gt;See a demo: &lt;a href=&quot;https://www.youtube.com/watch?v=-P28LKWTzrI&quot;&gt;Mythbusters Demo GPU versus CPU&lt;/a&gt;&lt;/p&gt; &lt;iframe width=&quot;840&quot; height=&quot;515&quot; src=&quot;https://www.youtube.com/embed/-P28LKWTzrI&quot; title=&quot;Mythbusters Demo GPU versus CPU&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt; &lt;h2 id=&quot;compute-shader-stage&quot;&gt;Compute Shader Stage&lt;/h2&gt; &lt;p&gt;To make GPU computing easier accessible especially for graphics applications while sharing common memory mappings, the...</content>
+ </entry>
+ 
+ <entry>
+   <title>An Introduction to Modern GPU Architecture</title>
+   <link href="https://ggangliu.cn//2023/06/09/GPU-Evolution.html"/>
+   <id>https://ggangliu.cn//2023/06/09/GPU-Evolution</id>
+   <updated>2023-06-09T00:00:00+00:00</updated>
+   <content type="html">&lt;h2 id=&quot;1-graphics-pipelines-for-last-20-years&quot;&gt;1. Graphics Pipelines For Last 20 Years&lt;/h2&gt; &lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-09_132948.png&quot; alt=&quot;Pipelines&quot; /&gt;&lt;/p&gt; &lt;h2 id=&quot;2-unified-pipeline&quot;&gt;2. Unified Pipeline&lt;/h2&gt; &lt;h3 id=&quot;why-unify&quot;&gt;Why Unify&lt;/h3&gt; &lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-09_133155.png&quot; alt=&quot;Shader&quot; /&gt;&lt;/p&gt; &lt;p&gt;&lt;img src=&quot;/assets/snip-images/2023-06-09_133302.png&quot; alt=&quot;Balanced workload&quot; /&gt;&lt;/p&gt; &lt;h3 id=&quot;why-scalar-instruction-shader&quot;&gt;Why Scalar Instruction Shader&lt;/h3&gt; &lt;ul&gt; &lt;li&gt;Vector ALU efficiency varies &lt;img src=&quot;/assets/snip-images/2023-06-09_133518.png&quot; alt=&quot;vector&quot; /&gt; co-issue – better but not perfect &lt;img src=&quot;/assets/snip-images/2023-06-09_133827.png&quot;...</content>
+ </entry>
+ 
+ <entry>
+   <title>NVIDIA Tesla Architecture</title>
+   <link href="https://ggangliu.cn//2023/05/31/nvidia-tesla-architecture.html"/>
+   <id>https://ggangliu.cn//2023/05/31/nvidia-tesla-architecture</id>
+   <updated>2023-05-31T00:00:00+00:00</updated>
+   <content type="html">&lt;p&gt;NVIDIA’s Tesla architecture, introduced in November 2006 in the GeForce 8800 GPU, unifies the vertex and pixel processors and extends them, enabling high-performance parallel computing application written in the C-language using the Compute Unified Device Architecture(CUDA) parallel programmig model and development tools.&lt;/p&gt; &lt;p&gt;The first GPU was the GeForce 256, introduced...</content>
+ </entry>
+ 
+ <entry>
+   <title>NVIDIA Pascal Architecture</title>
+   <link href="https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture.html"/>
+   <id>https://ggangliu.cn//2023/05/25/nvidia-pascal-architecture</id>
+   <updated>2023-05-25T00:00:00+00:00</updated>
+   <content type="html">&lt;p&gt;Tesla P100 is the world’s first GPU architecture to support HBM2 memory.&lt;/p&gt; &lt;p&gt;GP100 is the first NVIDIA GPU to support hardware page faulting, and when combined with new 49-bit (512 TB) virtual addressing, allows transparent migration of data between the full virtual address spaces of both the GPU and CPU.&lt;/p&gt;...</content>
+ </entry>
+ 
+ <entry>
+   <title>Understanding Nvidia Tensor Core</title>
+   <link href="https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core.html"/>
+   <id>https://ggangliu.cn//2023/05/24/Understanding-Nvidia-Tensor-Core</id>
+   <updated>2023-05-24T00:00:00+00:00</updated>
+   <content type="html">&lt;h2 id=&quot;对hpc和ai前所未有的加速&quot;&gt;对HPC和AI前所未有的加速&lt;/h2&gt; &lt;p&gt;Tensor Core能够进行mixed-precision计算，能在保证准确度的情况动态调整计算精度增加吞吐量。&lt;/p&gt; &lt;ul&gt; &lt;li&gt;Revoluinary AI Training&lt;/li&gt; &lt;li&gt;Breakthrough AI Inference&lt;/li&gt; &lt;li&gt;Advanced HPC&lt;/li&gt; &lt;/ul&gt; &lt;h2 id=&quot;understanding-tensor-core&quot;&gt;Understanding Tensor Core&lt;/h2&gt; &lt;h3 id=&quot;what-are-cuda-cores&quot;&gt;What are CUDA cores?&lt;/h3&gt; &lt;p&gt;&lt;img src=&quot;/assets/snip-images/CUDA_processing_flow_(En).png&quot; alt=&quot;CUDA_processing_flow&quot; /&gt;&lt;/p&gt; &lt;h3 id=&quot;what-are-tensor-cores&quot;&gt;What are Tensor Cores?&lt;/h3&gt; &lt;p&gt;Tensor Core是一个能够进行混合精度训练的特殊核。这个特殊核的第一代通过一个融合的乘加计算，允许两个4x4 FP16矩阵相乘并加到一个4x4的FP16或者FP32矩阵。之所以称为mixed precision computation是因为输入的矩阵可能是低精度的FP16，而最终输出是FP32(只有很少的精度损失)&lt;/p&gt; &lt;h3 id=&quot;how-do-tensor-cores-work&quot;&gt;How do Tensor Cores work?&lt;/h3&gt; &lt;p&gt;The basic role of a tensor core...</content>
+ </entry>
+ 
+ <entry>
+   <title>How to write presentation by markdown</title>
+   <link href="https://ggangliu.cn//2023/05/23/how-to-write-slide.html"/>
+   <id>https://ggangliu.cn//2023/05/23/how-to-write-slide</id>
+   <updated>2023-05-23T00:00:00+00:00</updated>
+   <content type="html">&lt;!-- slide --&gt;
+
+&lt;h1 id=&quot;hi-there&quot;&gt;Hi there&lt;/h1&gt;
+
+&lt;p&gt;What’s wrong with you?&lt;/p&gt;
+
+&lt;!-- slide --&gt;
+
+&lt;h1 id=&quot;i-am-here&quot;&gt;I am here&lt;/h1&gt;
+
+&lt;p&gt;Do you know who am I ?&lt;/p&gt;
+
+&lt;!-- slide --&gt;
+
+&lt;h1 id=&quot;where-are-you-from-&quot;&gt;Where are you from ?&lt;/h1&gt;
+
+&lt;p&gt;Chips and Freedom&lt;/p&gt;
+
+&lt;!-- slide --&gt;
+
+&lt;h1 id=&quot;q--a&quot;&gt;Q &amp;amp; A&lt;/h1&gt;
+</content>
+ </entry>
+ 
+
+</feed>
