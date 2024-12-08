@@ -35,7 +35,7 @@ html_theme = 'sphinx_rtd_theme' #'alabaster'
 html_static_path = ['_static']
 html_logo = '_static/firstai-2.png'
 html_favicon = ''
-html_css_files = ['_variables.scss',]
+html_css_files = ['_variables.scss', 'custom.css']
 html_copy_source = False
 html_show_sphinx = True
 
