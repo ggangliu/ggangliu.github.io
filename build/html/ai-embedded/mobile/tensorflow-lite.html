@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TensorFlow Lite &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TensorFlow Lite</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="tensorflow-lite">
+<h1>TensorFlow Lite<a class="headerlink" href="#tensorflow-lite" title="Link to this heading"></a></h1>
+<p>https://developer.android.com/codelabs/digit-classifier-tflite?hl=en#6</p>
+<p><a class="reference external" href="https://www.tensorflow.org/lite/guide/ops_custom?hl=zh-cn">自定义算子</a></p>
+<section id="embedded">
+<h2>Embedded<a class="headerlink" href="#embedded" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://www.tensorflow.org/lite/microcontrollers/overview?hl=zh-cn">TensorFlow Lite for Microcontrollers</a></p>
+<section id="id1">
+<h3>模型训练<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>OCR</p>
+</section>
+<section id="id2">
+<h3>开发工作流程<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>创建或获取TensorFlow模型</p></li>
+<li><p>将模型转换为TensorFlow Lite FlatBuffer
+使用<a class="reference external" href="https://www.tensorflow.org/lite/microcontrollers/build_convert?hl=zh-cn#%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9E%8B">TensorFlowLite转换器</a>来将模型转换为标准 TensorFlow Lite 格式</p></li>
+<li><p>将 FlatBuffer 转换为 C byte 数组
+模型保存在只读程序存储器中，并以简单的 C 文件的形式提供。标准工具可用于<a class="reference external" href="https://www.tensorflow.org/lite/microcontrollers/build_convert?hl=zh-cn#%E8%BD%AC%E6%8D%A2%E4%B8%BA_C_%E6%95%B0%E7%BB%84">将FlatBuffer转换为C数组</a>。</p></li>
+<li><p>集成TensorFlow Lite for Microcontrollers的C++库
+编写微控制器代码以使用<a class="reference external" href="https://www.tensorflow.org/lite/microcontrollers/library?hl=zh-cn">C++库</a>执行推断。
+<a class="reference external" href="https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro">https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro</a></p></li>
+<li><p>部署到您的设备</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>设备<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://github.com/google/stm32_bare_lib">“Blue Pill” STM32F103 兼容开发板</a></p>
+<p><a class="reference external" href="https://github.com/tensorflow/tflite-micro/tree/main">https://github.com/tensorflow/tflite-micro/tree/main</a>
+<a class="reference external" href="https://github.com/google/flatbuffers">https://github.com/google/flatbuffers</a></p>
+<p>This example illustrates a way of personalizing a TFLite model on-device without sending any data to the server.</p>
+<p><a class="reference external" href="https://github.com/tensorflow/examples/tree/master/lite/examples/model_personalization">https://github.com/tensorflow/examples/tree/master/lite/examples/model_personalization</a></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
