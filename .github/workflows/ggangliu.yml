@@ -8,13 +8,14 @@ permissions:
 jobs:
   docs:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: false
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme myst_parser sphinx_simplepdf rst2pdf sphinx_markdown_parser sphinx_markdown_tables sphinxcontrib-mermaid linkify
+          pip install sphinx sphinx_rtd_theme myst_parser sphinx_simplepdf rst2pdf sphinx_markdown_parser sphinx_markdown_tables sphinxcontrib-mermaid 
+          pip install linkify
       - name: Sphinx build
         run: |
           sphinx-build -M html source/ ./
