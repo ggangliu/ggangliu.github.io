@@ -33,7 +33,7 @@ todo_include_todos = True
 
 html_theme = 'sphinx_rtd_theme' #'alabaster'
 html_static_path = ['_static']
-html_logo = ''
+html_logo = '_static/firstai-2.png'
 html_favicon = ''
 html_css_files = ['_variables.scss',]
 html_copy_source = False
