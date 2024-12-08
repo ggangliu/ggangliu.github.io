@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xilinx Petalinux Workflow &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Software" href="../../software.html" />
+    <link rel="prev" title="Xilinx" href="xilinx.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../tinyml/tinyml.html">TinyML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zynq/zynq.html">ZYNQ</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="xilinx.html">Xilinx</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Xilinx Petalinux Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#boot-pre-build-images-from-sd-card">Boot Pre-build Images from SD Card</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boot-pre-built-images-with-jtag">Boot Pre-built Images with JTAG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-pre-build-petalinux-image-with-qemu">Test Pre-build PetaLinux Image with QEMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-the-re-build-petalinux-images">Testing the Re-build PetaLinux Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-a-petalinux-project">Working with a petalinux Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-a-bootable-system-image">Building a bootable system image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#internal-architecture-of-petalinux-projects">Internal Architecture of Petalinux Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../ai-embedded.html">AI Embedded</a></li>
+          <li class="breadcrumb-item"><a href="xilinx.html">Xilinx</a></li>
+      <li class="breadcrumb-item active">Xilinx Petalinux Workflow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="xilinx-petalinux-workflow">
+<h1>Xilinx Petalinux Workflow<a class="headerlink" href="#xilinx-petalinux-workflow" title="Link to this heading"></a></h1>
+<p><img alt="alt text" src="../../_images/image4.png" /></p>
+<section id="boot-pre-build-images-from-sd-card">
+<h2>Boot Pre-build Images from SD Card<a class="headerlink" href="#boot-pre-build-images-from-sd-card" title="Link to this heading"></a></h2>
+</section>
+<section id="boot-pre-built-images-with-jtag">
+<h2>Boot Pre-built Images with JTAG<a class="headerlink" href="#boot-pre-built-images-with-jtag" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Power off</p></li>
+<li><p>Connect the JTAG port</p></li>
+<li><p>Connect the serial port</p></li>
+<li><p>Connect the Ethernet port</p></li>
+<li><p>Power on</p></li>
+<li><p>petalinux-boot –jtag –prebuilt 3</p></li>
+</ol>
+</section>
+<section id="test-pre-build-petalinux-image-with-qemu">
+<h2>Test Pre-build PetaLinux Image with QEMU<a class="headerlink" href="#test-pre-build-petalinux-image-with-qemu" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>petalinux-boot –qemu –prebuilt 3</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--prebuilt</span> <span class="pre">1</span></code> performs FPGA bitstream</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--prebuilt</span> <span class="pre">2</span></code> performs U-boot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--prebuild</span> <span class="pre">3</span></code> performs pre-build Linux image</p></li>
+</ul>
+</li>
+<li><p>Login to PetaLinux with default user name <code class="docutils literal notranslate"><span class="pre">root</span></code> and password <code class="docutils literal notranslate"><span class="pre">root</span></code></p></li>
+</ol>
+<blockquote>
+<div><p>To exit QEMU, press Ctrl + A</p>
+</div></blockquote>
+</section>
+<section id="testing-the-re-build-petalinux-images">
+<h2>Testing the Re-build PetaLinux Images<a class="headerlink" href="#testing-the-re-build-petalinux-images" title="Link to this heading"></a></h2>
+<section id="testing-the-re-built-image-on-hardware">
+<h3>Testing the Re-built Image on Hardware<a class="headerlink" href="#testing-the-re-built-image-on-hardware" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>petalinux-boot –jtag –u-boot –fpga –bitstream &lt; Bit-stream &gt;</p></li>
+<li><p>petalinux-boot –jtag –kernel –fpga –bitstream &lt; Bit-stream &gt;</p></li>
+</ol>
+</section>
+<section id="testing-the-re-build-image-with-qemu">
+<h3>Testing the Re-build Image with QEMU<a class="headerlink" href="#testing-the-re-build-image-with-qemu" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>petalinux-boot –qemu –kernel</p></li>
+<li><p>login as <code class="docutils literal notranslate"><span class="pre">root</span></code> with password <code class="docutils literal notranslate"><span class="pre">root</span></code></p></li>
+</ol>
+</section>
+</section>
+<section id="working-with-a-petalinux-project">
+<h2>Working with a petalinux Project<a class="headerlink" href="#working-with-a-petalinux-project" title="Link to this heading"></a></h2>
+<section id="creating-a-new-project">
+<h3>Creating a new project<a class="headerlink" href="#creating-a-new-project" title="Link to this heading"></a></h3>
+<p>petalinux-create –type prject –template &lt; CPU_TYPE &gt; –name &lt; PROJECT &gt;</p>
+</section>
+<section id="import-hardware-description">
+<h3>Import Hardware Description<a class="headerlink" href="#import-hardware-description" title="Link to this heading"></a></h3>
+<p>petalinux-config –get-hw-description=&lt; path-to-directory-which-contains-hardware-description-file &gt;</p>
+</section>
+<section id="configure-project-components">
+<h3>Configure Project Components<a class="headerlink" href="#configure-project-components" title="Link to this heading"></a></h3>
+<p>petalinux-config
+petalinux-config -c kernel
+petalinux-config -c rootfs</p>
+</section>
+<section id="boot-the-default-linux-kernel-image">
+<h3>Boot the default Linux Kernel Image<a class="headerlink" href="#boot-the-default-linux-kernel-image" title="Link to this heading"></a></h3>
+<p>petalinux-boot –qemu –kernel</p>
+</section>
+<section id="boot-a-specific-linux-image">
+<h3>Boot a Specific Linux Image<a class="headerlink" href="#boot-a-specific-linux-image" title="Link to this heading"></a></h3>
+<p>petalinux-boot –qemu –image &lt; path-to-linux-iamge-file &gt;</p>
+</section>
+<section id="boot-a-linux-image-with-a-specific-dtb">
+<h3>Boot a linux image with a specific DTB<a class="headerlink" href="#boot-a-linux-image-with-a-specific-dtb" title="Link to this heading"></a></h3>
+<p>petalinux-boot –qemu –image ./images/linux/zImage –dtb ./images/linux/system.dtb</p>
+</section>
+</section>
+<section id="building-a-bootable-system-image">
+<h2>Building a bootable system image<a class="headerlink" href="#building-a-bootable-system-image" title="Link to this heading"></a></h2>
+<section id="generate-boot-image-for-zynq-device">
+<h3>Generate boot image for zynq device<a class="headerlink" href="#generate-boot-image-for-zynq-device" title="Link to this heading"></a></h3>
+<p>petalinux-package –boot –format BIN –fsbl &lt; FSBL image &gt; –fpga &lt; FPGA bitstream &gt; –u-boot</p>
+</section>
+</section>
+<section id="internal-architecture-of-petalinux-projects">
+<h2>Internal Architecture of Petalinux Projects<a class="headerlink" href="#internal-architecture-of-petalinux-projects" title="Link to this heading"></a></h2>
+<p><img alt="alt text" src="../../_images/image-115.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="xilinx.html" class="btn btn-neutral float-left" title="Xilinx" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../software.html" class="btn btn-neutral float-right" title="Software" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

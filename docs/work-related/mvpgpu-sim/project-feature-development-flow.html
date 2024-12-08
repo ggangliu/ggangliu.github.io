@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project/Feature Development Flow &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Project/Feature Development Flow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="project-feature-development-flow">
+<h1>Project/Feature Development Flow<a class="headerlink" href="#project-feature-development-flow" title="Link to this heading"></a></h1>
+<section id="project-development-flow">
+<h2>1. Project Development Flow<a class="headerlink" href="#project-development-flow" title="Link to this heading"></a></h2>
+</section>
+<section id="feature-development-flow">
+<h2>2. Feature Development Flow<a class="headerlink" href="#feature-development-flow" title="Link to this heading"></a></h2>
+<p>特性需求分析，并给出实现Feature的具体方法(Approach)，进行必要评审后，开始Coding完成Feature，Coding完成后及时进行Code review，避免代码测试稳定后再Review，引入新的修改而反复测试。如发现前期Approach有缺陷，可及时进行必要重构，避免技术欠债。</p>
+<section id="feature-requirement-clarification-meeting">
+<h3>2.1 Feature Requirement Clarification Meeting<a class="headerlink" href="#feature-requirement-clarification-meeting" title="Link to this heading"></a></h3>
+<p>系统或者需求导入者，需要召开特性需求澄清会议，进行特性需求澄清</p>
+<blockquote>
+<div><p>注意：针对复杂Feature，Feature Owner可召开特性需求反串讲会议，将对特性需求的理解进行反向串讲给系统工程师或者需求到入者，以达到充分正确理解特性需求的目的</p>
+</div></blockquote>
+</section>
+<section id="approach-review-meeting">
+<h3>2.2 Approach Review Meeting<a class="headerlink" href="#approach-review-meeting" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>评审特性开发方案，针对评审过程中的意见进行答复、修改或进一步讨论</p></li>
+<li><p>关键评审人达成一致后，开始Coding</p></li>
+</ol>
+<blockquote>
+<div><p>注意: 如有必要，也可在特性的分析评审过程中编写必要的demo代码辅助理解特性或阐述方案</p>
+</div></blockquote>
+</section>
+<section id="code-review">
+<h3>2.3 Code Review<a class="headerlink" href="#code-review" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Offline meeting
+代码改动较大，或认为有必要的，采用线下召开code review meeting的形式进行完成code review</p></li>
+<li><p>Online gerrit review
+代码改动较小的可采用线上code review</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

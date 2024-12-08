@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instruction Flow &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Instruction Flow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="instruction-flow">
+<h1>Instruction Flow<a class="headerlink" href="#instruction-flow" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>指令的执行流程<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>gpu_micro_architecture::cycle()</p></li>
+<li><p>graphics_process_cluster::core_cycle()</p></li>
+<li><p>texture_process_cluster::core_cycle()</p></li>
+<li><p>stream_multiprocessor::sp_cycle()</p></li>
+<li><p>stream_processor::cycle()</p></li>
+<li><p>scheduler_unit::cycle()</p></li>
+<li><p>stream_processor::issue_warp(register_set &amp;pipe_reg_set,
+const warp_inst_t *next_inst,
+const active_mask_t &amp;active_mask,
+unsigned warp_id, unsigned sch_id)</p></li>
+<li><p>mvp_stream_processor::func_exec_inst(warp_inst_t &amp;inst)</p></li>
+<li><p>core_t::execute_warp_inst_t(warp_inst_t &amp;inst, unsigned warpId)</p></li>
+<li><p>ptx_thread_info::ptx_exec_inst(warp_inst_t &amp;inst, unsigned lane_id)</p></li>
+<li><p>mvp_jr_impl(const ptx_instruction *pI, ptx_thread_info *thread)</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2>指令的完成判断流程<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>目前看指令完成有两条主要路径，分别如下</p>
+<section id="wb">
+<h3>WB<a class="headerlink" href="#wb" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>gpu_micro_architecture::cycle()</p></li>
+<li><p>graphics_process_cluster::core_cycle()</p></li>
+<li><p>texture_process_cluster::core_cycle()</p></li>
+<li><p>stream_multiprocessor::sp_cycle()</p></li>
+<li><p>stream_processor::cycle()</p></li>
+<li><p>stream_processor::writeback()</p>
+<ol class="arabic simple">
+<li><p>max_committed_thread_instructions = m_sp_config-&gt;warp_size *  m_sp_config-&gt;pipe_widths[EX_WB];</p></li>
+<li><p>stream_processor::warp_inst_complete(const warp_inst_t &amp;inst)</p>
+<ol class="arabic simple">
+<li><p>warp_inst_t::completed(unsigned long long cycle)</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="ex">
+<h3>EX<a class="headerlink" href="#ex" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>gpu_micro_architecture::cycle()</p></li>
+<li><p>graphics_process_cluster::core_cycle()</p></li>
+<li><p>texture_process_cluster::core_cycle()</p></li>
+<li><p>stream_multiprocessor::sp_cycle()</p></li>
+<li><p>stream_processor::cycle()</p></li>
+<li><p>stream_processor::execute()</p>
+<ol class="arabic simple">
+<li><p>ldst_unit::writeback()</p></li>
+<li><p>ldst_unit::L1_latency_queue_cycle()</p></li>
+<li><p>ldst_unit::cycle()</p></li>
+<li><p>ldst_unit::cycle()</p></li>
+</ol>
+</li>
+<li><p>stream_processor::warp_inst_complete(const warp_inst_t &amp;inst)</p></li>
+<li><p>warp_inst_t::completed(unsigned long long cycle)</p></li>
+</ol>
+</section>
+<section id="latency">
+<h3>该函数用于打印代码对应指令的latency<a class="headerlink" href="#latency" title="Link to this heading"></a></h3>
+<p>gpu_ctx-&gt;stats-&gt;ptx_file_line_stats_write_file();</p>
+<p>pInsn-&gt;get_source() 用于拿到汇编指令字符串</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

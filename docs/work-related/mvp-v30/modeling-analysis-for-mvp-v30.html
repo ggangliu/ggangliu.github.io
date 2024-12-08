@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVPGPU-Sim Performance Analysis and Modeling for MVP V3.0 &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVPGPU-Sim Performance Analysis and Modeling for MVP V3.0</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvpgpu-sim-performance-analysis-and-modeling-for-mvp-v3-0">
+<h1>MVPGPU-Sim Performance Analysis and Modeling for MVP V3.0<a class="headerlink" href="#mvpgpu-sim-performance-analysis-and-modeling-for-mvp-v3-0" title="Link to this heading"></a></h1>
+<section id="tasks-backlog">
+<h2>Tasks Backlog<a class="headerlink" href="#tasks-backlog" title="Link to this heading"></a></h2>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Architecture</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> GPUC</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> GPC</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> TPC</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> SM</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> SP</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Pipeline</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> LDST Unit</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Memory</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Register file size</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> L1 Instruction Cache size</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> L1 Data Cache size</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Local memory size</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> L2 Cache size</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Evaluating L3 Cache which shared by all GPCs</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Bus bandwidth</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> DRAM</p></li>
+</ul>
+</li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Graphics</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> VF</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> PA</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> CLIP</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> TPG</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> RAST</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> ROP</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> TEXT</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> RT Core</p></li>
+</ul>
+</li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Tensor Core</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> SMD</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Area</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Power</p></li>
+</ul>
+</section>
+<section id="open-issues">
+<h2>Open Issues<a class="headerlink" href="#open-issues" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Dual issue: Simultaneous execution of FP32 and INT32 operations, fmac and mac instruction
+Current MAC in SP support floating-point and integer operations, this will limit multi-issue</p></li>
+<li><p>Adding L3 Cache shared by all SMs instead of local memory</p></li>
+<li><p>Async copy and barrier</p></li>
+<li><p>Shared Cache Residency control</p></li>
+</ul>
+</section>
+<section id="schedule-overview">
+<h2>Schedule Overview<a class="headerlink" href="#schedule-overview" title="Link to this heading"></a></h2>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>gantt
+dateFormat YYYY-MM-DD
+%%axisFormat WK%W
+inclusiveEndDates
+todayMarker stroke-width:3px,stroke:#0f0,opacity:0.5
+title &quot;MVP v3.0 Modeling Schedule&quot;
+
+section 需求分析
+  Requirement analysis                           :done, r1, 2023-08-02, 4w 
+section Sprint 1
+  %% Modeling for mvp v3.0
+  MVP v3.0 design and exploring                  :done, t, 2023-07-01, 2w
+  Report release v0.1                            :done, milestone, crit, m0, after t, 1d   
+  GPC/TPC/SM/SP                                  :done, t0, after m0, 3w
+  MVP v2.1 Calculation                           :done, t0.0, 2023-09-10, 4w
+  SP Pipeline                                    :active, t0.1, 2023-10-10, 3w
+  Register file size                             :t1, after t0, 3w
+  LDST Unit                                      :active, t1-1, after t0, 3w  
+  L1 Instruction Cache size                      :t2, 2023-07-28, 3w
+  L1 Data Cache size                             :t3, after t2, 3w
+  Local memory size                              :t4, after t3, 3w
+  Report release v1.0                            :milestone, crit, m1, after t4, 1d
+  L2 Cache size                                  :t5, after m1, 3w
+  Bus bandwidth                                  :t6, after t5, 3w 
+  DRAM                                           :t7, after t6, 3w
+  Report release v2.0                            :milestone, crit, m2, after t7, 1d  
+  Evaluating L3 Cache which shared by all GPCs   :t8, after m2, 3w
+section Sprint 2
+  PA performance and quantity                    :t9, after t8, 3w
+  RAST performance and quantity                  :t10, after t9, 3w
+  ROP performance and quantity                   :t11, after t10, 3w
+  TEXT performance and quantity                  :t12, after t11, 3w
+  Report release v3.0                            :milestone, crit, m3, after t12, 1d
+section Sprint 3
+  Area                                           :t13, after m3, 4w
+  Power                                          :t14, after t13, 4w
+  Report release v4.0                            :milestone, crit, m4, after t14, 1d
+</pre></div>
+</div>
+</section>
+<section id="mvp-v3-0-architecture-modeling">
+<h2>MVP V3.0 Architecture Modeling<a class="headerlink" href="#mvp-v3-0-architecture-modeling" title="Link to this heading"></a></h2>
+<section id="gpc-tpc-sm-sp">
+<h3>1. GPC/TPC/SM/SP<a class="headerlink" href="#gpc-tpc-sm-sp" title="Link to this heading"></a></h3>
+<p>Now Perf-simulator is able to create 6 GPCs, 48 TPCs, 96 SMs and 384 SPs according to the mvpgpusim.config file. And tried to launch 98300 threads which is successed. The computed result also is correct.</p>
+<p>32 threads/warp, and there are 32 warps per block. And a SP only has one block.</p>
+<p>Big Picture of mvp v3.0 architecture
+<img alt="v3.0 architecture" src="../../_images/mvpgpu-sim-architecture-v3.0.png" /></p>
+<ol class="arabic simple">
+<li><p>The input assembler collects geometric primitive(points, lines, triangles) and fetches associated vertex input attribute data. It has peak rates of one primitive per clock and eight scalar attributes per clock at the GPU core clock, which is typically 600 MHz. (from Tesla)</p></li>
+</ol>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Product</th>
+<th style="text-align: left;">MVP V3.0</th>
+<th style="text-align: left;">MVP V2.1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GPCs</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">TPCs</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SMs</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SPs</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">INT32 Units / SP</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">INT32 Units / GPU</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">FP32 Units / SP</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">FP32 Units / GPU</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">FP64 Units / SP</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">FP64 Units / GPU</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Tensor Cores / SP</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Tensor Cores / GPU</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">GPU Boost Clock</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Peak FP32 TFLOPS</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Peak FP64 TFLOPS</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Peak Tensor Core TFLOPS</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Texture Units</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Interface</td>
+<td style="text-align: left;">4096-bit HBM2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Size</td>
+<td style="text-align: left;">16 GB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">L2 Cache Size</td>
+<td style="text-align: left;">6144 KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">L1 Cache Size</td>
+<td style="text-align: left;">6144 KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shared Memory Size / SP</td>
+<td style="text-align: left;">Configurable up to 96 KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Shared Memory Size / GPU</td>
+<td style="text-align: left;">Configurable up to 96 KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Register File Size / SP</td>
+<td style="text-align: left;">256KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">Register File Size / GPU</td>
+<td style="text-align: left;">20480 KB</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr>
+<td style="text-align: left;">TDP</td>
+<td style="text-align: left;">300 Watts</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+<section id="gpc">
+<h4>1.1 GPC<a class="headerlink" href="#gpc" title="Link to this heading"></a></h4>
+</section>
+<section id="tpc">
+<h4>1.2 TPC<a class="headerlink" href="#tpc" title="Link to this heading"></a></h4>
+</section>
+<section id="sm">
+<h4>1.3 SM<a class="headerlink" href="#sm" title="Link to this heading"></a></h4>
+</section>
+<section id="sp">
+<h4>1.4 SP<a class="headerlink" href="#sp" title="Link to this heading"></a></h4>
+<p>从Nvidia资料看，the amount of thread / warp size = 16，该比例可能是最合理的</p>
+<p><img alt="v3.0 sp" src="../../_images/mvp-v3.0-sp-pipeline.png" /></p>
+<ul class="simple">
+<li><p>所有指令都应该进入SP进行译码，也就意味着只要有指令触发的功能单元都应该在SP内</p></li>
+<li><p>MIO queue (volta has this unit for load/store/TEX)
+sends MIO instructions to the MIO instruction queue for later scheduling</p></li>
+</ul>
+</section>
+<section id="computing-power-curve">
+<h4>1.5 Computing power curve<a class="headerlink" href="#computing-power-curve" title="Link to this heading"></a></h4>
+<p>(the number of FP32 operations) * frequency / cycle</p>
+<p>In theorical, there 6144 FP32 units</p>
+</section>
+<section id="frequency">
+<h4>1.6 Frequency<a class="headerlink" href="#frequency" title="Link to this heading"></a></h4>
+<p>Frequency (MHz)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Core</p></th>
+<th class="head text-left"><p>Icnt</p></th>
+<th class="head text-left"><p>L2</p></th>
+<th class="head text-left"><p>Dram</p></th>
+<th class="head text-left"><p>PA</p></th>
+<th class="head text-left"><p>ROP</p></th>
+<th class="head text-left"><p>Raster</p></th>
+<th class="head text-left"><p>Texture</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>800</p></td>
+<td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>1000</p></td>
+<td class="text-left"><p>1000</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="issues">
+<h4>1.7 Issues<a class="headerlink" href="#issues" title="Link to this heading"></a></h4>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> <font color='#00f'> Don’t support multiple ldst unit, only one now </font>, [fixed]</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> MSHR</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Scheduler</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> 将Inst cache中的load指令存入一个队列，只要ldst单元空闲就执行该队列中的load指令，从而达到预取数据的目的，提升程序效率</p></li>
+</ul>
+</li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> 每一个ALU按照warp_size去运行，而非一个ALU执行一个线程，跟当前硬件不一致，即SIMT的模式，而非SMT （m_warp_active_mask）</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> 取指可否取的更多以提升性能，帮助完成预取，当前是取4条</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> 根据当前MVP设计，在FE, EX和WB均有指令完成</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> warp size</p></li>
+</ul>
+</section>
+</section>
+<section id="pipeline">
+<h3>2. Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h3>
+<p>目前的设计中，在FE\IS\RF阶段都有Decoder。</p>
+<ul class="simple">
+<li><p>流水线中支持的V线程（Warp数）需要跟流水级数确定，否则在前后指令有数据依赖时会有流水线stall的情况</p></li>
+</ul>
+<section id="fe-stage">
+<h4>2.1 FE Stage<a class="headerlink" href="#fe-stage" title="Link to this heading"></a></h4>
+<p>当前设计中，如果stall了，FE阶段不会取指，但是如果添加一个ibuffer，用来缓存FE取到的指令，那么FE就不会stall，每个cycle都可以取指并放入ibufferz中。IS阶段直接从ibuffer中选择指令。从而提高流水线的并发性，提升性能。</p>
+<p>按照当前设计，如下指令在FE阶段完成并退出流水线</p>
+<ul class="simple">
+<li><p>break</p></li>
+<li><p>exit</p></li>
+<li><p>exret</p></li>
+<li><p>sync</p></li>
+</ul>
+</section>
+<section id="is-stage">
+<h4>2.2 IS Stage<a class="headerlink" href="#is-stage" title="Link to this heading"></a></h4>
+<p>添加scoreboard来记录需要写入的目的寄存器，以支持乱序发射。从ibuffer中取出的指令，如果其源寄存器或目的寄存器不在scoreboard中，那么该指令不依赖前一条指令，可以继续执行进入RF阶段，否则该指令不能进入RF阶段。同时做相关的结构冲突检测。</p>
+<p>为了提升ILP，并提高FU的占用率，可以使用双发射或者多发射。从调度器选择的warp中取出连续的、不存在数据相关性的指令，同时发射到FU上执行。存在相关性的指令或者第一天指令为分支跳转指令的情况还是禁止双发射。</p>
+<section id="dynamic-scheduling">
+<h5>Dynamic Scheduling<a class="headerlink" href="#dynamic-scheduling" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>运行为一个流水线编译的代码高效的运行在不同的流水线上</p></li>
+<li><p>能够处理一些编译时未知依赖的情况，比如memory reference or a data-dependent branch</p></li>
+<li><p>允许处理器容忍不可预知的延迟，比如cache miss时通过运行其他代码来解决等待miss的情况</p></li>
+</ol>
+<dl class="myst field-list simple">
+<dt class="field-odd">memo<span class="colon">:</span></dt>
+<dd class="field-odd"><p>能否实现一个简单的Dynamic Schedule既能降低硬件复杂度，也能提升FU利用率。比如只要前后指令之间没有依赖，就多发射，如果有依赖就单发射</p>
+</dd>
+</dl>
+</section>
+<section id="register-renaming">
+<h5>Register Renaming<a class="headerlink" href="#register-renaming" title="Link to this heading"></a></h5>
+<p>Solve WAR and WAW</p>
+</section>
+</section>
+<section id="rf-stage">
+<h4>2.3 RF Stage<a class="headerlink" href="#rf-stage" title="Link to this heading"></a></h4>
+<p>进入RF阶段的指令需要从寄存器文件中获取源寄存器的值，但由于寄存器文件的结构可能会出现bank冲突，因此可以增加Operand_Collector以缓存暂时由于Register File Bank冲突导致的暂时无法进入EX阶段的指令。当前的设计是由IS阶段将寄存器id传递给Register File，在RF阶段直接取数据，而且每次只发送4条指令，没有寄存器冲突。</p>
+<p>从RF中正常拿到源寄存器值的指令进入EX阶段。</p>
+</section>
+<section id="ex-stage">
+<h4>2.4 EX Stage<a class="headerlink" href="#ex-stage" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>ALU指令进行运算，但计算的结果在WB阶段写会寄存器文件。如果IS阶段的scoreboard中有指令依赖该目的寄存器，可以先解除依赖，因为(正常情况下)下一个cycle该目的寄存器会被写入。</p></li>
+<li><p>store指令直接写入cache中，结束指令。load指令可能会由于cache miss而导致该线程被换出。load指令最终需要到WB阶段将数据写入目的寄存器。</p></li>
+<li><p>当前ldst单元是属于流水线的一部分，会stall流水线。可以考虑增加一个属于memory系统的ldst单元。将load、store指令直接送入该ldst单元，不stall流水线。load指令在ldst单元中等待cache返回，在未返回前，stall该线程。</p></li>
+<li><p>同时也可以考虑ldst单元直接回写寄存器，load指令的回写操作不需要进入WB阶段。</p></li>
+<li><p>增加MSHR，来保存miss的memory request。当有新的memory request时，可以先检查是否会被miss的request包含，如果是则该新的请求就不在下发，避免浪费memory bandwidth。</p></li>
+<li><p>基于目前模拟器的结构，Tensor Core较容易支持在SP内部</p></li>
+<li><p>Dispatch unit负责分派指令到相应的执行单元，消耗1个cycle</p></li>
+</ol>
+<p>按照当前设计，如下指令在FE阶段完成并退出流水线</p>
+<ul class="simple">
+<li><p>store指令在EX的第一个Cycle计算地址，第二个Cycle写入cache</p></li>
+<li><p>load指令在EX的第一个Cycle计算地址，第二个Cycle可能发生miss</p></li>
+</ul>
+</section>
+<section id="wb-stage">
+<h4>2.5 WB Stage<a class="headerlink" href="#wb-stage" title="Link to this heading"></a></h4>
+<p>执行回写寄存器的操作，回写操作可能也会出现寄存器bank冲突。因此也可以交给Operand_Collector。同时有Operand_Collector更新Scoreboard。</p>
+<p>按照当前设计，如下指令在FE阶段完成并退出流水线</p>
+<ul class="simple">
+<li><p>所有需要写目的寄存器的指令</p></li>
+</ul>
+</section>
+</section>
+<section id="register-file">
+<h3>3. Register file<a class="headerlink" href="#register-file" title="Link to this heading"></a></h3>
+<p>Now MVP v2.1 is based on 16-register per thread</p>
+<ul class="simple">
+<li><p>Size
+根据每个线程预分配的寄存器数量及每个SP支持多少个线程，可以确定寄存器文件大小</p></li>
+<li><p>Design
+并发线程数量变多之后，Register File也需要考虑设计问题，因为大量并发的寄存器访问可能会出现conflict，从而会影响指令的latency。Nvidia是引入了Operand Collector机制来解决</p>
+<ul>
+<li><p>寄存器堆的简单实现要求每周期、每条被发射的指令、每个操作数都拥有一个端口</p></li>
+<li><p>减少寄存器堆面积的一种方法是使用多个单端口内存bank来模拟大量端口</p></li>
+<li><p>编译器优先使用寄存器存参数，其次使用栈</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="l1-instruction-cache-size">
+<h3>4. L1 Instruction Cache size<a class="headerlink" href="#l1-instruction-cache-size" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Structure(Full/Set)</p></li>
+<li><p>Size(GPC/TPC/SM/SP, and in total)</p></li>
+<li><p>Occupancy(average/maximum)</p></li>
+<li><p>Timeserices(Occupancy)</p></li>
+</ul>
+</section>
+<section id="l1-data-cache-size">
+<h3>5. L1 Data Cache size<a class="headerlink" href="#l1-data-cache-size" title="Link to this heading"></a></h3>
+<p>在ldst下面创建的L1D Cache</p>
+<ul class="simple">
+<li><p>Cache size需要跟warp_size及SP内的线程数量，还有THDC调度机制相配合</p></li>
+<li><p>ISA</p>
+<ul>
+<li><p>访问不同存储类型的数据，使用不同的load指令，比如ldg, ldl, lds</p>
+<ul>
+<li><p>ldg (load from global memory)</p></li>
+<li><p>ldl (load from local memory)</p></li>
+<li><p>lds (load from shared memory)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="local-memory-size">
+<h3>6. Local memory size<a class="headerlink" href="#local-memory-size" title="Link to this heading"></a></h3>
+</section>
+<section id="l2-cache">
+<h3>7. L2 Cache<a class="headerlink" href="#l2-cache" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>L2 Cache</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Capacity</td>
+<td></td>
+</tr>
+<tr>
+<td>Structure</td>
+<td></td>
+</tr>
+<tr>
+<td>Latency</td>
+<td></td>
+</tr>
+<tr>
+<td>Bandwidth</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>现在，L2 Cache是在ICNT和DRAM之间</p>
+<p>Reference</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Production</th>
+<th>Latency</th>
+<th>Bandwidth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apple M2 Pro iGPU</td>
+<td></td>
+<td>1034 GB/s</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bus-bandwidth">
+<h3>8. Bus bandwidth<a class="headerlink" href="#bus-bandwidth" title="Link to this heading"></a></h3>
+<p>共有 6144个MAC单元，因此峰值数据量为6144<em>3</em>4Bytes=73728Bytes=72KB=576Kbits</p>
+<p>以当前256bits的带宽来算，需要2304个DDR</p>
+</section>
+<section id="dram">
+<h3>9. DRAM<a class="headerlink" href="#dram" title="Link to this heading"></a></h3>
+<p>The A100 GPU includes 40 GB of fast HBM2 DRAM memory. The memory is organized as five active HBM2 stacks with eight memory dies per stack. With a 1215 MHz (DDR) data rate the A100 HBM2 delivers 1555 GB/sec memory bandwidth.</p>
+<p>1555GB/sec / 1215 MHz = 1289B</p>
+<p>DRAM Timing Options:
+nbk                                    16 # number of banks
+CCD                                     4 # column to column delay
+RRD                                    10 # minimal delay between activation of rows in different banks
+RCD                                    20 # row to column delay
+RAS                                    50 # time needed to activate row
+RP                                     20 # time needed to precharge (deactivate) row
+RC                                     62 # row cycle time
+CDLR                                    9 # switching from write to read (changes tWTR)
+WR                                     20 # last data-in to row precharge
+CL                                     20 # CAS latency
+WL                                      8 # Write latency
+nbkgrp                                  4 # number of bank groups
+CCDL                                    4 # column to column delay between accesses to different bank groups
+RTPL                                    4 # read to precharge delay between accesses to different bank groups</p>
+</section>
+<section id="graphics-pipeline">
+<h3>10. Graphics Pipeline<a class="headerlink" href="#graphics-pipeline" title="Link to this heading"></a></h3>
+<section id="overall-process">
+<h4>10.0 Overall Process<a class="headerlink" href="#overall-process" title="Link to this heading"></a></h4>
+<p><img alt="GT200" src="../../_images/2023-08-15_150953.png" /></p>
+<p><img alt="pipeline" src="../../_images/2023-11-08_104309.png" /></p>
+</section>
+<section id="pa">
+<h4>10.1 PA<a class="headerlink" href="#pa" title="Link to this heading"></a></h4>
+</section>
+<section id="rast">
+<h4>10.2 RAST<a class="headerlink" href="#rast" title="Link to this heading"></a></h4>
+</section>
+<section id="tex">
+<h4>10.3 TEX<a class="headerlink" href="#tex" title="Link to this heading"></a></h4>
+<p>定义子模块或接口(能够开放给后续的建模评估)
+1.</p>
+</section>
+<section id="rop">
+<h4>10.4 ROP<a class="headerlink" href="#rop" title="Link to this heading"></a></h4>
+<p>the raster operations processor blends it with the pixel color at its assigned (x, y) pixel position and writes the final color to memory</p>
+</section>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://doc.weixin.qq.com/doc/w3_AfoA2QaaAFEERecDBfLRC2aUzV8Mb?scode=ANAA3Qc1AAYQNba6fKAfoA2QaaAFE">https://doc.weixin.qq.com/doc/w3_AfoA2QaaAFEERecDBfLRC2aUzV8Mb?scode=ANAA3Qc1AAYQNba6fKAfoA2QaaAFE</a></p></li>
+<li><p><a class="reference external" href="https://dando18.github.io/posts/2020/04/02/roofline-model">https://dando18.github.io/posts/2020/04/02/roofline-model</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

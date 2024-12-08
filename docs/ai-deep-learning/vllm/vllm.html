@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vLLM &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="LightLLM" href="../lightllm/lightllm.html" />
+    <link rel="prev" title="Transformer" href="../transformer/transformer.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning-course.html">How to study Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../learning_pytorch.html">Learning Pytorch with Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rnn/rnn.html">Recurrent Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../diffusion/diffusion.html">Diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sd3/stable-diffusion-3-medium.html">Stable Diffusion 3 Medium</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../generative-ai-for-beginners.html">Generative AI for Beginners (Version 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ai-for-beginners.html">Artificial Intelligence for Beginners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformer/transformer.html">Transformer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">vLLM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solution">Solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-do">How to do</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../lightllm/lightllm.html">LightLLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tokenattention/tokenattention.html">Token Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flashattention/flashattention.html">Flash Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faster-transformer/faster-transformer.html">FasterTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kimi/mooncake.html">Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+      <li class="breadcrumb-item active">vLLM</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="vllm">
+<h1>vLLM<a class="headerlink" href="#vllm" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://github.com/vllm-project/vllm">https://github.com/vllm-project/vllm</a></p>
+<p>A high-throughput and memory-efficient inference and serving engine for LLMs</p>
+<dl class="simple myst">
+<dt>PagedAttention</dt><dd><p>受操作系统虚拟内存和分页思想启发，将原本连续的 KV cache 存储在不连续的空间，以避免 KV cache 带来的显存浪费</p>
+</dd>
+<dt>KV cache</dt><dd><p>一种缓存之前 token attention 计算过程的 key value 值以加速后续 token attention 计算的加速技巧</p>
+</dd>
+</dl>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h2>
+<p>现有推理系统的 KV cache 利用率低下:</p>
+<ol class="arabic simple">
+<li><p>提前分配过大的空间导致部分空间没有被使用：需根据请求的可能最大长度（prompt + output）预分配连续的空间，产生内部碎片（internal fragmentation，已经分配给请求但未被利用的空间）以及外部碎片（external fragmentation，过小而无法分配给其他请求）</p></li>
+<li><p>无法利用共享空间：有些解码算法（decoding alogorithm）会为一个请求生成多个输出，例如 parallel sampling 和 beam search，而现有推理系统无法利用这个特点将同一 prompt 存储在同一块空间</p></li>
+</ol>
+<p>究其原因，KV cache 利用率低下是现有推理系统需将 KV cache 存储在连续的内存空间导致的，而内存空间的连续性正是深度学习框架处理张量所必须的。</p>
+</section>
+<section id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Link to this heading"></a></h2>
+<p>论文作者提出 PagedAttention，用以解决 KV cache 需存储在连续内存空间的问题，它的做法是<strong>预先分配一大块显存，并将大块显存划分成较小的块（block），每块可以存放固定数量 token 的 key 和 value 值，为请求的 KV cache 分配空间时按需分配，且无需存储在连续的内存空间</strong>。它将大块显存划分成小块并按需分配的做法有效解决了内部碎片和外部碎片，因为每块只存放固定数量（block size，这个值默认是16）的 token，对于每个 request，最多只会浪费 block size-1 个 token 所需的空间。另外，<strong>由于它以块的方式存储 KV cache，因此它天然能够以块的粒度实现显存的共享</strong>。</p>
+</section>
+<section id="how-to-do">
+<h2>How to do<a class="headerlink" href="#how-to-do" title="Link to this heading"></a></h2>
+<p><img alt="craete block" src="../../_images/vllm1.webp" />
+<img alt="allocate" src="../../_images/vllm2.webp" />
+<img alt="1st token" src="../../_images/vllm3.webp" />
+<img alt="2st token" src="../../_images/vllm4.webp" />
+<img alt="3st token" src="../../_images/vllm5.webp" />
+<img alt="4st token" src="../../_images/vllm6.webp" />
+<img alt="shared" src="../../_images/vllm7.webp" /></p>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p><img alt="archi" src="../../_images/vllm7-archi.webp" /></p>
+<dl class="simple myst">
+<dt>Scheduler</dt><dd><p>负责调度不同request，保证vLLM中的Cache Block资源足够现有的请求完成执行，否则对现有的request进行抢占。Scheduler 类控制 Block Manager 来管理 Phyical Token Block</p>
+</dd>
+<dt>Worker</dt><dd><p>负责模型载入、模型执行，对于分布式推理，则通过创建多个worker在执行完整模型的一部分（Tensor Parallel）</p>
+</dd>
+<dt>Cache Engine</dt><dd><p>管理CPU/GPU上完整的KV Cache Tensor，执行Scheduler 调度的request的block数据搬运。</p>
+</dd>
+<dt>Model Runner</dt><dd><p>拥有实际执行的Model 实例，并负责进行数据的pre-process/ post-process 及sampling</p>
+</dd>
+</dl>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://zhuanlan.zhihu.com/p/680153425">https://zhuanlan.zhihu.com/p/680153425</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../transformer/transformer.html" class="btn btn-neutral float-left" title="Transformer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../lightllm/lightllm.html" class="btn btn-neutral float-right" title="LightLLM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

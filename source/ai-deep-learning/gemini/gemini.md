@@ -1,0 +1,5 @@
+# Gemini
+
+API KEY:
+
+AIzaSyCS0y9ifGp6BsuVJNaqgQmZUDC__2QKZVo

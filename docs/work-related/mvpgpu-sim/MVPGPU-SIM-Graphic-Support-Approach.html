@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphic Support Approach &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Graphic Support Approach</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="graphic-support-approach">
+<h1>Graphic Support Approach<a class="headerlink" href="#graphic-support-approach" title="Link to this heading"></a></h1>
+<section id="application">
+<h2>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Create Vertex shader
+unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER)</p></li>
+<li><p>Create Fragment shader
+unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER)</p></li>
+<li><p>Fill vertices data
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);</p></li>
+<li><p>while loop</p>
+<ul>
+<li><p>glClearColor()</p></li>
+<li><p>glUseProgram(shaderProgram) //Activate the shader</p></li>
+<li><p>glDrawArrays(GL_TRIANGLES, 0, 3) //render the triangle</p></li>
+<li><p>glfwSwapBuffers(window) //glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)</p></li>
+<li><p>glfwPollEvents()</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">frag_shader_source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; __kernel void normal_fragment_shader(__global float3* payload,                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      __global float3* return_color,                                             </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      const unsigned int n)                                                      </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; {                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     int tid = get_global_id(0);                                                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     if (tid &lt; n) {                                                                                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         float3 color = (float3)(payload[tid].x + 1.0f, payload[tid].y + 1.0f, payload[tid].z + 1.0f) / 2.f;     </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         return_color[tid] = (float3)(color.x * 255, color.y * 255, color.z * 255);                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     }                                                                                                           </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; }                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">140.0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">command_line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// [Loading model] Load .obj File</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">loadout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">api_load_model</span><span class="p">(</span><span class="s">&quot;../models/spot/spot_triangulated_good.obj&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// [Texture]</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">obj_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../models/spot/&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">texture_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;spot_texture.png&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Texture</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Texture</span><span class="p">(</span><span class="n">obj_path</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">texture_path</span><span class="p">);</span>
+<span class="w">    </span><span class="n">api_texture</span><span class="p">(</span><span class="n">Text</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="w"> </span><span class="n">eye_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">};</span>
+
+<span class="w">    </span><span class="c1">//api_set_vertex_shader(vertex_shader);</span>
+<span class="w">    </span><span class="n">api_set_fragment_shader</span><span class="p">(</span><span class="s">&quot;normal_fragment_shader&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">frag_shader_source</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">frame_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">//while(key != 27)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">api_set_model</span><span class="p">(</span><span class="n">get_model_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">));</span>
+<span class="w">        </span><span class="n">api_set_view</span><span class="p">(</span><span class="n">get_view_matrix</span><span class="p">(</span><span class="n">eye_pos</span><span class="p">));</span>
+<span class="w">        </span><span class="n">api_set_projection</span><span class="p">(</span><span class="n">get_projection_matrix</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">));</span>
+
+<span class="w">        </span><span class="c1">//r.draw(pos_id, ind_id, col_id, rst::Primitive::Triangle);</span>
+<span class="w">        </span><span class="n">api_draw</span><span class="p">(</span><span class="n">rst</span><span class="o">::</span><span class="n">Primitive</span><span class="o">::</span><span class="n">Triangle</span><span class="p">);</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="w"> </span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">key</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;d&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="how-to-build-application-and-shader">
+<h3>How to build application and shader<a class="headerlink" href="#how-to-build-application-and-shader" title="Link to this heading"></a></h3>
+<p>构建应用和构建kernel的逻辑跟OpenCL类似。单独构建shader为kernel，然后通过接口将shader的kernel加载进可编程部分。接下来Rasterizer程序通过api来启动GPU工作，shader工作时，由固定管线部分的rast模块进行启动shader kernel。待shader kernel完成其工作后将结果返回给rast模块。</p>
+<ul>
+<li><p>Application building</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.10</span><span class="p">)</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span><span class="w"> </span><span class="s2">&quot;/usr/bin/gcc-9&quot;</span><span class="p">)</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s2">&quot;/usr/bin/g++-9&quot;</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span><span class="s">Rasterizer</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="c">#find_package(Graphic REQUIRED)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span><span class="w">   </span><span class="s2">&quot;-g&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS_DEBUG</span><span class="w">   </span><span class="s2">&quot;-O0&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS_RELEASE</span><span class="w"> </span><span class="s2">&quot;-O2 -DNDEBUG &quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
+
+<span class="nb">include_directories</span><span class="p">(</span><span class="s">/usr/local/include/opencv4</span><span class="w"> </span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/gpu/graphics/include</span><span class="w"> </span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/gpu/graphics/texture</span><span class="p">)</span>
+<span class="nb">link_directories</span><span class="p">(</span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/lib</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">Rasterizer</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">Rasterizer</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Graphic</span><span class="w"> </span><span class="o">${</span><span class="nv">OpenCV_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Shader building</p>
+<blockquote>
+<div><p>Now reuse opencl</p>
+</div></blockquote>
+</li>
+</ul>
+<p>在OpenGL中会将VS和FS连接为一个program，因此在实现中可以通过Shader type来决定PC的起始位置，让可编程部分运行对应的Shader。</p>
+<p><img alt="VS and FS" src="../../_images/vs-and-fs.png" /></p>
+</section>
+<section id="refer-to-shader-examples">
+<h3>Refer to Shader examples<a class="headerlink" href="#refer-to-shader-examples" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vertex shader</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#version 330 core</span>
+<span class="n">layout</span><span class="w"> </span><span class="p">(</span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">vec3</span><span class="w"> </span><span class="n">aPos</span><span class="p">;</span><span class="w"> </span><span class="c1">// the position variable has attribute position 0</span>
+<span class="w">  </span>
+<span class="n">out</span><span class="w"> </span><span class="n">vec4</span><span class="w"> </span><span class="n">vertexColor</span><span class="p">;</span><span class="w"> </span><span class="c1">// specify a color output to the fragment shader</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">gl_Position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec4</span><span class="p">(</span><span class="n">aPos</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span><span class="w"> </span><span class="c1">// see how we directly give a vec3 to vec4&#39;s constructor</span>
+<span class="w">    </span><span class="n">vertexColor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vec4</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">);</span><span class="w"> </span><span class="c1">// set the output variable to a dark-red color</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Fragment shader</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#version 330 core</span>
+<span class="n">out</span><span class="w"> </span><span class="n">vec4</span><span class="w"> </span><span class="n">FragColor</span><span class="p">;</span>
+
+<span class="n">in</span><span class="w"> </span><span class="n">vec4</span><span class="w"> </span><span class="n">vertexColor</span><span class="p">;</span><span class="w"> </span><span class="c1">// 从顶点着色器传来的输入变量（名称相同、类型相同）</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">FragColor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vertexColor</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="gpu">
+<h2>GPU<a class="headerlink" href="#gpu" title="Link to this heading"></a></h2>
+<p>当前GPU中是先VS后PA，CModel中是先PA后VS，没有本质上的差异。因此，这里可先做PA后VS，后续遵循硬件设计进行调整</p>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>graph LR
+  A0[Load Vertice] --&gt; A1[PA] --&gt; B1[VS] --&gt; A2[RAST] --&gt; A3[FS] --&gt; B2[ROP]
+</pre></div>
+</div>
+<p>每一帧有多个Draw，每个Draw有多个图元(三角形，线，点)</p>
+<ul class="simple">
+<li><p>RAST
+光栅化以图元(三角形)为单位进行，一次光栅化一个三角形，每个三角形光栅化按title(4x8)输出到local memory中(varing slot)，Rast会告诉SP有多少个点，每个SP运行32个线程并发处理32(4x8)个像素</p></li>
+<li><p>FS
+FS会从local memory拿到所需的参数，包括坐标等信息</p></li>
+</ul>
+<section id="mvp-graphics-api">
+<h3>MVP-Graphics API<a class="headerlink" href="#mvp-graphics-api" title="Link to this heading"></a></h3>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">api_load_model</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">Path</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_texture</span><span class="p">(</span><span class="n">Texture</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_set_vertex_shader</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">shader_name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">shader_source</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_set_fragment_shader</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">shader_name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">shader_source</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_set_model</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_set_view</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span><span class="o">&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_set_projection</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p</span><span class="p">)</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">api_draw</span><span class="p">(</span><span class="n">rst</span><span class="o">::</span><span class="n">rasterizer</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rast</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Triangle</span><span class="o">*&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Triangle_List</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-model">
+<h3>Loading model<a class="headerlink" href="#loading-model" title="Link to this heading"></a></h3>
+<p>Load .obj file，将模型文件转换为顶点数组</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">api_load_model</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">Path</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">loaded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Loader</span><span class="p">.</span><span class="n">LoadFile</span><span class="p">(</span><span class="n">Path</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">loaded</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="pa">
+<h3>PA<a class="headerlink" href="#pa" title="Link to this heading"></a></h3>
+<p>将顶点装配为三角形</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">primitive_assemble</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Triangle</span><span class="o">*&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Triangle_List</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">mesh</span><span class="o">:</span><span class="n">Loader</span><span class="p">.</span><span class="n">LoadedMeshes</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">+=</span><span class="mi">3</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Triangle</span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Triangle</span><span class="p">();</span>
+<span class="w">            </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">setVertex</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">Vector4f</span><span class="p">(</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Position</span><span class="p">.</span><span class="n">X</span><span class="p">,</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Position</span><span class="p">.</span><span class="n">Y</span><span class="p">,</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Position</span><span class="p">.</span><span class="n">Z</span><span class="p">,</span><span class="mf">1.0</span><span class="p">));</span>
+<span class="w">                </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">setNormal</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">Vector3f</span><span class="p">(</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Normal</span><span class="p">.</span><span class="n">X</span><span class="p">,</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Normal</span><span class="p">.</span><span class="n">Y</span><span class="p">,</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">Normal</span><span class="p">.</span><span class="n">Z</span><span class="p">));</span>
+<span class="w">                </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">setTexCoord</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">Vector2f</span><span class="p">(</span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">TextureCoordinate</span><span class="p">.</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">mesh</span><span class="p">.</span><span class="n">Vertices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">].</span><span class="n">TextureCoordinate</span><span class="p">.</span><span class="n">Y</span><span class="p">));</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">Triangle_List</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="vs">
+<h3>VS<a class="headerlink" href="#vs" title="Link to this heading"></a></h3>
+<p>Vertex Shader对顶点进行MVP变化</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="p">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">get_model_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">));</span>
+<span class="n">r</span><span class="p">.</span><span class="n">set_view</span><span class="p">(</span><span class="n">get_view_matrix</span><span class="p">(</span><span class="n">eye_pos</span><span class="p">));</span>
+<span class="n">r</span><span class="p">.</span><span class="n">set_projection</span><span class="p">(</span><span class="n">get_projection_matrix</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">));</span>
+<span class="n">r</span><span class="p">.</span><span class="n">set_vertex_shader</span><span class="p">(</span><span class="n">vertex_shader</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="rasterizer">
+<h3>Rasterizer<a class="headerlink" href="#rasterizer" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">rst</span><span class="o">::</span><span class="n">rasterizer</span><span class="w"> </span><span class="nf">r</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span><span class="w"> </span><span class="mi">700</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">rst</span><span class="o">::</span><span class="n">rasterizer</span><span class="o">::</span><span class="n">rasterize_triangle</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Triangle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">view_pos</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="texture">
+<h3>Texture<a class="headerlink" href="#texture" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">obj_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../models/spot/&quot;</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">texture_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hmap.jpg&quot;</span><span class="p">;</span>
+<span class="n">Texture</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Texture</span><span class="p">(</span><span class="n">obj_path</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">texture_path</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">api_texture</span><span class="p">(</span><span class="n">Texture</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">//Texture</span>
+<span class="w">    </span><span class="n">RAST</span><span class="p">.</span><span class="n">set_texture</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fs">
+<h3>FS<a class="headerlink" href="#fs" title="Link to this heading"></a></h3>
+<p>Now MVPGPU-SIM don’t support <strong>OpenGL kernel</strong> compiling，so using OpenCL kernel to implement <strong>Fragment Shader</strong></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">frag_shader_source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; __kernel void normal_fragment_shader(__global float3* payload,                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      __global float3* return_color,                                             </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      const unsigned int n)                                                      </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; {                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     int tid = get_global_id(0);                                                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     if (tid &lt; n) {                                                                                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         float3 color = (float3)(payload[tid].x + 1.0f, payload[tid].y + 1.0f, payload[tid].z + 1.0f) / 2.f;     </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         return_color[tid] = (float3)(color.x * 255, color.y * 255, color.z * 255);                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     }                                                                                                           </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; }                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="n">api_set_fragment_shader</span><span class="p">(</span><span class="s">&quot;normal_fragment_shader&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">frag_shader_source</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="rop">
+<h3>ROP<a class="headerlink" href="#rop" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">render_output</span><span class="p">(</span><span class="n">rst</span><span class="o">::</span><span class="n">rasterizer</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rast</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="n">image</span><span class="p">(</span><span class="mi">700</span><span class="p">,</span><span class="w"> </span><span class="mi">700</span><span class="p">,</span><span class="w"> </span><span class="n">CV_32FC3</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">.</span><span class="n">frame_buffer</span><span class="p">().</span><span class="n">data</span><span class="p">());</span>
+<span class="w">    </span><span class="n">image</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">CV_8UC3</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">cv</span><span class="o">::</span><span class="n">COLOR_RGB2BGR</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;image&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">imwrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">image</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Link to this heading"></a></h3>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># OBJ File Generated by Meshlab</span>
+<span class="c1"># Object spot_triangulated_good.obj</span>
+<span class="c1"># Vertices: 3225</span>
+<span class="c1"># Faces: 5856</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Expected result
+<a class="reference internal" href="../../_images/2023-05-19_093037.png"><img alt="../../_images/2023-05-19_093037.png" src="../../_images/2023-05-19_093037.png" style="width: 60%;" /></a></p></li>
+<li><p>Actual result
+<a class="reference internal" href="../../_images/2023-05-22_094553.png"><img alt="../../_images/2023-05-22_094553.png" src="../../_images/2023-05-22_094553.png" style="width: 60%;" /></a></p></li>
+</ul>
+</section>
+</section>
+<section id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Is able to run VS and FS at the same time?
+Right now, MVP don’t support it.</p></li>
+<li><p>Putting all data in DDR
+Vertice data and color/depth/frame buffer</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

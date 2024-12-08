@@ -1,0 +1,3 @@
+# Token Attention
+
+TokenAttention，一种在token级别管理Key和Value缓存的注意机制。与PagedAttetion相比，TokenAttention不仅最大限度地减少了内存碎片，实现了高效的内存共享，而且有助于高效的内存分配和释放。它允许更精确和细粒度的内存管理，从而优化内存利用率。

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLVM Backend &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TVM" href="tvm.html" />
+    <link rel="prev" title="LLVM" href="llvm.html" />
+    <link href="../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulator.html">Simulator</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../compiler.html">Compiler</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="llvm.html">LLVM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">LLVM Backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-of-llvm-backend">Overview of LLVM backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#backend-code-structure">backend code structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tablegen-files-that-describe-a-backend">TableGen files that describe a backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tablegen-language">TableGen Language</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#instruction-selection">Instruction selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#instruction-scheduling-and-register-allocation">Instruction scheduling and register allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-emission">Code emission</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-write-your-own-backend-pass">How to write your own backend pass</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tvm.html">TVM</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../compiler.html">Compiler</a></li>
+      <li class="breadcrumb-item active">LLVM Backend</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="llvm-backend">
+<h1>LLVM Backend<a class="headerlink" href="#llvm-backend" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Code generation analysis and transform passes that converts the LLVM IR into object code(or assembly)</p></li>
+<li><p>All backends share a common interface, which is part of the target-indpendent code generator, abstracting away the backend tasks by means of a generic API</p></li>
+<li><p>Each target must specialize the code generator generic classes to implement target-specific behavior</p></li>
+</ul>
+<section id="overview-of-llvm-backend">
+<h2>Overview of LLVM backend<a class="headerlink" href="#overview-of-llvm-backend" title="Link to this heading"></a></h2>
+<p>The following diagram shows an overview of the neccessary steps to go from LLVM IR to object code or assembly
+<img alt="Overview of LLVM backend" src="../_images/overview-of-llvm-backend.png" /></p>
+<ul class="simple">
+<li><p><strong>Instruction Selection</strong> converts the in-memory IR representation into target-specific <em>SelectionDAG</em> nodes. This phase converts the three-address structure of the LLVM IR to a <strong>Directed Acyclic Graph(DAG)</strong> form</p></li>
+<li><p>After instruction selection, <strong>Instruction scheduling</strong>, also called <strong>Pre-register Allocation(RA) Scheduling</strong>, orders the instructions while trying to explore instruction-level parallelism as much as possible. The instructions are then converted to the <em>MachineInstr</em> three-address representation</p></li>
+<li><p>LLVM IR has an infinite set of registers until we reach <strong>Register Allocation</strong>, which transforms an infinite set of virtual register into a finite set of target-specific registers</p></li>
+<li><p>The second instance of <strong>Instruction Scheduling</strong>, also called <strong>Post-register Allocation(RA) Scheduling</strong>. Since real register information is now avaliable at this point, extra hazards and delays associated with certain type of register can be used to improve instruction order</p></li>
+<li><p><strong>Code Emission</strong> converts instructions from the <em>MachineInstr</em> representation to <em>MCInst</em> instances. In this representation, which is more suitable for assembler and linker, two options: to emit assembly code or a specific binary object code format</p></li>
+</ul>
+<p>Backend pipeline: in-memory LLVM IR -&gt; SelectionDAG nodes -&gt; MachineInstr -&gt; MCInst</p>
+<blockquote>
+<div><dl class="myst field-list simple">
+<dt class="field-odd">memo<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Note:</strong> IR has target-dependent aspects despite being designed as a common language for all backends. Since C/C++ languages have target-dependent attributes</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>llc<span class="w"> </span>sum.bc<span class="w"> </span>-o<span class="w"> </span>sum.s
+lcc<span class="w"> </span>sum.bc<span class="w"> </span>-filetype<span class="o">=</span>obj<span class="w"> </span>-o<span class="w"> </span>sum.o
+lcc<span class="w"> </span>-march<span class="o">=</span>mips<span class="w"> </span>-filetype<span class="o">=</span>obj<span class="w"> </span>sum.bc<span class="w"> </span>-o<span class="w"> </span>sum.o
+</pre></div>
+</div>
+<section id="backend-code-structure">
+<h3>backend code structure<a class="headerlink" href="#backend-code-structure" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>CodeGen</strong> directory contains implementation files and headers for all generic code generation algorithm: instruction selection, scheduler, register allocation, and all analysises needed for them</p></li>
+<li><p><strong>MC</strong> directory contains the implementation of low-level functionality for the assembler, disassembler, and specific object file such as ELF, COFF and so on</p></li>
+<li><p><strong>TableGen</strong> directory holds the complete implementation of the TableGen tool, which is used to generate C++ code based on high-level target descriptions found in .td files</p></li>
+<li><p><strong>Target</strong> is implemented in a different subfolder under the Target folder(for example, Target/Mips) with several .cpp, .h, and .td files</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Filenames</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">tools/llc/llc.cpp</td>
+<td style="text-align: left;">llc</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/Sparc.td</td>
+<td style="text-align: left;">Definition of machine features, CPU variations, and extension features</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/SparcInstrInfo.td </br> Target/Sparc/SparcInstrFormats.td</td>
+<td style="text-align: left;">Instruction and format definitions</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/SparcRegisterInfo.td</td>
+<td style="text-align: left;">Registers and register classes definitions</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/SparcISelDAGToDAG.cpp</td>
+<td style="text-align: left;">Instruction selection</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/SparcAsmPrinter.cpp</td>
+<td style="text-align: left;">Assembly code emission</td>
+</tr>
+<tr>
+<td style="text-align: left;">Target/Sparc/SparcCallingConv.td</td>
+<td style="text-align: left;">ABI-defined calling conventions</td>
+</tr>
+</tbody>
+</table>
+<p>The tareget-independent code generator libraries are the following</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Libraries</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>AsmParser.a</p></td>
+<td class="text-left"><p>This library contains code to parse assembly text and implement an assembler</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>AsmPrinter.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>CodeGen.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>MC.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MCDisassembler.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>MCJIT.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>MCParser.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>SelectionDAG.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Target.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>The target-specific libraries</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Filenames</p></th>
+<th class="head text-left"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>&lt;Target&gt;AsmParser.a</p></td>
+<td class="text-left"><p>This library contains the target-specific part of the AsmParser library, responsible for implementing an assembler for the target machine</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>&lt;Target&gt;AsmPrinter.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>&lt;Target&gt;CodeGen.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>&lt;Target&gt;Desc.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>&lt;Target&gt;Disassembler.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>&lt;Target&gt;Info.a</p></td>
+<td class="text-left"><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tablegen-files-that-describe-a-backend">
+<h2>TableGen files that describe a backend<a class="headerlink" href="#tablegen-files-that-describe-a-backend" title="Link to this heading"></a></h2>
+<p>The idea was to declare machine aspects in a single location.Nowadays, TableGen is used to describe all kinds of target-specific information, such as instrution formats, instructions, registers, pattern-matching DAGs, instruction selection matching order, calling conventions, and target CPU properties(supported ISA features and processors families)</p>
+<section id="tablegen-language">
+<h3>TableGen Language<a class="headerlink" href="#tablegen-language" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="http://insns.td">insns.td</a></p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Insn</span><span class="o">&lt;</span><span class="n">bits</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MajOpc</span><span class="p">,</span><span class="w"> </span><span class="n">bit</span><span class="w"> </span><span class="n">MinOpc</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">bits</span><span class="o">&lt;</span><span class="mi">32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">insnEncoding</span><span class="p">;</span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">insnEncoding</span><span class="p">{</span><span class="mi">15-12</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MajOpc</span><span class="p">;</span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">insnEncoding</span><span class="p">{</span><span class="mi">11</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MinOpc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">multiclass</span><span class="w"> </span><span class="n">RegAndImmInsn</span><span class="o">&lt;</span><span class="n">bits</span><span class="w"> </span><span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">opcode</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">rr</span><span class="o">:</span><span class="w"> </span><span class="n">Insn</span><span class="o">&lt;</span><span class="n">opcode</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">ri</span><span class="o">:</span><span class="w"> </span><span class="n">Insn</span><span class="o">&lt;</span><span class="n">opcode</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">def</span><span class="w"> </span><span class="n">SUB</span><span class="o">:</span><span class="w"> </span><span class="n">Insn</span><span class="o">&lt;</span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="n">defm</span><span class="w"> </span><span class="n">ADD</span><span class="o">:</span><span class="w"> </span><span class="n">RegAndImmInsn</span><span class="o">&lt;</span><span class="mh">0x01</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>llvm-tblgen<span class="w"> </span>-print-records<span class="w"> </span>insns.td
+&gt;&gt;
+-------------<span class="w"> </span>Classes<span class="w"> </span>-----------------
+class<span class="w"> </span>Insn&lt;bits&lt;<span class="m">4</span>&gt;<span class="w"> </span>Insn:MajOpc<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?<span class="w"> </span><span class="o">}</span>,<span class="w"> </span>bit<span class="w"> </span>Insn:MinOpc<span class="w"> </span><span class="o">=</span><span class="w"> </span>?&gt;<span class="w"> </span><span class="o">{</span>
+<span class="w">  </span>bits&lt;<span class="m">32</span>&gt;<span class="w"> </span><span class="nv">insnEncoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>Insn:MajOpc<span class="o">{</span><span class="m">3</span><span class="o">}</span>,<span class="w"> </span>Insn:MajOpc<span class="o">{</span><span class="m">2</span><span class="o">}</span>,<span class="w"> </span>Insn:MajOpc<span class="o">{</span><span class="m">1</span><span class="o">}</span>,<span class="w"> </span>Insn:MajOpc<span class="o">{</span><span class="m">0</span><span class="o">}</span>,<span class="w"> </span>Insn:MinOpc,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?<span class="w"> </span><span class="o">}</span><span class="p">;</span>
+<span class="o">}</span>
+-------------<span class="w"> </span>Defs<span class="w"> </span>-----------------
+def<span class="w"> </span>ADDri<span class="w"> </span><span class="o">{</span><span class="w">     </span>//<span class="w"> </span>Insn
+<span class="w">  </span>bits&lt;<span class="m">32</span>&gt;<span class="w"> </span><span class="nv">insnEncoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?<span class="w"> </span><span class="o">}</span><span class="p">;</span>
+<span class="o">}</span>
+def<span class="w"> </span>ADDrr<span class="w"> </span><span class="o">{</span><span class="w">     </span>//<span class="w"> </span>Insn
+<span class="w">  </span>bits&lt;<span class="m">32</span>&gt;<span class="w"> </span><span class="nv">insnEncoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?<span class="w"> </span><span class="o">}</span><span class="p">;</span>
+<span class="o">}</span>
+def<span class="w"> </span>SUB<span class="w"> </span><span class="o">{</span><span class="w">       </span>//<span class="w"> </span>Insn
+<span class="w">  </span>bits&lt;<span class="m">32</span>&gt;<span class="w"> </span><span class="nv">insnEncoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?,<span class="w"> </span>?<span class="w"> </span><span class="o">}</span><span class="p">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="instruction-selection">
+<h2>Instruction selection<a class="headerlink" href="#instruction-selection" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="llvm_backend_instruction_selection.html"><span class="std std-doc">llvm_backend_instruction_selection</span></a></p>
+</section>
+<section id="instruction-scheduling-and-register-allocation">
+<h2>Instruction scheduling and register allocation<a class="headerlink" href="#instruction-scheduling-and-register-allocation" title="Link to this heading"></a></h2>
+</section>
+<section id="code-emission">
+<h2>Code emission<a class="headerlink" href="#code-emission" title="Link to this heading"></a></h2>
+</section>
+<section id="how-to-write-your-own-backend-pass">
+<h2>How to write your own backend pass<a class="headerlink" href="#how-to-write-your-own-backend-pass" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="llvm.html" class="btn btn-neutral float-left" title="LLVM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tvm.html" class="btn btn-neutral float-right" title="TVM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

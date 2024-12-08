@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker Notes &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Samba" href="how-to-start-samba.html" />
+    <link rel="prev" title="How to setup VPN to access home server by WireGuard" href="home-vpn-setup.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../work-related.html">Work-related</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mvpgpu-sim/Index.html">GGangLiu Doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-vpn-setup.html">How to setup VPN to access home server by WireGuard</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Docker Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker-install">Docker install</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-container-operation">Docker Container Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-image-operation">Docker Image Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-start-samba.html">Samba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnc.html">VNC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphviz-dot.html">Graphviz Dot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-server-config.html">Home Server Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avazz-i610t.html">黑爵i610T说明书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="note.html">Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mermaid.html">Mermaid</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../work-related.html">Work-related</a></li>
+      <li class="breadcrumb-item active">Docker Notes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="docker-notes">
+<h1>Docker Notes<a class="headerlink" href="#docker-notes" title="Link to this heading"></a></h1>
+<section id="docker-install">
+<h2>Docker install<a class="headerlink" href="#docker-install" title="Link to this heading"></a></h2>
+<p>To install Docker on Ubuntu, you can follow these steps:</p>
+<ol class="arabic">
+<li><p><strong>Update Package Index</strong>: First, update the package index on your Ubuntu system to ensure you have the latest version information for available packages.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install Required Packages</strong>: Docker requires a few packages to be installed before it can be installed from the Docker repository. Install these packages by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>apt-transport-https<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>software-properties-common
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add Docker’s GPG Key</strong>: Add Docker’s official GPG key to your system.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add Docker Repository</strong>: Add the Docker repository to your system’s APT sources.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span><span class="s2">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> stable&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Update Package Index</strong>: Update the package index again to ensure the system is aware of the newly added Docker repository.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install Docker</strong>: Finally, install Docker Community Edition (CE) using the following command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker-ce
+</pre></div>
+</div>
+</li>
+<li><p><strong>Start Docker Service</strong>: Once Docker is installed, the Docker service should start automatically. You can verify its status with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>docker
+</pre></div>
+</div>
+</li>
+<li><p><strong>Enable Docker Service (Optional)</strong>: If you want Docker to start automatically at boot, you can enable the Docker service with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add User to Docker Group (Optional)</strong>: By default, Docker commands require root privileges. If you want to run Docker commands without sudo, add your user to the <code class="docutils literal notranslate"><span class="pre">docker</span></code> group.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>groupadd<span class="w"> </span>docker
+sudo<span class="w"> </span>chmod<span class="w"> </span><span class="m">666</span><span class="w"> </span>/var/run/docker.sock
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Log Out and Log Back In (Optional)</strong>: To apply the group membership changes, you may need to log out and log back in, or restart your system.</p></li>
+<li><p><strong>Verify Docker Installation</strong>: Verify that Docker is installed correctly by running the following command, which should display the Docker version information:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>--version
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install SSHFS</strong>: First, you need to install SSHFS on the host machine where Docker is running. You can typically install SSHFS using your package manager. For example, on Ubuntu, you can install it using the following command:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>sshfs
+sshfs<span class="w"> </span>user@remote_host:/remote/path<span class="w"> </span>/local/mount/point
+umount<span class="w"> </span>/local/mount/point
+</pre></div>
+</div>
+</section>
+<section id="docker-container-operation">
+<h2>Docker Container Operation<a class="headerlink" href="#docker-container-operation" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>sphinx-server<span class="w"> </span>-v<span class="w"> </span>/home/ggangliu/sphinx_docs:/home/sphinx_docs<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">80</span>:80<span class="w"> </span>ggangliu/sphinx-server:latest<span class="w"> </span>/bin/bash
+docker<span class="w"> </span>start<span class="w"> </span>my_container
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>my_container<span class="w"> </span>bash
+</pre></div>
+</div>
+<p>remove containers</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span>mycontainer
+</pre></div>
+</div>
+</section>
+<section id="docker-image-operation">
+<h2>Docker Image Operation<a class="headerlink" href="#docker-image-operation" title="Link to this heading"></a></h2>
+<p>building image</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>MyCustomDockerfile<span class="w"> </span>-t<span class="w"> </span>docker-image-name<span class="w"> </span>.
+</pre></div>
+</div>
+<p>renaming image name</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>tag<span class="w"> </span>my-node-app:latest<span class="w"> </span>my-renamed-app:v1.0
+</pre></div>
+</div>
+<p>commit image to hub</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>commit<span class="w"> </span>sphinx-server<span class="w"> </span>ggangliu/sphinx-server:v1.0
+</pre></div>
+</div>
+<p>push</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>push
+</pre></div>
+</div>
+<p>remove image</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>rmi
+</pre></div>
+</div>
+<p>That’s it! Docker should now be installed and ready to use on your Ubuntu system.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="home-vpn-setup.html" class="btn btn-neutral float-left" title="How to setup VPN to access home server by WireGuard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="how-to-start-samba.html" class="btn btn-neutral float-right" title="Samba" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

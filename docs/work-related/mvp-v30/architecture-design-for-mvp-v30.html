@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture design and exploring for MVP v3.0 performance target &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Architecture design and exploring for MVP v3.0 performance target</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="architecture-design-and-exploring-for-mvp-v3-0-performance-target">
+<h1>Architecture design and exploring for MVP v3.0 performance target<a class="headerlink" href="#architecture-design-and-exploring-for-mvp-v3-0-performance-target" title="Link to this heading"></a></h1>
+<p>This article is used to depict how to get the target performance based on MVP architecture</p>
+<section id="revision-history">
+<h2>Revision history<a class="headerlink" href="#revision-history" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Date</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2023-06-28</td>
+<td style="text-align: left;">v1.0</td>
+<td style="text-align: left;">Initial</td>
+<td style="text-align: left;">Liu Yonggang</td>
+</tr>
+<tr>
+<td style="text-align: left;">2023-07-04</td>
+<td style="text-align: left;">v1.1</td>
+<td style="text-align: left;"><a href="#threadswarp-vs-memory-bandwidth">Thread/warp</a></td>
+<td style="text-align: left;">Liu Yonggang</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="target-performance">
+<h2>Target Performance<a class="headerlink" href="#target-performance" title="Link to this heading"></a></h2>
+<section id="tflops">
+<h3>10 TFLOPS<a class="headerlink" href="#tflops" title="Link to this heading"></a></h3>
+<p>Total FLOPs per second = FLOPs per cycle per core * core count</p>
+</section>
+</section>
+<section id="current-mvp-v2-1-architecture-design">
+<h2>Current MVP v2.1 Architecture Design<a class="headerlink" href="#current-mvp-v2-1-architecture-design" title="Link to this heading"></a></h2>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
+<p>There are 4 TPCs，each TPC has 2 SMs，and each SM has 4 SPs.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>TPCs</p></th>
+<th class="head text-left"><p>SMs</p></th>
+<th class="head text-left"><p>SPs</p></th>
+<th class="head text-left"><p>FP32 unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>4</p></td>
+<td class="text-left"><p>8</p></td>
+<td class="text-left"><p>32</p></td>
+<td class="text-left"><p>128</p></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">PA</th>
+<th style="text-align: left;">RAST</th>
+<th style="text-align: left;">ROPs</th>
+<th style="text-align: left;">TEXTs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Architecture" src="../../_images/MVP-Architecture.png" /></p>
+<p>Each SP contains 4 INT32 units, 4 FP32 units, 4 LD/ST units, and 2 different SFU unit for different special function.
+<img alt="MVP SP Arch" src="../../_images/SP-Architecture.png" /></p>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Clock Speed</th>
+<th style="text-align: left;">FP32 Unit</th>
+<th style="text-align: left;">FP32 Computing power</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">1.0 GHz</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">256 GFLOPS</td>
+</tr>
+</tbody>
+</table>
+<p>FP32 Computing power = Clock x Amount of FP32 Unit x 2 (FMA) = 1.0G x 128 x 2 = 256 Gflops</p>
+</section>
+<section id="memory">
+<h3>Memory<a class="headerlink" href="#memory" title="Link to this heading"></a></h3>
+<p>Clock: 800 MHz
+DDR: 2 x 2 GByte DDR4
+SRAM: 3 MByte
+PCIe: 3.0</p>
+<dl class="simple myst">
+<dt>DDR4</dt><dd><p>DDR controller: 1
+Clock: 800 MHz
+Data bus: 256 bit
+Latency: latency (ns) = clock cycle tim e (ns) x number of clock cycles
+Bandwidth = (800 MHz x 256 bits) / 8 = 25,600 MB/s or 25 GB/s or 6.25 Giga-FP32/s</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="next-gen-mvp-v3-0-architecture-design">
+<h2>Next Gen MVP v3.0 Architecture Design<a class="headerlink" href="#next-gen-mvp-v3-0-architecture-design" title="Link to this heading"></a></h2>
+<section id="option-1">
+<h3>Option 1<a class="headerlink" href="#option-1" title="Link to this heading"></a></h3>
+<section id="major-changes-adding-gpc-and-extending-sp">
+<h4>Major changes: Adding GPC and extending SP<a class="headerlink" href="#major-changes-adding-gpc-and-extending-sp" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>There are 6 GPCs, each GPC has 8 TPCs，each TPC has 2 SMs, and each SM has 4 SPs</p></li>
+<li><p>Each SP contains 16 INT32 unit, <strong>16 FP32 unit</strong>, 16 LDST unit and 4 SFUs</p></li>
+</ul>
+<p><img alt="mvp-v3.0-archi" src="../../_images/mvp-v3.0-architecture.png" /></p>
+<p>Below shows the comparison of MVP v2.0 and MVP v3.0 from high level structure and performance</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">GPC</th>
+<th style="text-align: left;">TPC</th>
+<th style="text-align: left;">SM</th>
+<th style="text-align: left;">SP</th>
+<th style="text-align: left;">FP32 unit</th>
+<th style="text-align: left;">FP32 (tflops)</th>
+<th style="text-align: left;">Speedup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MVP v3.0</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">48</td>
+<td style="text-align: left;">96</td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">6144</td>
+<td style="text-align: left;">12.288</td>
+<td style="text-align: left;">48x</td>
+</tr>
+<tr>
+<td style="text-align: left;">MVP v2.0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">0.256</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="configvsa100" src="../../_images/mvp-config-comparision.png" /></p>
+<p>Below shows the memory related comparison in total</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Memory</th>
+<th style="text-align: left;">MVP v2.0</th>
+<th style="text-align: left;">MVP v3.0</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Thread</td>
+<td style="text-align: left;">2048</td>
+<td style="text-align: left;">98304</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Register file(KB)</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">6144</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">L1 Inst Cache(KB)</td>
+<td style="text-align: left;">288</td>
+<td style="text-align: left;">13824</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">L1 Data Cache(KB)</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">3072</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Local memory(KB)</td>
+<td style="text-align: left;">1024</td>
+<td style="text-align: left;">49152</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">L2 Cache(KB)</td>
+<td style="text-align: left;">2048</td>
+<td style="text-align: left;">98304</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">DRAM</td>
+<td style="text-align: left;">DDR4</td>
+<td style="text-align: left;">HBM2</td>
+<td style="text-align: left;">TBD</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Interface (bit)</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">4096</td>
+<td style="text-align: left;">16x256 DDR4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Data Rate (MHz)</td>
+<td style="text-align: left;">800</td>
+<td style="text-align: left;">1000</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Bandwidth (GB/s)</td>
+<td style="text-align: left;">51.2</td>
+<td style="text-align: left;">1024</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Memory Size (GB)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">16x2  DDR4</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="memoryvsa100" src="../../_images/mvp-memory-comparison.png" /></p>
+</section>
+<section id="sp-design">
+<h4>SP Design<a class="headerlink" href="#sp-design" title="Link to this heading"></a></h4>
+<p><img alt="v3.0" src="../../_images/mvp-sp-v3.0-architecture.png" />
+<img alt="v3.0 sp" src="../../_images/mvp-v3.0-sp-uarchitecture-design.png" /></p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">优点</th>
+<th style="text-align: left;">缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SMT</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SMT + SIMT</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SMT + SIMT + SIMD</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SIMT</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SMT + SIMD</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<section id="smt">
+<h5>SMT<a class="headerlink" href="#smt" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>保持当前的SMT设计，扩展为16个ALU/SP，即16个独立PC。</p></li>
+<li><p>进行流水线的优化，添加ibuffer, operand_collector，支持2-issue，降低stall概率，提升并行性</p></li>
+</ul>
+</section>
+<section id="smt-simt-simd">
+<h5>SMT + SIMT/SIMD<a class="headerlink" href="#smt-simt-simd" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>保持当前SMT设计的基础上，每个PC对应支持4个ALU，即4个ALU共享同一个PC，该4个ALU按SIMT模式允许</p></li>
+<li><p>在该设计下，保持了SMT的灵活性，同时增加了吞吐率，4 SMT X 4 SIMT = 16</p></li>
+</ul>
+</section>
+<section id="simt">
+<h5>SIMT<a class="headerlink" href="#simt" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>将当前的SMT模式改为SIMT模式，即每个SP只有一个PC，16个ALU共享同一个PC</p></li>
+</ul>
+</section>
+</section>
+<section id="pipeline">
+<h4>PipeLine<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>FE阶段</p></li>
+</ol>
+</section>
+<section id="threads-warp-vs-memory-bandwidths">
+<h4>Threads/warp vs Memory bandwidths<a class="headerlink" href="#threads-warp-vs-memory-bandwidths" title="Link to this heading"></a></h4>
+<p>Assumption: 16 threads/warp, so if 16 threads with different address from the same warp, that means 16 x 32 bit = 512 bit. Because now bus bandwidth is 256 bit, so bus utilization is 100 %, but needs 2 cycles to finish data transaction at least.</p>
+<p><strong><font color='#00F'>Could bus bandwidth be improved to 512 bit?</font></strong></p>
+</section>
+</section>
+<section id="option-2">
+<h3>Option 2<a class="headerlink" href="#option-2" title="Link to this heading"></a></h3>
+<section id="major-changes-adding-gpc-and-extending-tpc">
+<h4>Major changes: Adding GPC and extending TPC<a class="headerlink" href="#major-changes-adding-gpc-and-extending-tpc" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>There are 20 GPCs, each GPU has 4 TPCs, <strong>each TPC has 4 SMs</strong>, and each SM has 4 SPs</p></li>
+<li><p>SP has no change</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">GPC</th>
+<th style="text-align: left;">TPC</th>
+<th style="text-align: left;">SM</th>
+<th style="text-align: left;">SP</th>
+<th style="text-align: left;">FP32 unit</th>
+<th style="text-align: left;">FP32 (tflops)</th>
+<th style="text-align: left;">Speedup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">v3.0</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">80</td>
+<td style="text-align: left;">320</td>
+<td style="text-align: left;">1280</td>
+<td style="text-align: left;">5120</td>
+<td style="text-align: left;">10.24</td>
+<td style="text-align: left;">40x</td>
+</tr>
+<tr>
+<td style="text-align: left;">v2.0</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">0.256</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Memory</th>
+<th style="text-align: left;">MVP v2.0</th>
+<th style="text-align: left;">MVP v3.0</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Thread</td>
+<td style="text-align: left;">2048</td>
+<td style="text-align: left;">81920</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Register file(KB)</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">5120</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">L1 Inst Cache(KB)</td>
+<td style="text-align: left;">288</td>
+<td style="text-align: left;">11520</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">L1 Data Cache(KB)</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">2560</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">Local memory(KB)</td>
+<td style="text-align: left;">1024</td>
+<td style="text-align: left;">40960</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">L2 Cache(KB)</td>
+<td style="text-align: left;">2048</td>
+<td style="text-align: left;">81920</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">DRAM</td>
+<td style="text-align: left;">DDR4</td>
+<td style="text-align: left;">HBM2</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Solution</th>
+<th style="text-align: left;">Clock</th>
+<th style="text-align: left;">FP32 unit</th>
+<th style="text-align: left;">FP32 (tflops)</th>
+<th style="text-align: left;">Onchip Memory</th>
+<th style="text-align: left;">Thread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Option 1</td>
+<td style="text-align: left;">1.0GHz</td>
+<td style="text-align: left;">6144</td>
+<td style="text-align: left;">12.288</td>
+<td style="text-align: left;">170496</td>
+<td style="text-align: left;">98304</td>
+</tr>
+<tr>
+<td style="text-align: left;">Option 2</td>
+<td style="text-align: left;">1.0GHz</td>
+<td style="text-align: left;">5120</td>
+<td style="text-align: left;">10.24</td>
+<td style="text-align: left;">142080</td>
+<td style="text-align: left;">81920</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="what-simulator-need-to-figure-out">
+<h2>What simulator need to figure out<a class="headerlink" href="#what-simulator-need-to-figure-out" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Register file size</p></li>
+<li><p>L1 Instruction Cache size</p></li>
+<li><p>L1 Data Cache size</p></li>
+<li><p>Local memory size and if it is necessary</p></li>
+<li><p>L2 Cache size</p></li>
+<li><p>Evaluating L3 Cache which shared by all GPCs</p></li>
+<li><p>Bus bandwidth</p></li>
+<li><p>DRAM</p></li>
+<li><p>The number of fixed pipeline</p></li>
+<li><p>Area</p></li>
+<li><p>Power</p></li>
+</ul>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Option 1 is the better choice as the next generation MVP architecture</p>
+</section>
+<section id="open-issues">
+<h2>Open Issues<a class="headerlink" href="#open-issues" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Dual issue: Simultaneous execution of FP32 and INT32 operations, fmac and mac instruction
+Current MAC in SP support floating-point and integer operations, this will limit multi-issue</p></li>
+<li><p>L2 Cache shared by all SMs</p></li>
+<li><p>Adding L3 Cache shared by all GPC instead of local memory</p></li>
+<li><p>Async copy and barrier</p></li>
+<li><p>Shared Cache Residency control</p></li>
+</ul>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>A100</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p>Clock speed</p></th>
+<th class="head text-left"><p>CUDA core</p></th>
+<th class="head text-left"><p>FP32 (tflops)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>A100</p></td>
+<td class="text-left"><p>1410 MHz</p></td>
+<td class="text-left"><p>6912(108x64)</p></td>
+<td class="text-left"><p>19.5</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>GA100</p></td>
+<td class="text-left"><p>1410 MHz</p></td>
+<td class="text-left"><p>8192(128x64)</p></td>
+<td class="text-left"><p>23.1</p></td>
+</tr>
+</tbody>
+</table>
+<p>A100 FP32: 19.5 TFLOPS =   8192 x 2 x 1410 MHz
+<img alt="A100" src="../../_images/2023-06-20_141221.png" />
+<img alt="GA100" src="../../_images/GA100.png" />
+<img alt="memory" src="../../_images/2023-06-22_144528.png" />
+<img alt="bw/latency" src="../../_images/2023-06-22_144735.png" />
+<img alt="SM" src="../../_images/2023-06-22_151851.png" /></p>
+</li>
+<li><p>DDR</p>
+<ul class="simple">
+<li><p>DDR4
+Clock: 3200 MHz
+Bus Width: 64 bits
+Formula: Bandwidth = (Data Rate x Bus Width) / 8
+Bandwidth = (3200 MHz x 64 bits) / 8 = 25,600 MB/s or 25 GB/s or 6.25 Giga-FP32/s</p></li>
+</ul>
+</li>
+<li><p>HBM</p>
+<ul class="simple">
+<li><p>HBM2
+Clock: 1.6 Gbps
+Bus width: 1024 bits
+Memory Channels: 8
+Formula: Bandwidth = (Data Rate x Data Bus Width x Memory Channels) / 8
+Bandwidth = (1.6 Gbps x 1024 bits x 8) / 8 = 204.8 GB/s or 51.2 Giga-FP32/s</p></li>
+</ul>
+</li>
+<li><p>Cache Mapping and Bandwidth Comparison</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p>MVP</p></th>
+<th class="head text-left"><p>Ampere</p></th>
+<th class="head text-left"><p>MVP</p></th>
+<th class="head text-left"><p>Ampere</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>SP</p></td>
+<td class="text-left"><p>L1 Inst/Data</p></td>
+<td class="text-left"><p>L0 Inst</p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>SM</p></td>
+<td class="text-left"><p>L2</p></td>
+<td class="text-left"><p>L1 Data/Shared</p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>GPU</p></td>
+<td class="text-left"><p>-</p></td>
+<td class="text-left"><p>L2</p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p>5120 Bytes/clk<a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>DRAM</p></td>
+<td class="text-left"><p>DDR4</p></td>
+<td class="text-left"><p>HBM2</p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>2 x 40 slices, 5 x 8 x 512 KB, 2 x 5 = 10, 10 x 512 Bytes/clk</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

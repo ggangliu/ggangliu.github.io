@@ -1,3 +1,6 @@
-# Chips and Freedom
+## How to build
 
-This repo is for sharing some chips articles and RISC-V Playground project
+```
+
+
+```

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to clone and commit code &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=7050c318" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+          </a>
+              <div class="version">
+                v0.01
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to clone and commit code</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-clone-and-commit-code">
+<h1>How to clone and commit code<a class="headerlink" href="#how-to-clone-and-commit-code" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>This material will be as a guide for new comer to learn how to configure git related environment, source code clone and code commit</p>
+</div></blockquote>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#"><span class="doc std std-doc">How to clone and commit code</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#table-of-contents"><span class="xref myst">Table of Contents</span></a></p></li>
+<li><p><a class="reference internal" href="#basic-configuration"><span class="xref myst">Basic configuration</span></a></p></li>
+<li><p><a class="reference internal" href="#clone-source-code-and-submodule"><span class="xref myst">Clone source code and submodule</span></a></p></li>
+<li><p><a class="reference internal" href="#clone-mvpgpu-doc"><span class="xref myst">Clone mvpgpu-doc</span></a></p></li>
+<li><p><a class="reference internal" href="#work-with-gerrit"><span class="xref myst">Work with Gerrit</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#login-with-gerrit"><span class="xref myst">Login with Gerrit</span></a></p></li>
+<li><p><a class="reference internal" href="#review"><span class="xref myst">Review</span></a></p></li>
+<li><p><a class="reference internal" href="#submit"><span class="xref myst">Submit</span></a></p></li>
+<li><p><a class="reference internal" href="#submodules"><span class="xref myst">Submodules</span></a></p></li>
+<li><p><a class="reference internal" href="#tag"><span class="xref myst">Tag</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#usefull-usage"><span class="xref myst">Usefull usage</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#git-stash"><span class="xref myst">git stash</span></a></p></li>
+<li><p><a class="reference internal" href="#how-to-remove-remote-branch"><span class="xref myst">How to remove remote branch</span></a></p></li>
+<li><p><a class="reference internal" href="#how-to-modify-git-message-template"><span class="xref myst">How to modify git message template</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#faq"><span class="xref myst">FAQ</span></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="basic-configuration">
+<h2>Basic configuration<a class="headerlink" href="#basic-configuration" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;name&quot;</span>
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;email@email.com&quot;</span>
+
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.co<span class="w"> </span>checkout
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.br<span class="w"> </span>branch
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.ci<span class="w"> </span>commit
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.st<span class="w"> </span>status
+
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.lg<span class="w"> </span><span class="s1">&#39;log --oneline&#39;</span>
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>alias.last<span class="w"> </span><span class="s1">&#39;log -1 HEAD&#39;</span>
+
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>diff.tool<span class="w"> </span>meld
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>difftool.meld.path<span class="w"> </span><span class="s2">&quot;/opt/git_meld.sh&quot;</span>
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>difftool.prompt<span class="w"> </span><span class="nb">false</span>
+
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>commit.template<span class="w"> </span><span class="s2">&quot;/opt/gitmessage.txt&quot;</span>
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>core.editor<span class="w"> </span>gedit
+$<span class="w"> </span>git<span class="w"> </span>config<span class="w"> </span>-l
+</pre></div>
+</div>
+<p>More detailed refer to <a class="reference external" href="https://www.atlassian.com/git/tutorials/git-alias">Git Alias</a></p>
+</section>
+<section id="clone-source-code-and-submodule">
+<h2>Clone source code and submodule<a class="headerlink" href="#clone-source-code-and-submodule" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span><span class="s2">&quot;ssh://{user}@localhost:29418/mvpgpu-sim&quot;</span>
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>mvpgpu-sim
+$<span class="w"> </span>git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init<span class="w"> </span>--recursive
+</pre></div>
+</div>
+</section>
+<section id="clone-mvpgpu-doc">
+<h2>Clone mvpgpu-doc<a class="headerlink" href="#clone-mvpgpu-doc" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>&lt;user_name&gt;@10.0.11.10:/var/www/html/mvpgpu-doc
+</pre></div>
+</div>
+<p>Then, You must execute the following script if you submit a new commit and would like to show it in web immediately, otherwise your changes won’t be show in brower</p>
+<ul class="simple">
+<li><p>login ssh server first</p></li>
+</ul>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>ssh <span class="p">&lt;</span>username<span class="p">&gt;</span>@10.0.11.10
+</pre></div>
+</div>
+<p><img alt="SSH" src="../../_images/2023-05-22_151032.png" /></p>
+<ul class="simple">
+<li><p>Update in server side</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">[</span><span class="nv">liuyonggang@eda mvpgpu-doc</span><span class="p p-Indicator">]</span><span class="l l-Scalar l-Scalar-Plain">$ ./update_to_the_latest.sh</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="work-with-gerrit">
+<h2>Work with Gerrit<a class="headerlink" href="#work-with-gerrit" title="Link to this heading"></a></h2>
+<p>Before start your work, checking your user profile of gerrit, make sure you set the full name that we can call you. Contact to the administrators to make sure you are in the right group so that you can see your project.</p>
+<section id="login-with-gerrit">
+<h3>Login with Gerrit<a class="headerlink" href="#login-with-gerrit" title="Link to this heading"></a></h3>
+<p>on <code class="docutils literal notranslate"><span class="pre">119</span></code> service<br />
+<a class="reference external" href="http://localhost:8081">http://localhost:8081</a></p>
+<p>Now we do not have stmp email so skip this!</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;!--<span class="w"> </span>here<span class="w"> </span>list<span class="w"> </span>some<span class="w"> </span>commands<span class="w"> </span>that<span class="w"> </span>usually<span class="w"> </span>used<span class="w"> </span>by<span class="w"> </span>user<span class="w"> </span>--&gt;
+
+&lt;!--<span class="w"> </span>Clone<span class="w"> </span>with<span class="w"> </span>commit-msg<span class="w"> </span>hook<span class="w"> </span>by<span class="w"> </span>copy<span class="w"> </span>the<span class="w"> </span>commands<span class="w"> </span><span class="k">in</span><span class="w"> </span>general<span class="w"> </span>page<span class="w"> </span>of<span class="w"> </span>reposity<span class="w"> </span><span class="k">in</span><span class="w"> </span>gerrit--&gt;
+
+git<span class="w"> </span>clone<span class="w"> </span><span class="s2">&quot;ssh://gerrithost:29418/XXX.git&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">(</span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;pytorch-gpgpu-sim&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>.git/hooks<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>curl<span class="w"> </span>-Lo<span class="w"> </span><span class="sb">`</span>git<span class="w"> </span>rev-parse<span class="w"> </span>--git-dir<span class="sb">`</span>/hooks/commit-msg<span class="w"> </span>ssh://gerrithost:29418/XXX.git<span class="p">;</span><span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span><span class="sb">`</span>git<span class="w"> </span>rev-parse<span class="w"> </span>--git-dir<span class="sb">`</span>/hooks/commit-msg<span class="o">)</span>
+
+
+&lt;!--<span class="w"> </span>Push<span class="w"> </span><span class="k">for</span><span class="w"> </span>Code<span class="w"> </span>Review<span class="w"> </span>--&gt;
+
+git<span class="w"> </span>commit
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:refs/for/master
+
+&lt;!--<span class="w"> </span>the<span class="w"> </span>last<span class="w"> </span>one<span class="w"> </span>is<span class="w"> </span>branch<span class="w"> </span>which<span class="w"> </span>is<span class="w"> </span>consistant<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>one<span class="w"> </span>after<span class="w"> </span><span class="s2">&quot;origin&quot;</span>,<span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>as:<span class="w"> </span>--&gt;
+git<span class="w"> </span>commit
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:refs/for/refs/heads/master
+&lt;!--other<span class="w"> </span>branch--&gt;
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;branch_name&gt;:refs/for/refs/heads/&lt;branch_name&gt;
+&lt;!--<span class="w"> </span>Push<span class="w"> </span>with<span class="w"> </span>bypassing<span class="w"> </span>Code<span class="w"> </span>Review<span class="w"> </span>--&gt;
+git<span class="w"> </span>commit
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:master
+
+&lt;!--<span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>as:<span class="w"> </span>--&gt;
+git<span class="w"> </span>commit
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:refs/heads/master
+
+&lt;!--<span class="w"> </span>Push<span class="w"> </span>new<span class="w"> </span>Patch<span class="w"> </span>Set<span class="w"> </span>--&gt;
+git<span class="w"> </span>commit<span class="w"> </span>--amend
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:refs/for/master
+</pre></div>
+</div>
+</section>
+<section id="review">
+<h3>Review<a class="headerlink" href="#review" title="Link to this heading"></a></h3>
+<p>on the gerrit web, In the change screen reviewers can be added explicitly to a change.</p>
+<p>Mainly this functionality is used to request the review of specific person who is known to be an expert in the modified code or who is a stakeholder of the implemented feature. Normally it is not needed to explicitly add reviewers on every change, but you rather rely on the project team to watch their project and to process the incoming changes by importance, interest, time etc.</p>
+</section>
+<section id="submit">
+<h3>Submit<a class="headerlink" href="#submit" title="Link to this heading"></a></h3>
+<p>Submitting a change means that the code modifications of the current patch set are applied to the target branch. Submit requires the Submit access right and is done on the change screen by clicking on the Submit button.</p>
+<p>In order to be submittable changes must first be approved by voting on the review labels. By default a change can only be submitted if it has a vote with the highest value on each review label and no vote with the lowest value (veto vote). Projects can configure custom labels and custom submit rules to control when a change becomes submittable.</p>
+<p>Submitting a change may fail with conflicts. In this case you need to rebase the change locally, resolve the conflicts and upload the commit with the conflict resolution as new patch set.</p>
+<p>If a change cannot be merged due to path conflicts this is highlighted on the change screen by a bold red Cannot Merge label.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;!--<span class="w"> </span>Rebase<span class="w"> </span>a<span class="w"> </span>Change<span class="w"> </span>locally<span class="w"> </span>--&gt;
+
+&lt;!--<span class="w"> </span>update<span class="w"> </span>the<span class="w"> </span>remote<span class="w"> </span>tracking<span class="w"> </span>branches<span class="w"> </span>--&gt;
+git<span class="w"> </span>fetch
+
+&lt;!--<span class="w"> </span>fetch<span class="w"> </span>and<span class="w"> </span>checkout<span class="w"> </span>the<span class="w"> </span>change<span class="w"> </span>--&gt;
+&lt;!--<span class="w"> </span><span class="o">(</span>checkout<span class="w"> </span><span class="nb">command</span><span class="w"> </span>copied<span class="w"> </span>from<span class="w"> </span>change<span class="w"> </span>screen<span class="o">)</span><span class="w"> </span>--&gt;
+git<span class="w"> </span>fetch<span class="w"> </span>https://gerrithost/myProject<span class="w"> </span>refs/changes/74/67374/2<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span>FETCH_HEAD
+
+&lt;!--<span class="w"> </span><span class="k">do</span><span class="w"> </span>the<span class="w"> </span>rebase<span class="w"> </span>--&gt;
+git<span class="w"> </span>rebase<span class="w"> </span>origin/master
+
+&lt;!--<span class="w"> </span>resolve<span class="w"> </span>conflicts<span class="w"> </span><span class="k">if</span><span class="w"> </span>needed<span class="w"> </span>and<span class="w"> </span>stage<span class="w"> </span>the<span class="w"> </span>conflict<span class="w"> </span>resolution<span class="w"> </span>--&gt;
+<span class="w">  </span>...
+git<span class="w"> </span>add<span class="w"> </span>&lt;path-of-file-with-conflicts-resolved&gt;
+
+&lt;!--<span class="w"> </span><span class="k">continue</span><span class="w"> </span>the<span class="w"> </span>rebase<span class="w"> </span>--&gt;
+git<span class="w"> </span>rebase<span class="w"> </span>--continue
+
+&lt;!--<span class="w"> </span>push<span class="w"> </span>the<span class="w"> </span>commit<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>conflict<span class="w"> </span>resolution<span class="w"> </span>as<span class="w"> </span>new<span class="w"> </span>patch<span class="w"> </span><span class="nb">set</span><span class="w"> </span>--&gt;
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>HEAD:refs/for/master
+</pre></div>
+</div>
+<p>If you want to learn more about Gerrit, see the guides in <a class="reference internal" href="#/ebook/Tools%20Instro/"><span class="xref myst">Tools Intro</span></a>.</p>
+</section>
+<section id="submodules">
+<h3>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h3>
+<p>More detailed info, please refer to <a class="reference external" href="https://archive.kernel.org/oldwiki/git.wiki.kernel.org/index.php/Gerrit_Submodules_Support.html">Gerrit Submodules Support</a></p>
+</section>
+<section id="tag">
+<h3>Tag<a class="headerlink" href="#tag" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>tag<span class="w"> </span>&lt;tag_name&gt;<span class="w">   </span>//当前分支所在的提交上打上轻量标签
+git<span class="w"> </span>tag<span class="w"> </span>&lt;tag_name&gt;<span class="w"> </span>&lt;commit<span class="w"> </span><span class="nb">hash</span><span class="w"> </span>value&gt;<span class="w"> </span>//为某次具体的提交打上轻量标签
+git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>&lt;anotated_name&gt;<span class="w"> </span>-m<span class="w"> </span>&lt;tag_message&gt;<span class="w"> </span>//为当前分支所在提交打上附注标签
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;tag_name&gt;<span class="w">  </span>//推送某个标签到远程仓库
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>--tags<span class="w"> </span>//推送所有标签到远程仓库
+
+git<span class="w"> </span>tag<span class="w"> </span>//列出所有的标签名
+git<span class="w"> </span>show<span class="w"> </span>&lt;tag_name&gt;<span class="w"> </span>//显示标签对应提交记录的具体信息
+git<span class="w"> </span>ls-remote<span class="w"> </span>--tags<span class="w"> </span>origin<span class="w">  </span>//显示远端的tag
+
+git<span class="w"> </span>tag<span class="w"> </span>-d<span class="w"> </span>&lt;tag_name&gt;<span class="w">  </span>//删除某个标签
+git<span class="w"> </span>ls-remote<span class="w"> </span>--tags<span class="w"> </span>origin<span class="w"> </span>//找出要删除的远端标签，类似于ref/tags/&lt;tag_name&gt;的格式
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>:refs/tags/&lt;tag_name&gt;<span class="w"> </span>//删除远程仓库某个标签
+</pre></div>
+</div>
+</section>
+</section>
+<section id="usefull-usage">
+<h2>Usefull usage<a class="headerlink" href="#usefull-usage" title="Link to this heading"></a></h2>
+<section id="git-stash">
+<h3>git stash<a class="headerlink" href="#git-stash" title="Link to this heading"></a></h3>
+<p>This command is used to save temporary code which you don’t want to commit or push</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span>git<span class="w"> </span>stash
+$
+$<span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span>save<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;This code is for feature A&quot;</span>
+$
+$<span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span><span class="o">[</span>apply<span class="w"> </span><span class="p">|</span><span class="w"> </span>pop<span class="w"> </span><span class="p">|</span><span class="w"> </span>drop<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="how-to-remove-remote-branch">
+<h3>How to remove remote branch<a class="headerlink" href="#how-to-remove-remote-branch" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span>git<span class="w"> </span>br<span class="w"> </span>-d<span class="w"> </span>remotes/origin/xxx
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>--delete<span class="w"> </span>remote/origin/login
+</pre></div>
+</div>
+</section>
+<section id="how-to-modify-git-message-template">
+<h3>How to modify git message template<a class="headerlink" href="#how-to-modify-git-message-template" title="Link to this heading"></a></h3>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>vim /opt/gitmessage.txt
+</pre></div>
+</div>
+</section>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<ul>
+<li><p>fatal: No url found for submodule path ‘ispass2009-benchmarks’ in .gitmodules</p>
+<blockquote>
+<div><p>git rm –cached ispass2009-benchmarks</p>
+</div></blockquote>
+</li>
+<li><p>How to modify commit message</p>
+<blockquote>
+<div><p>git commit –amend</p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

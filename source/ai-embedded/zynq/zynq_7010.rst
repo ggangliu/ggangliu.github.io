@@ -1,0 +1,132 @@
+================================
+ZYNQ7010
+================================
+
+.. tip:: 
+
+    TMDS差分传动技术是一种利用2个引脚间电压差来传送信号的技术，传输数据的数值（0或者1）有两脚间电压正负极性和大小决定。即，采用2根线来传输信号，一根线传输原来的信号，另一根线上传输与原来信号相反的信号。这样接收端就可以通过让一根线上的信号减去另一根线上的信号的方式来屏蔽电磁干扰，从而得到正确的信号。
+
+
+FSBL
+=====
+
+1. 初始化CPU, 初始化串口
+#. 初始化一些外设的控制器，比如PLL, CLK和DDR
+#. 禁止L1 Dache Cache
+#. 注册ARM中断向量
+#. 通过Boot mode寄存器判断启动方式
+
+    - QSPI Flash
+
+        - 初始化QSPI Flash控制器
+        - 从Flash复制System.bit到FPGA
+        - 从Flash复制应用程序的代码到DDR3
+        - 跳转到应用程序执行
+
+    - SD Card启动方式类似
+    - JTAG启动方式，直到退出
+
+Create BOOT.bin（fsbl.elf, system_wrapper.bit和u-boot.elf）
+
+U-BOOT
+=======
+
+u-boot buidling
+~~~~~~~~~~~~~~~~~
+
+.. note:: 
+    
+    需要确保环境中已经安装了设备数编译器工具（device tree compiler, dtc）
+
+1. 下载u-boot源码
+#. 通过make编译
+
+u-boot的工作模式
+~~~~~~~~~~~~~~~~
+
+- 启动加载模式： 嵌入式产品发布时，bootloader必须工作在这种模式下
+- 下载模式：一般是开发过程中，方便调试不同的内核映像或文件系统
+
+u-boot启动内核的过程
+~~~~~~~~~~~~~~~~~~~~
+
+1. 第一阶段
+
+    - 硬件设备初始化
+    - 加载u-boot第二阶段代码到RAM空间
+    - 设置好栈
+    - 跳转到第二阶段代码入口
+
+#. 第二阶段
+
+    - 初始化本阶段使用的硬件设备
+    - 检测系统内存映射
+    - 将内核从Flash读取到RAM中
+    - 为内核设置启动参数
+    - 调用内核
+
+Kernel image
+=============
+
+u-boot跑起来后，进入linux，则需要三大法宝：
+
+- Linux image(uImage or zImage)
+- Device Tree image
+- File System
+
+Linux Image
+~~~~~~~~~~~~
+
+.. note:: 
+
+    如果出现"mkimage" Command not found 癿问题，需要输入命令"sudo apt-get install u-boot-tools"安装一下
+
+使用如下命令进行编译，编译完成后在/arch/arm/boot目录下产生uImage文件
+
+.. code-block:: bash
+
+    make ARCH=arm CROSS_COMPILE=arm-xilinx-linux-gnueabi-uImage LOADADDR=0x00008000
+
+Device Tree Image
+~~~~~~~~~~~~~~~~~
+
+在 ARM Linux 在，一个.dts 文件对应一个 ARM machine，一般放置在内核的 arch/arm/boot/dts/目录
+
+通过如下命令即在linux目录下生成了devicetree.dtb文件
+
+.. code-block:: bash
+
+    ./scripts/dtc/dtc -I dts -O dtb -o devicetree.dtb ./arch/arm/boot/dts/AX7020.dts
+
+File System
+~~~~~~~~~~~~
+
+Linux内核启动阶段，待所有的驱动和外设都初始化好了以后，最后要加载一种文件系统，Linux才可以正常启动。
+
+三种类型的文件系统
+
+1. ubuntu文件系统（linaro-precise-ubuntu-desktop-20121124-560.tar.gz）
+#. 基于RAM的文件系统ramdisk8M.image.gz
+#. 基于NFS的网络文件系统（NFS文件系统一直都是调试Linux app的最佳方法）
+
+SD Card
+========
+
+- BOOT.bin放入FAT分区
+- uImage放入FAT分区
+- devicetree.dtb放入FAT分区
+- 文件系统放入EXT分区，解压，并将./binary/boot/filesystem.dir下所有内容同步到EXT分区根目录
+  
+  .. code-block:: bash
+    
+    rsync -av ./ /media/alinx/EXT
+
+NFS Server
+===========
+
+通过网络将PC ubuntu Linux NFS Server上的文件，mount到开发板上。
+
+.. code:: 
+    
+    sudo apt-get install nfs-kernel-server
+    mount -t nfs 192.168.1.27:/home/alinx/Downloads/nfs_server /mnt
