@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modeling for V2.1 &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modeling for V2.1</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="modeling-for-v2-1">
+<h1>Modeling for V2.1<a class="headerlink" href="#modeling-for-v2-1" title="Link to this heading"></a></h1>
+<p>经过分析，下图显示每个cycle的指令完成数量，蓝色为load指令的完成数量。如图显示，中间在380到540 cycle直接有大约160个cycle的空白，此为ddr的访问延迟。跟如下配置相关</p>
+<p>memory partition latency config
+-gpgpu_l2_rop_latency 160
+-dram_latency 100</p>
+<p><img alt="completed inst" src="../../_images/2023-08-25_095533.png" /></p>
+<p>将dram_latency改为1，相当于忽略dram的影响后，指令的每cycle完成情况如下图</p>
+<p><img alt="dram latency 1 cycle" src="../../_images/2023-08-25_110146.png" /></p>
+<section id="thdc">
+<h2>按THDC调度逻辑校准后<a class="headerlink" href="#thdc" title="Link to this heading"></a></h2>
+<section id="pipeline">
+<h3>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading"></a></h3>
+<dl class="simple myst">
+<dt>FE</dt><dd><p>THDC每个Cycle从非blocked线程中取4条指令。如果所有线程都处于block状态，则会将线程状态设置为reschedule状态，并从第一个线程开始重新进入流水线，线程将不在进行换出。在EX阶段的阻塞是等待数据返回。</p>
+</dd>
+<dt>IS</dt><dd><p>根据scoreboard来判断FE_IS寄存器中的指令是否存在data hazard及判断该指令是否在EX中有available的资源，条件满足后发射到IS_RF寄存器。模拟器中指令的执行实际是在IS阶段完成</p>
+</dd>
+<dt>RF</dt><dd><p>从IS_RF流水线寄存器中获取指令，并从寄存器文件中获取源寄存器的值，供EX阶段使用。此时寄存器的读和写可能产生冲突，这种情况下，寄存器写优先级高于读</p>
+</dd>
+<dt>EX</dt><dd><p>从RF_EX流水线寄存器中获取指令，如果有指令latency，则进入EX Stage的sub_pipeline，随着cycle进行delay。对于latency耗尽的指令，直接进入WB。store指令在EX阶段ldst单元完成，不进入WB</p>
+</dd>
+<dd><p>未支持数据forward功能</p>
+</dd>
+<dt>WB</dt><dd><p>将指令计算的结果写入目的寄存器。由于写寄存器操作的优先级高于读操作，这里不会stall(除非寄存器文件bank conflict)。</p>
+</dd>
+</dl>
+</section>
+<section id="cache">
+<h3>Cache<a class="headerlink" href="#cache" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>L1I Cache</p></li>
+<li><p>L1D Cache
+block size: 128Byte(4x32)</p></li>
+<li><p>L2 Cache</p></li>
+</ul>
+<p>按照THDC调度逻辑，指令完成情况</p>
+<ul class="simple">
+<li><p>warp size=32</p></li>
+<li><p>dram_latency=1</p></li>
+</ul>
+<p><img alt="thdc-warp32" src="../../_images/2023-10-10_175350.png" /></p>
+<p>按照THDC调度逻辑，指令完成情况</p>
+<ul class="simple">
+<li><p>warp size=64</p></li>
+<li><p>dram_latency=1</p></li>
+</ul>
+<p><img alt="thdc-warp64" src="../../_images/2023-10-10_175649.png" /></p>
+<p>按照THDC调度逻辑，指令完成情况</p>
+<ul class="simple">
+<li><p>warp size=32</p></li>
+<li><p>cache perfect hit</p></li>
+</ul>
+<p><img alt="thdc-warp32-cache-ideal" src="../../_images/2023-10-10_175538.png" /></p>
+</section>
+<section id="issued-instruction">
+<h3>Issued Instruction<a class="headerlink" href="#issued-instruction" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>cycle 60，200: jplnk指令是一个cycle执行完成，但是上一条指令需要还在占用</p></li>
+<li><p>cycle 79，136: EX阶段有一个组int指令，其余全部都是load指令，int抢了wb，load指令停滞</p></li>
+<li><p>jp类跳转指令在EX阶段的latency是1，跟其他为3的指令有影响</p></li>
+</ol>
+<p><img alt="issued" src="../../_images/2023-10-12_162014.png" /></p>
+<ol class="arabic simple">
+<li><p>THDC</p>
+<ul class="simple">
+<li><p>所有block后，调度器停止</p></li>
+<li><p>有cache返回的线程再开始调度</p></li>
+</ul>
+</li>
+<li><p>编辑器优先使用寄存器存参数，其次使用栈</p></li>
+</ol>
+</section>
+</section>
+<section id="id1">
+<h2>按修改问题校准后<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>After correct above issues, the result as following
+case1: Vthread=8 HThread=4</p>
+<ol class="arabic simple">
+<li><p>Finished instruction
+Cycle: 8-204 Inst: 1-800
+<img alt="finished" src="../../_images/2023-10-17_090501.png" /></p></li>
+<li><p>Issued instruction
+Cycle: 1-200 Inst: 1-784
+<img alt="issued" src="../../_images/2023-10-17_090644.png" /></p></li>
+</ol>
+<p>case2: Vthread=4 HThread=4</p>
+<ul class="simple">
+<li><p>不是所有指令的流水是对齐的</p></li>
+<li><p>前后指令有数据依赖</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Finished instruction
+Cycle: 8-232 Inst: 1-800
+<img alt="finished" src="../../_images/2023-10-17_092626.png" /></p></li>
+<li><p>Issued instruction
+Cycle: 1-228 Inst: 1-772
+<img alt="issued" src="../../_images/2023-10-17_093123.png" /></p></li>
+</ol>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">VThread</th>
+<th style="text-align: left;">1</th>
+<th style="text-align: left;">2</th>
+<th style="text-align: left;">3</th>
+<th style="text-align: left;">4</th>
+<th style="text-align: left;">5</th>
+<th style="text-align: left;">6</th>
+<th style="text-align: left;">7</th>
+<th style="text-align: left;">8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">HThread</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Iussed IPC</td>
+<td style="text-align: left;">1.43</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2.55</td>
+<td style="text-align: left;">3.38</td>
+<td style="text-align: left;">3.02</td>
+<td style="text-align: left;">3.37</td>
+<td style="text-align: left;">3.26</td>
+<td style="text-align: left;">3.92</td>
+</tr>
+<tr>
+<td style="text-align: left;">Finised IPC</td>
+<td style="text-align: left;">1.44</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2.53</td>
+<td style="text-align: left;">3.44</td>
+<td style="text-align: left;">2.99</td>
+<td style="text-align: left;">3.40</td>
+<td style="text-align: left;">3.22</td>
+<td style="text-align: left;">3.92</td>
+</tr>
+</tbody>
+</table>
+<p>Question:</p>
+<ol class="arabic simple">
+<li><p>store是不是2个cycle结束</p></li>
+<li><p>完成8条的情况</p>
+<ol class="arabic simple contains-task-list">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cycle 21: st + add</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cycle 61：jplnk + add</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cycle 93：beq[EX] + setlt[WB]</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cycle 173：st + add</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cycle 197: jr[EX] + add[WB]</p></li>
+</ol>
+</li>
+<li><p>寄存器依赖，数据依赖</p></li>
+<li><p>一个cycle取一个线程</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System &amp; Model 部门 - Func组 &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">System &amp; Model 部门 - Func组</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="system-model-func">
+<h1>System &amp; Model 部门 - Func组<a class="headerlink" href="#system-model-func" title="Link to this heading"></a></h1>
+<section id="cmodel">
+<h2>CModel的人力需求分析<a class="headerlink" href="#cmodel" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>从mvp2.1来看，从去年3月份开始到今年7月份末共17个月，cmodel这边人力2人，共开发（包括预研、设计、开发、cmodel验证、fpga验证）了约35个opengl功能或特性，每个特性实现平均消耗 0.97人月。</p></li>
+<li><p>南风二号中，OpenGL中需要实现的特性约90个，按mvp2.1的情况估计，总共需要87.3人月完成，按cmodel组每个人在该项目中有12人月的人力算，需要7.28个人进行OpenGL的开发。</p></li>
+<li><p>comdel组还需要进行vulkan功能特性的分析及实现，这部分预计需要消耗5人月。</p></li>
+<li><p>与OpenGL和vulkan特性无关的MVP架构改动和性能优化，预计也是需要消耗4人月。</p></li>
+</ol>
+<p>以上统计总人月预估为96.3人月，即需要8.025个人进行（按每人有12人月计算）。</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Feature(个数)</th>
+<th style="text-align: left;">人力(人)</th>
+<th style="text-align: left;">周期(月)</th>
+<th style="text-align: left;">总工时(人月)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MVP V2.1</td>
+<td style="text-align: left;">35</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">34</td>
+</tr>
+<tr>
+<td style="text-align: left;">南风二号</td>
+<td style="text-align: left;">90</td>
+<td style="text-align: left;"><strong>8</strong></td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">96</td>
+</tr>
+</tbody>
+</table>
+<p>以上预估的需要消耗总人力是建立在今年9月份就有8个比较成熟的人力可以进行相应的开发工作，如果加上对该岗位招聘到岗时间以及新人培养等消耗的时间，人力备份等因素，建议额外1~2个人力进行补充。</p>
+<p><strong>综述，按8人需求，当前团队有4个，所以人力缺口是4人，后续根据实际情况再考虑是否需要补充1~2人。</strong></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

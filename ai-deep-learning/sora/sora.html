@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sora &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sora</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="sora">
+<h1>Sora<a class="headerlink" href="#sora" title="Link to this heading"></a></h1>
+<p>Sora是一个先进的AI模型，它能够将文本描述转化为相应的视频内容。Sora是一个先进的AI模型，它能够将文本描述转化为相应的视频内容。用一句话概括Sora扩散模型的实现过程：将原视频训练素材压缩后给Sora学习，学习如何将压缩后的视频内容还原和生成新的视频</p>
+<section id="transformer">
+<h2>Transformer结构<a class="headerlink" href="#transformer" title="Link to this heading"></a></h2>
+<p>Transformer结构是一种深度学习模型的架构，最初是为了改进机器翻译任务而设计的。</p>
+<ol class="arabic simple">
+<li><p>Token或patch化
+对于文本，tokens是单词或字的部分
+对于图像，tokens是图像的一部分，如图像块
+对于视频，tokens是连续帧的一部分</p></li>
+<li><p>嵌入层(Embedding Layter)
+tokens会通过嵌入式层，其作用是将每个tokens转换成模型可以处理的固定大小的向量</p></li>
+<li><p>自注意力机制(Self-attention)
+自注意力是Transfomer的核心。这个机制使模型能够权衡每个token与序列中其他tokens之间的重要性。这意味着模型可以学习每个token如何与其他tokens相关联，从而更好的理解整个序列</p></li>
+<li><p>多头注意力(Multi-Head Attention)
+在这个阶段，模型同时从多个不同的角度进行学习输入tokens之间的关系</p></li>
+<li><p>位置编码(Positional Encoding)
+由于Transfomer本身不像循环神经网络那些具有处理序列的顺序信息的能力，因此需要添加位置编码来提供序列中每个token的位置信息，这确保了模型能够考虑到tokens的顺序</p></li>
+<li><p>编码器-解码器结构
+编码器负责处理输入tokens，而解码器则基于编码器的输出产生相应的输出。输入和输出都是序列数据。</p></li>
+</ol>
+</section>
+<section id="id1">
+<h2>扩散模型<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>扩散模型是一种先进的生成模型，其设计灵感来源于物理中的扩散过程。这种模型通过向数据中逐步引入噪声并再逆向去除这些噪声，最终能够生成高质量的数据，如图像或音频。这个过程包括两个关键阶段：一个是“正向过程”，在这个阶段中，模型逐步向数据中添加噪声；另一个是“逆向过程”，模型在这个阶段中逐渐去除噪声，恢复数据到其原始状态。</p>
+</section>
+<section id="id2">
+<h2>Transformer结构的扩散模型<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>扩散模型基础<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>前向过程是一个T步逐渐加噪的马尔科夫链。
+<img alt="Alt text" src="../../_images/image2.png" /></p>
+<p>Encoder就是将原视频进行压缩，压缩至一个低维度的空间，压缩后视频充满了噪点，Sora就是学习压缩后的数据。
+<img alt="Alt text" src="../../_images/image-112.png" /></p>
+<p>Decoder就是将压缩后的视频进行还原或创造，恢复至高清的像素空间。
+<img alt="Alt text" src="../../_images/image-26.png" /></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

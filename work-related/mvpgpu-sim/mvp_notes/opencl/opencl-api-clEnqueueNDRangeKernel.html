@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clEnqueueNDRangeKernel &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link href="../../../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">clEnqueueNDRangeKernel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="clenqueuendrangekernel">
+<h1>clEnqueueNDRangeKernel<a class="headerlink" href="#clenqueuendrangekernel" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>函数定义<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>cl_int clEnqueueNDRangeKernel (
+cl_command_queue command_queue,
+cl_kernel kernel,
+<strong>表示有几维数据</strong>
+cl_uint work_dim,
+const size_t <em>global_work_offset,
+<strong>describe the number of global work-items in work_dim dimensions that will execute the kernel function</strong>
+const size_t</em>global_work_size,
+<strong>describe the number of work-items that make up a work-group</strong>
+const size_t <em>local_work_size,
+cl_uint num_events_in_wait_list,
+const cl_event</em>event_wait_list,
+cl_event *event
+)</p>
+<p>根据MVPGPU-SIM中的代码实现，要求其参数中的 global_work_size % local_work_size == 0</p>
+<p>在支持图形处理的时候，顶点和像素的个数是不可控的，因此需要能够支持任意数量线程的运行，也可以实际按照cta size运行线程，只不过线程id大于count的线程会进入else分支</p>
+<p>_cl_V0Zo2b.s:67</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PC=0x008 (./tempfiles/_cl_01_opencl_arithmetic.s:15) st.w$ra, 52($sp) opcode: add operand name: $sp operand name: $sp operand value: -56 
+PC=0x010 (./tempfiles/_cl_01_opencl_arithmetic.s:16) st.w$6, 32($sp) opcode: st operand name: $ra operand value: 52 operand name: $sp 
+PC=0x018 (./tempfiles/_cl_01_opencl_arithmetic.s:17) st.w$5, 36($sp) opcode: st operand name: $6 operand value: 32 operand name: $sp 
+PC=0x020 (./tempfiles/_cl_01_opencl_arithmetic.s:18) st.w$4, 40($sp) opcode: st operand name: $5 operand value: 36 operand name: $sp 
+PC=0x028 (./tempfiles/_cl_01_opencl_arithmetic.s:19) add.si$4, $zero, 0 opcode: st operand name: $4 operand value: 40 operand name: $sp 
+PC=0x030 (./tempfiles/_cl_01_opencl_arithmetic.s:20) jplnk_Z13get_global_idj opcode: add operand name: $4 operand name: $zero operand value: 0 
+PC=0x038 (./tempfiles/_cl_01_opencl_arithmetic.s:21) ld.w$3, 32($sp) opcode: jplink operand name: _Z13get_global_idj 
+PC=0x040 (./tempfiles/_cl_01_opencl_arithmetic.s:22) setlt.u$3, $2, $3 opcode: ld operand name: $3 operand value: 32 operand name: $sp 
+PC=0x048 (./tempfiles/_cl_01_opencl_arithmetic.s:23) beq$3, $zero, .LBB0_2 opcode: setlt operand name: $3 operand name: $2 operand name: $3 
+PC=0x050 (./tempfiles/_cl_01_opencl_arithmetic.s:24) jp.LBB0_1 opcode: beq operand name: $3 operand name: $zero operand name: .LBB0_2 
+PC=0x058 (./tempfiles/_cl_01_opencl_arithmetic.s:25) .LBB0_1:                                # %if.then opcode: jp operand name: .LBB0_1 
+PC=0x060 (./tempfiles/_cl_01_opencl_arithmetic.s:27) ld.w$3, 40($sp) opcode: sfll operand name: $2 operand name: $2 operand value: 2 
+PC=0x068 (./tempfiles/_cl_01_opencl_arithmetic.s:28) add$3, $3, $2 opcode: ld operand name: $3 operand value: 40 operand name: $sp 
+PC=0x070 (./tempfiles/_cl_01_opencl_arithmetic.s:29) ld.w$3, 0($3) opcode: add operand name: $3 operand name: $3 operand name: $2 
+PC=0x078 (./tempfiles/_cl_01_opencl_arithmetic.s:30) fmul$4, $3, $3 opcode: ld operand name: $3 operand value: 0 operand name: $3 
+PC=0x080 (./tempfiles/_cl_01_opencl_arithmetic.s:31) fadd$3, $3, $3 opcode: fmul operand name: $4 operand name: $3 operand name: $3 
+PC=0x088 (./tempfiles/_cl_01_opencl_arithmetic.s:32) fsub$3, $3, $4 opcode: fadd operand name: $3 operand name: $3 operand name: $3 
+PC=0x090 (./tempfiles/_cl_01_opencl_arithmetic.s:33) fcvt$3, $3 opcode: fsub operand name: $3 operand name: $3 operand name: $4 
+PC=0x098 (./tempfiles/_cl_01_opencl_arithmetic.s:34) fcvt$4, $4 opcode: fcvt operand name: $3 operand name: $3 
+PC=0x0a0 (./tempfiles/_cl_01_opencl_arithmetic.s:35) sub$5, $4, $3 opcode: fcvt operand name: $4 operand name: $4 
+PC=0x0a8 (./tempfiles/_cl_01_opencl_arithmetic.s:36) add$3, $3, $4 opcode: sub operand name: $5 operand name: $4 operand name: $3 
+PC=0x0b0 (./tempfiles/_cl_01_opencl_arithmetic.s:37) mul.s$3, $3, $5 opcode: add operand name: $3 operand name: $3 operand name: $4 
+PC=0x0b8 (./tempfiles/_cl_01_opencl_arithmetic.s:38) ld.w$4, 36($sp) opcode: mul operand name: $3 operand name: $3 operand name: $5 
+PC=0x0c0 (./tempfiles/_cl_01_opencl_arithmetic.s:39) add$2, $4, $2 opcode: ld operand name: $4 operand value: 36 operand name: $sp 
+PC=0x0c8 (./tempfiles/_cl_01_opencl_arithmetic.s:40) st.w$3, 0($2) opcode: add operand name: $2 operand name: $4 operand name: $2 
+PC=0x0d0 (./tempfiles/_cl_01_opencl_arithmetic.s:41) .LBB0_2:                                # %if.end opcode: st operand name: $3 operand value: 0 operand name: $2 
+PC=0x0d8 (./tempfiles/_cl_01_opencl_arithmetic.s:43) add.si$sp, $sp, 56 opcode: ld operand name: $ra operand value: 52 operand name: $sp 
+PC=0x0e0 (./tempfiles/_cl_01_opencl_arithmetic.s:44) jr$ra opcode: add operand name: $sp operand name: $sp operand value: 56 
+PC=0x0e8 (./tempfiles/_cl_01_opencl_arithmetic.s:45) .setmacro opcode: jr operand name: $ra 
+</pre></div>
+</div>
+<p>31 jr $ra</p>
+<p>224 PC=0x0e0 (./tempfiles/_cl_01_opencl_arithmetic.s:44) jr<span class="math notranslate nohighlight">\(ra opcode: add operand name: \)</span>sp operand name: $sp operand value: 56</p>
+</section>
+<section id="cta-id">
+<h2>CTA ID<a class="headerlink" href="#cta-id" title="Link to this heading"></a></h2>
+<p>一个SP上运行一个cta
+每个cta有64个线程</p>
+<p>CTA: “cooperative thread array” is a PTX point of view of a “CUDA block”.</p>
+<ul class="simple">
+<li><p>kernel</p></li>
+<li><p>grid</p>
+<ul>
+<li><p>cta/blocks</p>
+<ul>
+<li><p>warps</p>
+<ul>
+<li><p>threads</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>每个cta有16个warp
+每个warp有4个线程</p>
+<p>warp_per_cta    16
+thread_per_warp 4</p>
+<section id="ptx-sim-init-thread">
+<h3>ptx_sim_init_thread的流程<a class="headerlink" href="#ptx-sim-init-thread" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">dim3</span><span class="w"> </span><span class="n">GridDim</span><span class="p">;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">GridDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">global_work_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">global_work_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">GridDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">work_dim</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="o">?</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">global_work_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">GridDim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">work_dim</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">?</span><span class="mi">1</span><span class="o">:</span><span class="p">(</span><span class="n">global_work_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="n">dim3</span><span class="w"> </span><span class="n">BlockDim</span><span class="p">;(</span><span class="mi">64</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="n">BlockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_local_size</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="n">BlockDim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">work_dim</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="o">?</span><span class="mi">1</span><span class="o">:</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="n">BlockDim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">work_dim</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">?</span><span class="mi">1</span><span class="o">:</span><span class="n">_local_size</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+
+<span class="n">issue_block2core</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">  </span><span class="n">kernel</span><span class="p">.</span><span class="n">inc_running</span><span class="p">();</span><span class="w"> </span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">cta_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">threads_per_cta</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">init_warps</span><span class="p">(</span><span class="n">free_cta_hw_id</span><span class="p">,</span><span class="w"> </span><span class="n">start_thread</span><span class="p">,</span><span class="w"> </span><span class="n">end_thread</span><span class="p">,</span><span class="w"> </span><span class="n">ctaid</span><span class="p">,</span><span class="w"> </span><span class="n">cta_size</span><span class="p">,</span><span class="w"> </span><span class="n">kernel</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">ptx_sim_init_thread</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="c1">//block_dim</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ctaid3d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_next_cta</span><span class="p">;</span>
+<span class="w">    </span><span class="n">new_tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">_block_dim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="n">tid3d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//m_next_tid从x开始加1，如果大于block_dim的话，y开始+1，以此类推</span>
+<span class="w">    </span><span class="n">increment_x_then_y_then_z</span><span class="p">(</span><span class="n">m_next_tid</span><span class="p">,</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">);</span>
+<span class="w">    </span><span class="n">new_tid</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">tid</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//新建thread</span>
+<span class="w">    </span><span class="n">ptx_thread_info</span><span class="w"> </span><span class="o">*</span><span class="n">thd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ptx_thread_info</span><span class="p">(</span><span class="n">kernel</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">//新建warp</span>
+<span class="w">    </span><span class="n">ptx_warp_lookup</span><span class="p">[</span><span class="n">hw_warp_id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">warp_info</span><span class="p">;</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">m_warp_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">warp_info</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_info</span><span class="p">(</span><span class="n">kernel</span><span class="p">.</span><span class="n">entry</span><span class="p">());</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_nctaid</span><span class="p">(</span><span class="n">kernel</span><span class="p">.</span><span class="n">get_grid_dim</span><span class="p">());</span><span class="w"> </span><span class="c1">//设置gridDim (1,1,1)</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_ntid</span><span class="p">(</span><span class="n">kernel</span><span class="p">.</span><span class="n">get_cta_dim</span><span class="p">());</span><span class="w">    </span><span class="c1">//设置blockDim (64,1,1)</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_ctaid</span><span class="p">(</span><span class="n">ctaid3d</span><span class="p">);</span><span class="w"> </span><span class="c1">//m_next_cta</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_tid</span><span class="p">(</span><span class="n">tid3d</span><span class="p">);</span><span class="w"> </span><span class="c1">//m_next_tid</span>
+
+<span class="w">    </span><span class="n">ctaid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_next_cta</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_grid_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_cta</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span>
+<span class="w">            </span><span class="n">m_grid_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_grid_dim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_cta</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="n">thd_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctaid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">threads_per_cta</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">new_tid</span><span class="p">;</span>
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_tid_to_reg</span><span class="p">(</span><span class="n">thd_id</span><span class="p">);</span><span class="w">        </span>
+
+<span class="w">    </span><span class="n">thd</span><span class="o">-&gt;</span><span class="n">m_cta_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cta_info</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cta_info</span><span class="o">-&gt;</span><span class="n">add_thread</span><span class="p">(</span><span class="n">thd</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">increment_x_then_y_then_z</span><span class="p">(</span><span class="n">m_next_cta</span><span class="p">,</span><span class="w"> </span><span class="n">m_grid_dim</span><span class="p">);</span>
+<span class="w">  </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">dim3</span><span class="w"> </span><span class="o">**</span><span class="n">m_grid_dim</span><span class="o">**</span><span class="p">;</span><span class="w"> </span><span class="n">初始化为gridDim</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dim3</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">;</span><span class="w">    </span><span class="n">初始化为blockDim</span><span class="w"> </span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dim3</span><span class="w"> </span><span class="o">**</span><span class="n">m_next_cta</span><span class="o">**</span><span class="p">;</span><span class="w"> </span><span class="n">初始化为0</span>
+<span class="n">dim3</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">;</span><span class="w">     </span><span class="n">初始化为0</span>
+
+<span class="c1">//每个线程有一个状态</span>
+<span class="n">m_threadState</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">m_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="c1">//获取下一个cta id</span>
+<span class="n">dim3</span><span class="w"> </span><span class="n">ctaid3d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">get_next_cta_id</span><span class="p">();</span><span class="w">  </span>
+<span class="c1">//获取下一个线程id  m_next_tid * m_block_dim</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="n">new_tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">get_next_thread_id</span><span class="p">();</span>
+<span class="c1">//获取下一个线程id的3d形式 m_next_tid</span>
+<span class="n">dim3</span><span class="w"> </span><span class="n">tid3d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">get_next_thread_id_3d</span><span class="p">();</span>
+<span class="c1">//m_next_tid从x开始加1，如果大于block_dim的话，y开始+1，以此类推</span>
+<span class="n">kernel</span><span class="p">.</span><span class="n">increment_thread_id</span><span class="p">();</span>
+
+<span class="n">new_tid</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">tid</span><span class="p">;</span><span class="w"> </span><span class="c1">//以传入的tid为基准</span>
+<span class="n">ptx_thread_info</span><span class="w"> </span><span class="o">*</span><span class="n">thd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ptx_thread_info</span><span class="p">(</span><span class="n">kernel</span><span class="p">);</span>
+
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_nctaid</span><span class="p">(</span><span class="n">kernel</span><span class="p">.</span><span class="n">get_grid_dim</span><span class="p">());</span>
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_ntid</span><span class="p">(</span><span class="n">kernel</span><span class="p">.</span><span class="n">get_cta_dim</span><span class="p">());</span>
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_ctaid</span><span class="p">(</span><span class="n">ctaid3d</span><span class="p">);</span>
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_tid</span><span class="p">(</span><span class="n">tid3d</span><span class="p">);</span>
+
+<span class="kt">unsigned</span><span class="w"> </span><span class="n">ctaid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">get_next_cta_id_single</span><span class="p">();</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">thd_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctaid</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">kernel</span><span class="p">.</span><span class="n">threads_per_cta</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">new_tid</span><span class="p">;</span>
+<span class="n">thd</span><span class="o">-&gt;</span><span class="n">set_tid_to_reg</span><span class="p">(</span><span class="n">thd_id</span><span class="p">);</span>
+
+<span class="kt">unsigned</span><span class="w"> </span><span class="nf">get_next_thread_id</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="k">return</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span>
+<span class="w">        </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">dim3</span><span class="w"> </span><span class="nf">get_next_thread_id_3d</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="n">dim3</span><span class="w"> </span><span class="nf">get_next_cta_id</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_next_cta</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment_thread_id</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">increment_x_then_y_then_z</span><span class="p">(</span><span class="n">m_next_tid</span><span class="p">,</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="o">**</span><span class="nf">more_threads_in_cta</span><span class="p">()</span><span class="o">**</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">          </span><span class="n">m_next_tid</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_block_dim</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">increment_x_then_y_then_z</span><span class="p">(</span><span class="n">dim3</span><span class="w"> </span><span class="o">&amp;</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dim3</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bound</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">i</span><span class="p">.</span><span class="n">x</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">bound</span><span class="p">.</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">i</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">i</span><span class="p">.</span><span class="n">y</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">bound</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">i</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">bound</span><span class="p">.</span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="n">z</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

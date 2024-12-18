@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVPGPU-Sim Architecture Refactoring Design Principles &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVPGPU-Sim Architecture Refactoring Design Principles</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvpgpu-sim-architecture-refactoring-design-principles">
+<h1>MVPGPU-Sim Architecture Refactoring Design Principles<a class="headerlink" href="#mvpgpu-sim-architecture-refactoring-design-principles" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>基本原则<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>类的实现和声明分开在cpp和hpp文件中，便于复用</p></li>
+<li><p>模块化，将相关功能单元进行模块化设计</p></li>
+<li><p>每个模块以动态链接库的形式生成</p></li>
+<li><p>用CMakeLists.txt构建库或者应用</p></li>
+<li><p>对硬件的访问需在cycle()中完成，比如ldst</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>可编程部分与固定管线的交互设计<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>方案一 <strong>将固定管线部分的实现直接放到整体GPU的框架下，完全按照GPU的设计思路</strong></p>
+<ul>
+<li><p>编译问题较麻烦</p></li>
+</ul>
+</li>
+<li><p>方案二 <strong>将固定管线部分单独放置，GPU框架下再调用固定管线的实现</strong></p>
+<ul>
+<li><p>编译问题好解决</p></li>
+<li><p>可独立为模块进行release</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h2>构建原则<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>以动态链接库的形式为主，各模块构建为独立的动态链接库so</p></li>
+<li><p>用CmakeLists.txt构建(主要针对新增或重构模块)</p></li>
+</ol>
+<section id="id4">
+<h3>当前的构建结构<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>libOpenCL.so</p>
+<ul class="simple">
+<li><p>$(LIBS)</p>
+<ul>
+<li><p>driver</p></li>
+<li><p>gpu</p>
+<ul>
+<li><p>driver</p>
+<ul>
+<li><p>driver/cuda_sim</p></li>
+</ul>
+</li>
+<li><p>gpu_uarch</p>
+<ul>
+<li><p>driver</p></li>
+<li><p>gpu/gpu_uarch</p></li>
+<li><p>gpu/gpu_uarch/mvp_core</p></li>
+</ul>
+</li>
+<li><p>$(INTERSIM)</p></li>
+</ul>
+</li>
+<li><p>$(INTERSIM)</p>
+<ul>
+<li><p>driver</p></li>
+<li><p>gpu_uarch</p></li>
+</ul>
+</li>
+<li><p>opencllib</p>
+<ul>
+<li><p>driver</p></li>
+<li><p>api/libopencl</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id5">
+<h3>期望的构建结构<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>libOpenGL.so</p>
+<ul class="simple">
+<li><p>$(LIBS)</p>
+<ul>
+<li><p>libdriver.so</p></li>
+<li><p>libgpu.so</p>
+<ul>
+<li><p>libuarch.so</p></li>
+<li><p>libgraphics.so</p></li>
+<li><p>libgpuwattch.so</p></li>
+<li><p>libintersim2.so</p></li>
+<li><p>libhardwaremodel.so</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id6">
+<h3>动态库模板<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nf">$(SIM_LIB_DIR)/libOpenCL.so</span><span class="o">:</span><span class="w"> </span><span class="n">makedirs</span> <span class="k">$(</span><span class="nv">LIBS</span><span class="k">)</span> <span class="n">libopencl</span> <span class="n">g</span>++ -<span class="n">shared</span> -<span class="n">Wl</span><span class="p">,</span> -<span class="n">soname</span><span class="p">,</span> <span class="n">libOpenCL</span>.<span class="n">so</span> \
+                             <span class="k">$(</span><span class="nv">MCPAT</span><span class="k">)</span> \
+                             <span class="k">$(</span><span class="nv">SIM_OBJ_FILES_DIR</span><span class="k">)</span>/<span class="n">libopencl</span>/*.<span class="n">o</span> \
+                             -<span class="n">o</span> <span class="k">$(</span><span class="nv">SIM_LIB_DIR</span><span class="k">)</span>/<span class="n">libOpenCL</span>.<span class="n">so</span>
+</pre></div>
+</div>
+</section>
+<section id="cmakelists-txt">
+<h3>CMakeLists.txt模板<a class="headerlink" href="#cmakelists-txt" title="Link to this heading"></a></h3>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.10</span><span class="p">)</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span><span class="w"> </span><span class="s2">&quot;/usr/bin/gcc-9&quot;</span><span class="p">)</span>
+<span class="nb">SET</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s2">&quot;/usr/bin/g++-9&quot;</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span><span class="s">Graphic</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">OpenCV</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">17</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span><span class="w">   </span><span class="s2">&quot;-g&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS_DEBUG</span><span class="w">   </span><span class="s2">&quot;-O0&quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS_RELEASE</span><span class="w"> </span><span class="s2">&quot;-O2 -DNDEBUG &quot;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
+
+<span class="nb">include_directories</span><span class="p">(</span><span class="s">/usr/local/include/opencv4</span><span class="w"> </span><span class="s">include</span><span class="w"> </span><span class="s">texture</span><span class="w"> </span><span class="s">rast</span><span class="w"> </span><span class="s">pa</span><span class="w"> </span><span class="s">rop</span><span class="p">)</span>
+<span class="nb">include_directories</span><span class="p">(</span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/gpu</span><span class="w"> </span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="w"> </span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/include</span><span class="w"> </span>
+<span class="w">                    </span><span class="o">$ENV{</span><span class="nv">CUDA_INSTALL_PATH</span><span class="o">}</span><span class="s">/include</span><span class="w"> </span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/api</span><span class="p">)</span>
+
+<span class="nb">link_directories</span><span class="p">(</span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/lib/gcc-5.3.1/cuda-11000/debug</span><span class="p">)</span>
+
+<span class="nb">add_library</span><span class="p">(</span><span class="s">Graphic</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="s">models/OBJ_Loader.cpp</span><span class="w"> </span><span class="s">pa/Primitive_assemble.hpp</span><span class="w"> </span><span class="s">pa/Primitive_assemble.cpp</span><span class="w"> </span>
+<span class="w">            </span><span class="s">rast/Rasterizer.cpp</span><span class="w"> </span><span class="s">include/global.hpp</span><span class="w"> </span><span class="s">Triangle.hpp</span><span class="w"> </span><span class="s">Triangle.cpp</span><span class="w"> </span><span class="s">texture/Texture.cpp</span><span class="w"> </span>
+<span class="w">            </span><span class="s">rop/Render_output.hpp</span><span class="w"> </span><span class="s">rop/Render_output.cpp</span><span class="w"> </span><span class="s">include/Shader.hpp</span><span class="w"> </span><span class="s">include/OBJ_Loader.h</span><span class="w"> </span><span class="s">gpuc.cpp</span><span class="p">)</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">Graphic</span><span class="w"> </span><span class="o">${</span><span class="nv">OpenCV_LIBRARIES</span><span class="o">}</span><span class="w"> </span><span class="s">OpenCL</span><span class="p">)</span><span class="w"> </span>
+
+<span class="c">#message(${OpenCV_LIBRARIES})</span>
+<span class="nb">message</span><span class="p">(</span><span class="o">$ENV{</span><span class="nv">GPGPUSIM_ROOT</span><span class="o">}</span><span class="s">/include</span><span class="p">)</span>
+
+<span class="nb">add_custom_command</span><span class="p">(</span><span class="w"> </span><span class="s">TARGET</span><span class="w"> </span><span class="s">Graphic</span>
+<span class="w">                    </span><span class="s">POST_BUILD</span>
+<span class="w">                    </span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_COMMAND</span><span class="o">}</span><span class="w"> </span><span class="s">-E</span><span class="w"> </span><span class="s">copy</span><span class="w"> </span><span class="s">./libGraphic.so</span><span class="w"> </span><span class="err">$</span><span class="p">(</span><span class="s">GPGPUSIM_ROOT</span><span class="p">)</span><span class="s">/lib/libGraphic.so</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

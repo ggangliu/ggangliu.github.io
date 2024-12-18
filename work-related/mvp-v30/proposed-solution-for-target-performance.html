@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposed solution for target performance &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Proposed solution for target performance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="proposed-solution-for-target-performance">
+<h1>Proposed solution for target performance<a class="headerlink" href="#proposed-solution-for-target-performance" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>1. 总体概览<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">参数</th>
+<th style="text-align: left;">目标指标</th>
+<th style="text-align: left;">方案一</th>
+<th style="text-align: left;">方案二</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">像素填充率</td>
+<td style="text-align: left;">64GPixel/s</td>
+<td style="text-align: left;"><font color="#00B050">86.4GPixel/s</td>
+<td style="text-align: left;"><font color="#00B050">64.8GPixel/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">纹理填充率</td>
+<td style="text-align: left;">128GTexel/s</td>
+<td style="text-align: left;"><font color="#00B050">172.8GTexel/s</td>
+<td style="text-align: left;"><font color="#00B050">129.6GTexel/s</td>
+</tr>
+<tr>
+<td style="text-align: left;">浮点性能FP32</td>
+<td style="text-align: left;">14TFLOPs</td>
+<td style="text-align: left;"><font color="#00B050">22TFLOPs</td>
+<td style="text-align: left;"><font color="#00B050">16.588TFLOPs</td>
+</tr>
+<tr>
+<td style="text-align: left;">GPU频率</td>
+<td style="text-align: left;">1.8GHz</td>
+<td style="text-align: left;"><font color="#00B050">1.8GHz</td>
+<td style="text-align: left;"><font color="#f00"> 1.35GHz</td>
+</tr>
+<tr>
+<td style="text-align: left;">FP32(训练)</td>
+<td style="text-align: left;">14TFLOPs</td>
+<td style="text-align: left;"><font color="#00B050">22TFLOPs</td>
+<td style="text-align: left;"><font color="#00B050">16.588TFLOPs</td>
+</tr>
+<tr>
+<td style="text-align: left;">INT8(推理)</td>
+<td style="text-align: left;">62TOPs</td>
+<td style="text-align: left;"><font color="#00B0F0">88.4736TOPs</td>
+<td style="text-align: left;"><font color="#00B0F0">66.355TOPs</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h2>2. 方案描述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>2.1 方案一<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>引入GPC的概念，共6个GPC，每个GPC有8个TPC，2个PA和2个RAST，每个TPC有2个SM，1个ROP和2个TEXT，每个SM有4个SP，每个SP有16个ALU，16个MAC和16个LDST。</p>
+<p>基于该架构，各个单元的数量如下：
+GPC: 6
+TPC: 48
+SM: 96
+SP: 384
+FP32 unit(MAC): 6144
+PA: 12
+RAST: 12
+ROP: 48
+TEXT: 96</p>
+<section id="id4">
+<h4>像素填充率<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<p>一个Cycle完成一个Pixel情况下，48x1.8GHz=86.4。反过来推算：GPU min freq &gt;= 1.33GHz(64GPixel/48)</p>
+</section>
+<section id="id5">
+<h4>纹理填充率<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<p>一个Cycle完成一个Texel情况下，96x1.8GHz=172.8。反过来推算：GPU min freq &gt;= 1.33GHz(128GTexel/96)</p>
+</section>
+<section id="id6">
+<h4>单精度浮点<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>FP32性能=6144x2x1.8=22.1184TFLOPs. 反过来推算可知: GPU min freq &gt;= 1.14GHz</p>
+</section>
+<section id="gpu">
+<h4>GPU频率<a class="headerlink" href="#gpu" title="Link to this heading"></a></h4>
+<p>在该配置下，GPU的频率大于1.33GHz即可满足所有性能指标</p>
+</section>
+<section id="fp32">
+<h4>FP32(训练)<a class="headerlink" href="#fp32" title="Link to this heading"></a></h4>
+<blockquote>
+<div><dl class="myst field-list simple">
+<dt class="field-odd">memo<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Note:</strong> 同<a class="reference internal" href="#%E5%8D%95%E7%B2%BE%E5%BA%A6%E6%B5%AE%E7%82%B9"><span class="xref myst">单精度浮点</span></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="int8">
+<h4>INT8(推理)<a class="headerlink" href="#int8" title="Link to this heading"></a></h4>
+<p>把INT32 unit改进为支持4个INT8 unit, INT8性能=6144x4x2x1.8=88.4736TOPs. 反过来推算：GPU min freq &gt;= 1.261GHz</p>
+</section>
+</section>
+<section id="id7">
+<h3>2.2 方案二<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>跟方案一相比，只有GPU频率的差异，除了频率不能满足要求，性能指标均可满足。如果GPU频率不是硬性要求，那么方案二对时序要求更低一些，功耗更低，相对更优。</p>
+</section>
+</section>
+<section id="id8">
+<h2>3. 人力<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">主要任务</th>
+<th style="text-align: left;">人力（人月）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">前期分析及方案讨论</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">将SP内4条流水线扩展为16条流水线</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">OCC/DCC/ICC</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">SP Scheduler</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">FE/IS/RF</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Register/L1I/L1D/Local Memory</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">SP内联调及问题定位</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">实现SM-Dispather</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">实现TPC-Dispatcher</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">GPC-Dispatcher</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr>
+<td style="text-align: left;">给GPC分配任务的Scheduler</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">PA的扩展及分配策略，优化</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">RAST的扩展及分配策略</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">ROP的扩展及分配策略</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">TEXT的扩展及分配策略</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">整体性能仿真调试</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">GPU时钟，时序调式</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr>
+<td style="text-align: left;">解决Bug</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">总计</td>
+<td style="text-align: left;">56</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h2>4. 开发时间<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>gantt
+%%dateFormat YYYY-MM-DD
+axisFormat WK%W%y
+inclusiveEndDates
+todayMarker stroke-width:3px,stroke:#0f0,opacity:0.5
+title 计划示意图(按1人)
+
+section 第一阶段
+    前期分析及方案讨论                :t0, 2023-08-01,   12w
+    将SP内4条流水线扩展为16条流水线    :t1, after t0,     8w
+    OCC/DCC/ICC                      :t2, after t0,     12w
+    SP Scheduler                     :t3, after t0,     8w   
+    FE/IS/RF                         :t4, after t0,     12w  
+    Register/L1I/L1D/Local Memory    :t5, after t0,     12w  
+    SP内联调及问题定位                 :t6, after t2 t3 t4 t5,    12w
+    Release v1.0                     :milestone, crit, m0, after t6, 0d
+section 第二阶段
+    实现SM-Dispather                 :t7, after m0,     8w   
+    扩展8个TPC, 实现TPC-Dispatcher    :t8, after m0,     8w   
+    扩展6个GPC, GPC-Dispatcher        :t9, after t7 t8,  8w   
+    给GPC分配任务的Scheduler          :t10, after t9,    12w  
+    Release v2.0                     :milestone, crit, m1, after t10, 1w
+section 第三阶段
+    PA的扩展及分配策略，优化         :t11, after t10,    16w  
+    RAST的扩展及分配策略             :t12, after t10,    16w  
+    ROP的扩展及分配策略              :t13, after t8,    16w  
+    TEXT的扩展及分配策略             :t14, after t8,    16w  
+    Release v3.0                     :milestone, crit, m2, after t11 t12 t13 t14, 1w
+section 第四阶段
+    整体性能仿真调试                 :t15, after t14,    16w  
+    GPU时钟，时序调式                :t16, after t15,    16w  
+    解决Bug                         :t17, after t15,    20w  
+    Release v4.0                    :milestone, crit, m3, after t15 t16 t17, 1w    
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h2>5. 关键突破技术<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>INT32 unit可以变为 4个INT8 unit同时计算，将会影响<a class="reference internal" href="#int8%E6%8E%A8%E7%90%86"><span class="xref myst">INT8推理</span></a>的性能</p></li>
+<li><p>SP中Exe阶段的ALU和MAC单元优化甚至重构（是否将int和float计算分开）</p></li>
+<li><p>PA/RAST/ROP/TEXT/SP等各个关键模块结构和性能优化提升</p></li>
+<li><p>Memory子系统须确保384个SP的访存效率</p></li>
+<li><p>固定管线中PA/RAST/ROP/TEXT的访存效率</p></li>
+</ol>
+</section>
+<section id="id11">
+<h2>6. 风险评估(可能的技术盲区)<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>评估GPU核心频率做到1.8GHz的可行性（考量工艺、RTL时序）</p></li>
+<li><p>DRAM及BUS的性能是否会称为整体性能瓶颈</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

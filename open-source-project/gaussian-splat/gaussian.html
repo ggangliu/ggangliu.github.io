@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Guassian Splatting &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Vortex" href="../vortex/vortex.html" />
+    <link rel="prev" title="Open Source Project" href="../../open-source-project.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3D Guassian Splatting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#d">什么是3D高斯点染</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sfm">SFM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#d-gaussian">3D Gaussian</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#repo">Repo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-images">Prepare Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#faq">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vortex/vortex.html">Vortex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cfu-playground/cfu-playground.html">CFU-Playground</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../anitalker/anitalker.html">AniTalker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sadtalker/sadtalker.html">SadTalker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mattermost.html">Mattermost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dify.html">Dify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chat-tts/chat-tts.html">ChatTTS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hallo/hallo.html">Hallo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fishaudio/fishaudio.html">Fish-Speech</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../open-source-project.html">Open Source Project</a></li>
+      <li class="breadcrumb-item active">3D Guassian Splatting</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="d-guassian-splatting">
+<h1>3D Guassian Splatting<a class="headerlink" href="#d-guassian-splatting" title="Link to this heading"></a></h1>
+<p><img alt="Alt text" src="../../_images/image-28.png" />
+上图为整个系统的示意图，系统首先对SfM点云进行初始化，得到3D高斯，然后借助相机外参将点投影到图像平面上（即Splatting），接着用可微光栅化，渲染得到图像。得到渲染图像Image后，将其与Ground Truth图像比较求loss，并沿蓝色箭头反向传播。蓝色箭头向上，更新3D高斯中的参数，向下送入自适应密度控制中，更新点云。</p>
+<section id="d">
+<h2>什么是3D高斯点染<a class="headerlink" href="#d" title="Link to this heading"></a></h2>
+<p>每个高斯图像可由以下参数来描述:</p>
+<ul class="simple">
+<li><p>位置: 所在位置 (XYZ)</p></li>
+<li><p>协方差: 缩放程度 (3x3 矩阵)</p></li>
+<li><p>颜色: 颜色 (RGB)</p></li>
+<li><p>Alpha: 透明度 (α)</p></li>
+</ul>
+<p><img alt="Alt text" src="../../_images/image7.png" /></p>
+<p>3DGS是一个非常厉害的技术，为了先有一个笼统的认知，我们可以简单将其概括为如下几步：</p>
+<ul class="simple">
+<li><p>录一段视频或者拍一组不同角度的照片，用一些技术（例如SfM）估计点云。或者直接随机初始化一组点云。</p></li>
+<li><p>点云中的每一个点，代表着一个三维的高斯分布，所以除了点的位置（均值）以外，还有协方差，以及不透明度，以及颜色（球谐系数）。直观可以理解为一个”椭球体“。</p></li>
+<li><p>将这些椭球体沿着特定的角度投影到对应位姿所在的投影平面上，这一步也叫“splatting“，一个椭球体投影到平面上会得到一个椭圆（代码实现时其实是以长轴为直径的圆），然后通过计算待求解像素和椭圆中心的距离，我们可以得到不透明度（离的越近，说明越不透明）。每个椭球体又各自代表自己的颜色，这是距离无关的。于是就可以进行alpha compositing，来合成颜色。然后快速的对所有像素做这样的计算，这被称作”快速可微光栅化“。</p></li>
+<li><p>于是可以得到整个图片，再和ground truth比较，得到损失，然后梯度反传，随机梯度下降，进行优化。
+<img alt="Alt text" src="../../_images/image-118.png" /></p></li>
+</ul>
+<section id="sfm">
+<h3>SFM<a class="headerlink" href="#sfm" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://colmap.github.io/index.html">https://colmap.github.io/index.html</a>
+<a class="reference external" href="https://github.com/colmap/colmap">https://github.com/colmap/colmap</a></p>
+</section>
+<section id="d-gaussian">
+<h3>3D Gaussian<a class="headerlink" href="#d-gaussian" title="Link to this heading"></a></h3>
+<dl class="simple myst">
+<dt>Gaussian</dt><dd><p>1D 高斯
+<img alt="Alt text" src="../../_images/image-84.png" />
+3D 高斯
+<img alt="Alt text" src="../../_images/image-94.png" />
+<img alt="Alt text" src="../../_images/image-143.png" /></p>
+</dd>
+<dt>各向异性（anisotropic）</dt><dd><p>指的是从各个方向上看过去，物体的外观表现都不同。</p>
+</dd>
+<dt>抛雪球（splatting）</dt><dd><p>一种计算机图形学中用三维点进行渲染的方法，该方法将三维点视作雪球往图像平面上抛，雪球在图像平面上会留下扩散痕迹，这些点的扩散痕迹叠加在一起就构成了最后的图像，是一种针对点云的渲染方法。</p>
+</dd>
+<dt>Structure-from-Motion（SfM）</dt><dd><p>COLMAP stands for “Structure from Motion” (SfM), which is an algorithm used to reconstruct the 3D structure of objects and camera poses from multi-view images of the same object taken from different angles.
+<img alt="Alt text" src="../../_images/image-122.png" />
+Incremental Structure-from-Motion pipline
+<img alt="Alt text" src="../../_images/image-133.png" />
+<a class="reference external" href="https://demuc.de/papers/schoenberger2016sfm.pdf">https://demuc.de/papers/schoenberger2016sfm.pdf</a></p>
+</dd>
+<dt>协方差</dt><dd><p>协方差（covariance）是两个变量的相关性度量，可以用来描述两个变量是否存在线性关系。方差是用来度量单个随机变量的离散程度，而协方差则一般用来刻画两个随机变量的相似程度，其中，方差的计算公式为
+<img alt="Alt text" src="../../_images/image-35.png" />
+其中，n 表示样本量，符号 \bar{x} 表示观测样本的均值，这个定义在初中阶段就已经开始接触了。
+在此基础上，协方差的计算公式被定义为<img alt="Alt text" src="../../_images/image-44.png" /></p>
+</dd>
+<dt>球谐函数(Spherical Harmonics)</dt><dd><p>在机器学习中，球谐函数可以用来表示球面上的特征，可以用于训练机器学习模型。协方差可以用来描述两个特征之间的相关性，可以用于选择特征、评估模型等
+<img alt="Alt text" src="../../_images/image-54.png" />
+<img alt="Alt text" src="../../_images/image-62.png" />
+当SH的系数用的越多，那么表达能力就越强，跟原始的函数就越接近
+<img alt="Alt text" src="../../_images/image-74.png" />
+<img alt="Alt text" src="../../_images/image-103.png" />
+<img alt="Alt text" src="../../_images/image-119.png" />
+<img alt="Alt text" src="../../_images/image-152.png" />
+<img alt="Alt text" src="../../_images/image-162.png" /></p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="repo">
+<h2>Repo<a class="headerlink" href="#repo" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/graphdeco-inria/gaussian-splatting">https://github.com/graphdeco-inria/gaussian-splatting</a></p></li>
+<li><p><a class="reference external" href="https://github.com/alyssaq/3Dreconstruction">https://github.com/alyssaq/3Dreconstruction</a></p></li>
+<li><p><a class="reference external" href="https://github.com/WangFeng18/3d-gaussian-splatting">https://github.com/WangFeng18/3d-gaussian-splatting</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jonstephens85/gaussian-splatting-Windows">gaussian-splatting-Windows</a></p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://developer.nvidia.com/cuda-11-8-0-download-archive?target_os=Windows&amp;amp;target_arch=x86_64&amp;amp;target_version=11&amp;amp;target_type=exe_local">Cuda Download</a>
+<a class="reference internal" href="#."><span class="xref myst">Visual Studio 2019 with Desktop C++</span></a>
+<a class="reference internal" href="#."><span class="xref myst">Anconda</span></a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>list
+conda<span class="w"> </span>info<span class="w"> </span>--envs
+conda<span class="w"> </span>config<span class="w"> </span>--show<span class="w"> </span>channels
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>pytorch
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>nvidia
+conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>channels<span class="w"> </span>conda-forge
+conda<span class="w"> </span>remove<span class="w"> </span>-n<span class="w"> </span>gaussian_splatting<span class="w"> </span>--all
+
+SET<span class="w"> </span><span class="nv">DISTUTILS_USE_SDK</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="c1"># Windows only</span>
+conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>gaussian_splatting<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.5
+conda<span class="w"> </span>activate<span class="w"> </span>gaussian_splatting
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">pip</span><span class="o">=</span><span class="m">22</span>.3.1
+conda<span class="w"> </span>install<span class="w"> </span>tqdm
+conda<span class="w"> </span>install<span class="w"> </span><span class="nv">plyfile</span><span class="o">=</span><span class="m">0</span>.8.1
+pip<span class="w"> </span>install<span class="w"> </span>torch-2.0.0+cu118-cp311-cp311-win_amd64.whl
+pip<span class="w"> </span>install<span class="w"> </span>torchaudio-2.0.1+cu118-cp311-cp311-win_amd64.whl
+pip<span class="w"> </span>install<span class="w"> </span>torchvision-0.15.1+cu118-cp311-cp311-win_amd64.whl
+
+pip<span class="w"> </span>install<span class="w"> </span>ninja
+pip<span class="w"> </span>install<span class="w"> </span>.<span class="se">\s</span>ubmodules<span class="se">\d</span>iff-gaussian-rasterization<span class="se">\</span>
+
+conda<span class="w"> </span>deactivate
+</pre></div>
+</div>
+</section>
+<section id="prepare-images">
+<h2>Prepare Images<a class="headerlink" href="#prepare-images" title="Link to this heading"></a></h2>
+<p>ffmpeg -i {video} -vf fps={fps} %05d.jpg</p>
+<p>python.exe .\convert.py -s .\datasets\truck\ –colmap_executable .\tool\COLMAP-3.8-windows-cuda\COLMAP.bat</p>
+<p>python.exe .\train.py -s .\datasets\truck\ -m .\datasets\trained-model\</p>
+<p>python.exe .\train.py -s .\datasets\truck\ -m .\datasets\trained-model\ –data_device cpu –debug_from 0 –densify_from_iter 0 –densification_interal 1</p>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://segmentfault.com/a/1190000044505300">https://segmentfault.com/a/1190000044505300</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/blog/gaussian-splatting">https://huggingface.co/blog/gaussian-splatting</a></p></li>
+<li><p><a class="reference external" href="https://zhuanlan.zhihu.com/p/666465701">https://zhuanlan.zhihu.com/p/666465701</a></p></li>
+<li><p><a class="reference external" href="https://www.thomasantony.com/posts/gaussian-splatting-renderer/">https://www.thomasantony.com/posts/gaussian-splatting-renderer/</a></p></li>
+<li><p><a class="reference external" href="https://www.zhihu.com/tardis/zm/art/37609917?source_id=1003">协方差</a></p></li>
+<li><p><a class="reference external" href="https://zhuanlan.zhihu.com/p/661569671">https://zhuanlan.zhihu.com/p/661569671</a></p></li>
+<li><p><a class="reference external" href="https://www.reshot.ai/3d-gaussian-splatting">https://www.reshot.ai/3d-gaussian-splatting</a></p></li>
+<li><p><a class="reference external" href="https://docs.gsplat.studio/">https://docs.gsplat.studio/</a></p></li>
+<li><p><a class="reference external" href="https://www.bilibili.com/video/av872162410/?vd_source=0c5ad79582f906d810296380161a7988">https://www.bilibili.com/video/av872162410/?vd_source=0c5ad79582f906d810296380161a7988</a></p></li>
+</ul>
+</section>
+<section id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>python -m pip uninstall pip==20.0.2</p></li>
+<li><p>git submodule update –init –recursive</p></li>
+<li><p>git submodule update –init –recursive –force</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../open-source-project.html" class="btn btn-neutral float-left" title="Open Source Project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../vortex/vortex.html" class="btn btn-neutral float-right" title="Vortex" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

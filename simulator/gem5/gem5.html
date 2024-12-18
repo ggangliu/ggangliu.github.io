@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEM5 &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GPGPU-SIM" href="../gpgpu-sim/gpgpu-sim.html" />
+    <link rel="prev" title="Simulator" href="../../simulator.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../simulator.html">Simulator</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GEM5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-gem5">Building gem5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-simple-configuration-script">Creating a simple configuration script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-cache-to-the-configuration-script">Adding cache to the configuration script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-caches-to-the-simple-config-file">Adding caches to the simple config file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-gem5-statistics-and-output">Understanding gem5 statistics and output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gpgpu-sim/gpgpu-sim.html">GPGPU-SIM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accel/accel-sim.html">Accel-Sim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accel/accel-wattch.html">AccelWattch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qemu/qemu.html">QEMU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spike/spike.html">SPIKE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sst/sst.html">Structural Simulation Toolkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timeloop/timeloop.html">Timeloop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../maestro/maestro.html">Maestro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accelergy/accelergy.html">Accelergy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../simulator.html">Simulator</a></li>
+      <li class="breadcrumb-item active">GEM5</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="gem5">
+<h1>GEM5<a class="headerlink" href="#gem5" title="Link to this heading"></a></h1>
+<p>gem5 is a modular discrete event driven computer system simulator platform.</p>
+<p>gem5 is written primarily in C++ and python and most components are provided under a BSD style license. It can simulate a complete system with devices and an operating system in full system mode (FS mode), or user space only programs where system services are provided directly by the simulator in syscall emulation mode (SE mode). There are varying levels of support for executing Alpha, ARM, MIPS, Power, SPARC, RISC-V, and 64 bit x86 binaries on CPU models including two simple single CPI models, an out of order model, and an in order pipelined model. A memory system can be flexibly built out of caches and crossbars or the Ruby simulator which provides even more flexible memory system modeling.</p>
+<section id="building-gem5">
+<h2>Building gem5<a class="headerlink" href="#building-gem5" title="Link to this heading"></a></h2>
+<p>The required dependencies</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>git<span class="w"> </span>m4<span class="w"> </span>scons<span class="w"> </span>zlib1g<span class="w"> </span>zlib1g-dev<span class="w"> </span>libprotobuf-dev<span class="w"> </span>protobuf-compiler<span class="w"> </span>libprotoc-dev<span class="w"> </span>libgoogle-perftools-dev<span class="w"> </span>python-dev<span class="w"> </span>python
+</pre></div>
+</div>
+<p>First gem5 build</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span><span class="sb">`</span>which<span class="w"> </span>scons<span class="sb">`</span><span class="w"> </span>build/X86/gem5.opt<span class="w"> </span>-j9
+</pre></div>
+</div>
+</section>
+<section id="creating-a-simple-configuration-script">
+<h2>Creating a simple configuration script<a class="headerlink" href="#creating-a-simple-configuration-script" title="Link to this heading"></a></h2>
+<p>Our configuration script is going to model a very simple system. We’ll have just one simple CPU core. This CPU core will be connected to a system-wide memory bus. And we’ll have a single DDR3 memory channel, also connected to the memory bus.</p>
+<p>gem5’s modular design is built around the <strong>SimObject</strong> type. Most of the components in the simulated system are SimObjects: CPUs, caches, memory controllers, buses, etc. gem5 exports all of these objects from their C++ implementation to python. Thus, from the python configuration script you can create any SimObject, set its parameters, and specify the interactions between SimObjects.</p>
+<p>The first thing we’ll do in this file is import the m5 library and all SimObjects that we’ve compiled.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">m5</span>
+<span class="kn">from</span> <span class="nn">m5.objects</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">system</span> <span class="o">=</span> <span class="n">System</span><span class="p">()</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">clk_domain</span> <span class="o">=</span> <span class="n">SrcClockDomain</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">clk_domain</span><span class="o">.</span><span class="n">clock</span> <span class="o">=</span> <span class="s1">&#39;1GHz&#39;</span>
+<span class="n">system</span><span class="o">.</span><span class="n">clk_domain</span><span class="o">.</span><span class="n">voltage_domain</span> <span class="o">=</span> <span class="n">VoltageDomain</span><span class="p">()</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">mem_mode</span> <span class="o">=</span> <span class="s1">&#39;timing&#39;</span>
+<span class="n">system</span><span class="o">.</span><span class="n">mem_ranges</span> <span class="o">=</span> <span class="p">[</span><span class="n">AddrRange</span><span class="p">(</span><span class="s1">&#39;512MB&#39;</span><span class="p">)]</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span> <span class="o">=</span> <span class="n">X86TimingSimpleCPU</span><span class="p">()</span> <span class="c1">#RiscvTimingSimpleCPU() or ArmTimingSimpleCPU()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">membus</span> <span class="o">=</span> <span class="n">SystemXBar</span><span class="p">()</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">icache_port</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">dcache_port</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">createInterruptController</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">interrupts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pio</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">mem_side_ports</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">interrupts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">int_requestor</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">interrupts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">int_responder</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">mem_side_ports</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">system_port</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">mem_ctrl</span> <span class="o">=</span> <span class="n">MemCtrl</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">mem_ctrl</span><span class="o">.</span><span class="n">dram</span> <span class="o">=</span> <span class="n">DDR3_1600_8x8</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">mem_ctrl</span><span class="o">.</span><span class="n">dram</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">mem_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">system</span><span class="o">.</span><span class="n">mem_ctrl</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="o">.</span><span class="n">mem_side_ports</span>
+
+</pre></div>
+</div>
+<p>After those final connections, we’ve finished instantiating our simulated system! Our system should look like the figure below.
+<img alt="Alt text" src="../../_images/image8.png" /></p>
+<p>gem5 can run in two different modes called <strong>“syscall emulation”</strong> and <strong>“full system”</strong> or SE and FS modes.</p>
+<dl class="simple myst">
+<dt>Syscall emulation</dt><dd><p>Syscall emulation mode, on the other hand, does not emulate all of the devices in a system and focuses on simulating the CPU and memory system. Syscall emulation is much easier to configure since you are not required to instantiate all of the hardware devices required in a real system. However, syscall emulation only emulates Linux system calls, and thus only models user-mode code.</p>
+</dd>
+<dt>Full system</dt><dd><p>However, if you need high fidelity modeling of the system, or OS interaction like page table walks are important, then you should use FS mode.</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">binary</span> <span class="o">=</span> <span class="s1">&#39;tests/test-progs/hello/bin/x86/linux/hello&#39;</span>
+
+<span class="c1"># for gem5 V21 and beyond</span>
+<span class="n">system</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="n">SEWorkload</span><span class="o">.</span><span class="n">init_compatible</span><span class="p">(</span><span class="n">binary</span><span class="p">)</span>
+
+<span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
+<span class="n">process</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">binary</span><span class="p">]</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="n">process</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">createThreads</span><span class="p">()</span>
+
+<span class="n">root</span> <span class="o">=</span> <span class="n">Root</span><span class="p">(</span><span class="n">full_system</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">system</span> <span class="o">=</span> <span class="n">system</span><span class="p">)</span>
+<span class="n">m5</span><span class="o">.</span><span class="n">instantiate</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Beginning simulation!&quot;</span><span class="p">)</span>
+<span class="n">exit_event</span> <span class="o">=</span> <span class="n">m5</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exiting @ tick </span><span class="si">{}</span><span class="s1"> because </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m5</span><span class="o">.</span><span class="n">curTick</span><span class="p">(),</span> <span class="n">exit_event</span><span class="o">.</span><span class="n">getCause</span><span class="p">()))</span>
+</pre></div>
+</div>
+<p>Now that we’ve created a simple simulation script (the full version of which can be found in the gem5 code base at configs/learning_gem5/part1/simple.py ) we’re ready to run gem5.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>build/X86/gem5.opt<span class="w"> </span>configs/tutorial/part1/simple.py
+</pre></div>
+</div>
+</section>
+<section id="adding-cache-to-the-configuration-script">
+<h2>Adding cache to the configuration script<a class="headerlink" href="#adding-cache-to-the-configuration-script" title="Link to this heading"></a></h2>
+<p><img alt="Alt text" src="../../_images/image-120.png" /></p>
+<p>Now, to create caches with specific parameters, we are first going to create a new file, caches.py, in the same directory as simple.py, configs/tutorial/part1. Next, let’s two more sub-classes of L1Cache, an L1DCache and L1ICache</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">m5.objects</span> <span class="kn">import</span> <span class="n">Cache</span>
+
+<span class="k">class</span> <span class="nc">L1Cache</span><span class="p">(</span><span class="n">Cache</span><span class="p">):</span>
+    <span class="n">assoc</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">tag_latency</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">data_latency</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">response_latency</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">mshrs</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">tgts_per_mshr</span> <span class="o">=</span> <span class="mi">20</span>
+
+    <span class="k">def</span> <span class="nf">connectCPU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu</span><span class="p">):</span>
+    <span class="c1"># need to define this in a base class!</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">connectBus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem_side</span> <span class="o">=</span> <span class="n">bus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+
+<span class="k">class</span> <span class="nc">L1ICache</span><span class="p">(</span><span class="n">L1Cache</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;16kB&#39;</span>
+
+    <span class="k">def</span> <span class="nf">connectCPU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_side</span> <span class="o">=</span> <span class="n">cpu</span><span class="o">.</span><span class="n">icache_port</span>
+
+<span class="k">class</span> <span class="nc">L1DCache</span><span class="p">(</span><span class="n">L1Cache</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;64kB&#39;</span>
+
+    <span class="k">def</span> <span class="nf">connectCPU</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_side</span> <span class="o">=</span> <span class="n">cpu</span><span class="o">.</span><span class="n">dcache_port</span>
+
+<span class="k">class</span> <span class="nc">L2Cache</span><span class="p">(</span><span class="n">Cache</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="s1">&#39;256kB&#39;</span>
+    <span class="n">assoc</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">tag_latency</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">data_latency</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">response_latency</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">mshrs</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">tgts_per_mshr</span> <span class="o">=</span> <span class="mi">12</span>
+
+    <span class="k">def</span> <span class="nf">connectCPUSideBus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cpu_side</span> <span class="o">=</span> <span class="n">bus</span><span class="o">.</span><span class="n">mem_side_ports</span>
+
+    <span class="k">def</span> <span class="nf">connectMemSideBus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem_side</span> <span class="o">=</span> <span class="n">bus</span><span class="o">.</span><span class="n">cpu_side_ports</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-caches-to-the-simple-config-file">
+<h2>Adding caches to the simple config file<a class="headerlink" href="#adding-caches-to-the-simple-config-file" title="Link to this heading"></a></h2>
+<p>Now, let’s add the caches we just created to the configuration script we created in the last chapter. We can’t directly connect the L1 caches to the L2 cache since the L2 cache only expects a single port to connect to it. Therefore, we need to create an L2 bus to connect our L1 caches to the L2 cache.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">caches</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">icache</span> <span class="o">=</span> <span class="n">L1ICache</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">dcache</span> <span class="o">=</span> <span class="n">L1DCache</span><span class="p">()</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">icache</span><span class="o">.</span><span class="n">connectCPU</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="p">)</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">dcache</span><span class="o">.</span><span class="n">connectCPU</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="p">)</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">l2bus</span> <span class="o">=</span> <span class="n">L2XBar</span><span class="p">()</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">icache</span><span class="o">.</span><span class="n">connectBus</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">l2bus</span><span class="p">)</span>
+<span class="n">system</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">dcache</span><span class="o">.</span><span class="n">connectBus</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">l2bus</span><span class="p">)</span>
+
+<span class="n">system</span><span class="o">.</span><span class="n">l2cache</span> <span class="o">=</span> <span class="n">L2Cache</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">l2cache</span><span class="o">.</span><span class="n">connectCPUSideBus</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">l2bus</span><span class="p">)</span>
+<span class="n">system</span><span class="o">.</span><span class="n">membus</span> <span class="o">=</span> <span class="n">SystemXBar</span><span class="p">()</span>
+<span class="n">system</span><span class="o">.</span><span class="n">l2cache</span><span class="o">.</span><span class="n">connectMemSideBus</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">membus</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we have a complete configuration with a two-level cache hierarchy. If you run the current file, hello should now finish in 57467000 ticks. The full script can be found in the gem5 source at configs/learning_gem5/part1/two_level.py.</p>
+</section>
+<section id="understanding-gem5-statistics-and-output">
+<h2>Understanding gem5 statistics and output<a class="headerlink" href="#understanding-gem5-statistics-and-output" title="Link to this heading"></a></h2>
+<p>In addition to any information which your simulation script prints out, after running gem5, there are three files generated in a directory called m5out:</p>
+<dl class="simple myst">
+<dt>config.ini</dt><dd><p>Contains a list of every SimObject created for the simulation and the values for its parameters.</p>
+</dd>
+<dt>config.json</dt><dd><p>The same as config.ini, but in json format.</p>
+</dd>
+<dt>stats.txt</dt><dd><p>A text representation of all of the gem5 statistics registered for the simulation.</p>
+</dd>
+</dl>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gem5.org/documentation/learning_gem5/introduction/">https://www.gem5.org/documentation/learning_gem5/introduction/</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ggangliu/gem5/blob/stable/configs/learning_gem5/part1/simple.py">https://github.com/ggangliu/gem5/blob/stable/configs/learning_gem5/part1/simple.py</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../simulator.html" class="btn btn-neutral float-left" title="Simulator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../gpgpu-sim/gpgpu-sim.html" class="btn btn-neutral float-right" title="GPGPU-SIM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

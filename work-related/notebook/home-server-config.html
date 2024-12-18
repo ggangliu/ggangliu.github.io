@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Server Configuration &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="黑爵i610T说明书" href="avazz-i610t.html" />
+    <link rel="prev" title="Graphviz Dot" href="graphviz-dot.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../work-related.html">Work-related</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mvpgpu-sim/Index.html">GGangLiu Doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-vpn-setup.html">How to setup VPN to access home server by WireGuard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-start-samba.html">Samba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnc.html">VNC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphviz-dot.html">Graphviz Dot</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Home Server Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wireguard">Wireguard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-server">SSH Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#samba-server">Samba Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-mount">How to mount</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vnc-undone">VNC [Undone]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#v2ray-undone">V2Ray [Undone]</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mail">Mail</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="avazz-i610t.html">黑爵i610T说明书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="note.html">Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mermaid.html">Mermaid</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../work-related.html">Work-related</a></li>
+      <li class="breadcrumb-item active">Home Server Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="home-server-configuration">
+<h1>Home Server Configuration<a class="headerlink" href="#home-server-configuration" title="Link to this heading"></a></h1>
+<section id="wireguard">
+<h2>Wireguard<a class="headerlink" href="#wireguard" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wireguard
+sudo<span class="w"> </span>wg-quick<span class="w"> </span>up<span class="w"> </span>wg0
+sudo<span class="w"> </span>netstat<span class="w"> </span>-tuln
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>wg-quick@wg0
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>wg-quick@wg0.service
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>wg-quick@wg0.service
+sudo<span class="w"> </span>vim<span class="w"> </span>/etc/sysctl.conf<span class="w"> </span><span class="c1"># net.ipv4.ip_forward=1</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>-p
+</pre></div>
+</div>
+<p>/etc/wireguard/wg0.conf</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Interface]</span>
+<span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">GIZEVov6oTpWsaHUKyN4jvORvNZdw5kHZoBikpBUR0o=</span>
+<span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.1/32</span>
+<span class="na">ListenPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">51820</span>
+
+<span class="na">PreUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreUp</span>
+<span class="na">PostUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -I FORWARD -i wg0 -j ACCEPT</span><span class="c1">; iptables -I FORWARD -o wg0 -j ACCEPT; iptables -I INPUT -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="na">PreDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreDown</span>
+<span class="na">PostDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -D FORWARD -i wg0 -j ACCEPT</span><span class="c1">; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D INPUT -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
+
+<span class="k">[Peer]</span>
+<span class="c1"># remote pc</span>
+<span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">63EmJHn3Ki6JKhQ1lrbr235soT4qfECahuBb1zJZixc=</span>
+<span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.2/32</span>
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Interface]</span>
+<span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">GIZEVov6oTpWsaHUKyN4jvORvNZdw5kHZoBikpBUR0o=</span>
+<span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.3.1/32</span>
+<span class="na">ListenPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">51820</span>
+
+<span class="na">PreUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreUp</span>
+<span class="na">PostUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -t nat -A POSTROUTING -s 192.0.3.0/24 -j SNAT --to-source 192.168.31.188</span>
+<span class="na">PreDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreDown</span>
+<span class="na">PostDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -t nat -D POSTROUTING -s 192.0.3.0/24 -j SNAT --to-source 192.168.31.188</span>
+
+<span class="k">[Peer]</span>
+<span class="c1"># remote pc</span>
+<span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">63EmJHn3Ki6JKhQ1lrbr235soT4qfECahuBb1zJZixc=</span>
+<span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.3.2/24</span>
+
+<span class="c1">#[Peer]</span>
+<span class="c1"># remote pc</span>
+<span class="c1">#PublicKey = PbpAvIVLJ5rl3KD1LXqVjKoH7YnxgxMul3lvLxuDZjE=</span>
+<span class="c1">#AllowedIPs = 192.0.3.3/32</span>
+</pre></div>
+</div>
+</section>
+<section id="ssh-server">
+<h2>SSH Server<a class="headerlink" href="#ssh-server" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>openssh-server
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>ssh
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>ssh
+systemctl<span class="w"> </span>cat<span class="w"> </span>ssh<span class="w"> </span><span class="c1"># 确保 After=network.target 行存在，这意味着 SSH 服务将在网络服务启动之后启动</span>
+sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+ssh-keygen.exe<span class="w"> </span>-f<span class="w"> </span>ggangliu188
+ssh-copy-id<span class="w"> </span>ggangliu@192.168.31.188
+ssh-copy-id<span class="w"> </span>-i<span class="w"> </span>ggangliu188.pub<span class="w"> </span>ggangliu@192.168.31.188
+sudo<span class="w"> </span>reboot
+</pre></div>
+</div>
+<p>/etc/ssh/sshd_config</p>
+</section>
+<section id="samba-server">
+<h2>Samba Server<a class="headerlink" href="#samba-server" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>samba
+sudo<span class="w"> </span>vim<span class="w"> </span>/etc/samba/smb.conf
+sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>smbd
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>smbd
+</pre></div>
+</div>
+<p>/etc/samba/smb.conf</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[ubuntu_smb]</span>
+<span class="na">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/ggangliu</span>
+<span class="na">available</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
+<span class="na">browseable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
+<span class="na">public</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
+<span class="na">writable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span>
+<span class="na">create_mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0755</span>
+<span class="na">force user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ggangliu</span>
+<span class="na">force group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ggangliu</span>
+</pre></div>
+</div>
+<section id="how-to-mount">
+<h3>How to mount<a class="headerlink" href="#how-to-mount" title="Link to this heading"></a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>cifs-utils
+sudo<span class="w"> </span>mkdir<span class="w"> </span>/mnt/31-52
+sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>cifs<span class="w"> </span>-o<span class="w"> </span><span class="nv">username</span><span class="o">=</span>ggangliu<span class="w"> </span>//192.168.31.52/ggangliu<span class="w"> </span>/mnt/31-52
+</pre></div>
+</div>
+<p>add to /etc/fstab file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">//192.168.31.52/ggangliu  /mnt/31-52 cifs user</span><span class="o">=</span><span class="s">ggangliu,pass=liuyg628 0 0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="vnc-undone">
+<h2>VNC [Undone]<a class="headerlink" href="#vnc-undone" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04">https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04</a></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>tightvncserver
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>xfce4<span class="w"> </span>xfce4-goodies
+tightvncserver<span class="w"> </span>:1
+sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">5900</span>
+sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">5901</span>
+vim<span class="w"> </span>~/.vnc/xstartup
+chmod<span class="w"> </span>+x<span class="w"> </span>~/.vnc/xstartup
+vncserver<span class="w"> </span>-localhost<span class="w"> </span><span class="c1"># restart VNC server</span>
+sudo<span class="w"> </span>vim<span class="w"> </span>/etc/systemd/system/vncserver@.service
+sudo<span class="w"> </span>systemctl<span class="w"> </span>daemon-reload
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>vncserver@1.service
+vncserver<span class="w"> </span>-kill<span class="w"> </span>:1<span class="w"> </span><span class="c1"># kill instance of VNC</span>
+vncserver<span class="w"> </span>:1
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>vncserver@1
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>vncserver@1
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1">#!/bin/sh</span>
+
+<span class="na">xrdb &quot;$HOME/.Xresources&quot;</span>
+<span class="na">startxfce4 &amp;</span>
+</pre></div>
+</div>
+<p>restart vncserver</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>vncserver<span class="w"> </span>-localhost<span class="w"> </span>
+</pre></div>
+</div>
+<p>/etc/systemd/system/vncserver&#64;.service</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Start TightVNC server at startup</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+<span class="na">User</span><span class="o">=</span><span class="s">ggangliu</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">ggangliu</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/home/ggangliu</span>
+
+<span class="na">PIDFile</span><span class="o">=</span><span class="s">/home/ggangliu/.vnc/%H:%i.pid</span>
+<span class="na">ExecStartPre</span><span class="o">=</span><span class="s">-/usr/bin/vncserver -kill :%i &gt; /dev/null 2&gt;&amp;1</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/vncserver -depth 24 -geometry 1280x800 -localhost :%i</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/usr/bin/vncserver -kill :%i</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+</div>
+</section>
+<section id="v2ray-undone">
+<h2>V2Ray [Undone]<a class="headerlink" href="#v2ray-undone" title="Link to this heading"></a></h2>
+<p>App Center “V2rayX”</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># 解压</span>
+unzip<span class="w"> </span>v2ray-linux-64.zip
+<span class="c1"># 建立目录</span>
+sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/usr/bin/v2ray
+<span class="c1"># 将两个可执行文件复制至新目录</span>
+sudo<span class="w"> </span>mv<span class="w"> </span>v2ray<span class="w"> </span>/usr/bin/v2ray/
+sudo<span class="w"> </span>mv<span class="w"> </span>v2ctl<span class="w"> </span>/usr/bin/v2ray/
+<span class="c1"># 将文件所有者设为root</span>
+<span class="nb">cd</span><span class="w"> </span>/usr/bin/v2ray/
+sudo<span class="w"> </span>chown<span class="w"> </span>root:root<span class="w"> </span>./*
+</pre></div>
+</div>
+</section>
+<section id="mail">
+<h2>Mail<a class="headerlink" href="#mail" title="Link to this heading"></a></h2>
+<p>Installation</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>mailutils
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>postfix
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>postfix
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>postfix
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This is a test email&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mail<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;Test Email&quot;</span><span class="w"> </span>rider628@qq.com
+sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/mail.log
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># Define the file to store the WAN IP address</span>
+<span class="nv">IP_FILE</span><span class="o">=</span><span class="s2">&quot;wan_ip.txt&quot;</span>
+<span class="nv">EMAIL</span><span class="o">=</span><span class="s2">&quot;rider628@qq.com&quot;</span>
+<span class="nv">SUBJECT</span><span class="o">=</span><span class="s2">&quot;WAN IP Address Updated&quot;</span>
+<span class="nv">MAIL_BODY</span><span class="o">=</span><span class="s2">&quot;Your WAN IP address has been updated. The new IP address is:&quot;</span>
+
+<span class="c1"># Get the current WAN IP address</span>
+<span class="nv">CURRENT_IP</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>ifconfig.me<span class="k">)</span>
+
+<span class="c1"># Check if the IP address was successfully retrieved</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to retrieve WAN IP address&quot;</span>
+<span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">fi</span>
+
+<span class="c1"># If the file does not exist, create the file and write the current IP</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IP_FILE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IP_FILE</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;File does not exist, created file and wrote current IP: </span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="c1"># Send email notification and check if it was successful</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAIL_BODY</span><span class="s2"> </span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mail<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SUBJECT</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$EMAIL</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Email successfully sent to </span><span class="nv">$EMAIL</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to send email&quot;</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="c1"># Read the old IP address from the file</span>
+<span class="nv">OLD_IP</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IP_FILE</span><span class="s2">&quot;</span><span class="k">)</span>
+
+<span class="c1"># Compare the current IP with the old IP</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$OLD_IP</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IP_FILE</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;IP address updated: </span><span class="nv">$OLD_IP</span><span class="s2"> -&gt; </span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1"># Send email notification and check if it was successful</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$MAIL_BODY</span><span class="s2"> </span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>mail<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SUBJECT</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$EMAIL</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Email successfully sent to </span><span class="nv">$EMAIL</span><span class="s2">&quot;</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Failed to send email&quot;</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="k">else</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;IP address has not changed: </span><span class="nv">$CURRENT_IP</span><span class="s2">&quot;</span>
+<span class="k">fi</span>
+</pre></div>
+</div>
+<p>To run this script periodically</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>crontab<span class="w"> </span>-e
+crontab<span class="w"> </span>-l
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="graphviz-dot.html" class="btn btn-neutral float-left" title="Graphviz Dot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="avazz-i610t.html" class="btn btn-neutral float-right" title="黑爵i610T说明书" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

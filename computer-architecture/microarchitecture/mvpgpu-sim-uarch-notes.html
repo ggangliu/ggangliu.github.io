@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVP uarch notes &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVP uarch notes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvp-uarch-notes">
+<h1>MVP uarch notes<a class="headerlink" href="#mvp-uarch-notes" title="Link to this heading"></a></h1>
+<p>SP作为MVP微架构中的最小单元，在模拟器中通过stream_processor::cycle()来串连流水线的各个阶段。</p>
+<section id="fetch">
+<h2>Fetch<a class="headerlink" href="#fetch" title="Link to this heading"></a></h2>
+<section id="fe">
+<h3>FE阶段一次取多少条指令？<a class="headerlink" href="#fe" title="Link to this heading"></a></h3>
+<p>MVP fetchs 4 instructions from the instruction cache concurrently for the four horizontal launched threads provided that the threads is not stalled and no bank conflict, and do the same for next group of horizontal threads at next cycle.</p>
+<p>If the PCs of the horizontal threads are the same, the fetch can be done using one access. Otherwise the fetch will use 2/3/4 times access with or without bank conflict.</p>
+<p>scheduler_unit::cycle()</p>
+<p>mvp_stream_processor::checkExecutionStatusAndUpdate()</p>
+</section>
+<section id="stream-processor-fetch">
+<h3>stream_processor::fetch()<a class="headerlink" href="#stream-processor-fetch" title="Link to this heading"></a></h3>
+</section>
+<section id="valid">
+<h3>valid<a class="headerlink" href="#valid" title="Link to this heading"></a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">warp</span><span class="p">(</span><span class="n">warp_id</span><span class="p">).</span><span class="n">set_next_pc</span><span class="p">(</span><span class="n">pc</span><span class="p">);</span>
+<span class="n">warp</span><span class="p">(</span><span class="n">warp_id</span><span class="p">).</span><span class="n">ibuffer_flush</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>warp_inst_complete() 记录SP中完成的指令数量</p>
+<p>8： 5010
+12： 5011
+16:  5012
+20:  5012</p>
+<p>微架构的分析中发现如下个现象</p>
+<ol class="arabic simple">
+<li><p>一个cycle可以完成4、8、12条指令</p>
+<ul class="simple">
+<li><p>4条指令意味着只有writeback或者execute阶段完成指令</p></li>
+<li><p>12条指令，发现分别是add/ld/jp</p></li>
+</ul>
+</li>
+<li><p>有的cycle没有指令完成</p></li>
+</ol>
+<p>-l2_ideal 1</p>
+<p>memory partition latency config
+-gpgpu_l2_rop_latency 160
+-dram_latency 100</p>
+</section>
+</section>
+<section id="issue">
+<h2>Issue<a class="headerlink" href="#issue" title="Link to this heading"></a></h2>
+</section>
+<section id="register-file">
+<h2>Register File<a class="headerlink" href="#register-file" title="Link to this heading"></a></h2>
+</section>
+<section id="execution">
+<h2>Execution<a class="headerlink" href="#execution" title="Link to this heading"></a></h2>
+<p>EX阶段根据操作的Latency，建立自己的pipeline_depth及pipeline_reg。而在SP中也有m_pipeline_reg与EX阶段自身的重名。将会重命名EX的为m_ex_pipeline_reg以免混淆。在创建ALU的时候，会根据最大的Latency来创建EX阶段的流水级数m_ex_pipeline_depth。在EX执行的过程中，EX的cycle()会将m_ex_pipeline_reg[0]中指令放入m_result_port，m_result_port中的指令会在下一个cycle被传递给WB阶段。而在EX内部，流水是从最大往最小一次发送。在指令被放入EX内部流水之前，先经过initiation_interval个cycle的delay，之后放入EX流水线的（latency-initiation_interval）位置，然后再在每个cycle中依次往前传递，直到流水完成，进入WB阶段，EX完成使命。</p>
+<p>SP中的定义如下：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">register_set</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_pipeline_reg</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>EX中的定义如下：</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">warp_inst_t</span><span class="w"> </span><span class="o">**</span><span class="n">m_ex_pipeline_reg</span><span class="p">;</span>
+</pre></div>
+</div>
+<section id="ldst-unit">
+<h3>LDST Unit<a class="headerlink" href="#ldst-unit" title="Link to this heading"></a></h3>
+<p>在ldst的cycle中会完成下面的工作：</p>
+<ol class="arabic simple">
+<li><p>load指令的write_back</p></li>
+<li><p>operand collector的step</p></li>
+<li><p>subpipeline的执行</p></li>
+<li><p>处理cache的response_fifo，其中可能是某条load指令的响应</p></li>
+<li><p>执行各种cache的cycle</p>
+<ol class="arabic simple">
+<li><p>L1D cache</p></li>
+</ol>
+</li>
+<li><p>执行local memory的cycle</p></li>
+<li><p>如果stall，记录log</p></li>
+<li><p>如果未stall，则处理pending_write</p></li>
+</ol>
+</section>
+</section>
+<section id="writeback">
+<h2>WriteBack<a class="headerlink" href="#writeback" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>根据warp_size和pipe_width[WB]计算max_committed_thread_instructions</p></li>
+<li><p>从m_pipeline_reg[EX_WB]得到要执行的指令 warp_inst_t **preg = m_pipeline_reg[EX_WB].get_ready()</p></li>
+<li><p>完成writeback操作 m_operand_collector.writeback(*pipe_reg);</p></li>
+<li><p>完成指令后的资源释放等工作</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">warp_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pipe_reg</span><span class="o">-&gt;</span><span class="n">warp_id</span><span class="p">();</span>
+<span class="w"> </span><span class="n">m_scoreboard</span><span class="o">-&gt;</span><span class="n">releaseRegisters</span><span class="p">(</span><span class="n">pipe_reg</span><span class="p">);</span>
+<span class="w"> </span><span class="n">m_warp</span><span class="p">[</span><span class="n">warp_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">dec_inst_in_pipeline</span><span class="p">();</span>
+<span class="w"> </span><span class="n">warp_inst_complete</span><span class="p">(</span><span class="o">*</span><span class="n">pipe_reg</span><span class="p">);</span>
+<span class="w"> </span><span class="n">m_gpu</span><span class="o">-&gt;</span><span class="n">gpu_sim_insn_last_update_sid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_sp_id</span><span class="p">;</span>
+<span class="w"> </span><span class="n">m_gpu</span><span class="o">-&gt;</span><span class="n">gpu_sim_insn_last_update</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_gpu</span><span class="o">-&gt;</span><span class="n">gpu_sim_cycle</span><span class="p">;</span>
+<span class="w"> </span><span class="n">m_last_inst_gpu_sim_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_gpu</span><span class="o">-&gt;</span><span class="n">gpu_sim_cycle</span><span class="p">;</span>
+<span class="w"> </span><span class="n">m_last_inst_gpu_tot_sim_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_gpu</span><span class="o">-&gt;</span><span class="n">gpu_tot_sim_cycle</span><span class="p">;</span>
+<span class="w"> </span><span class="n">pipe_reg</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">();</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphic debug notes &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link href="../../../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Graphic debug notes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="graphic-debug-notes">
+<h1>Graphic debug notes<a class="headerlink" href="#graphic-debug-notes" title="Link to this heading"></a></h1>
+<section id="kernel-program">
+<h2>Kernel program<a class="headerlink" href="#kernel-program" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">KernelSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; __kernel void normal_fragment_shader(__global float3* payload,                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      __global float3* return_color,                                             </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;                                      const unsigned int n)                                                      </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; {                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     int tid = get_global_id(0);                                                                                 </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     if (tid &lt; n) {                                                                                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         float3 color = (float3)(payload[tid].x + 1.0f, payload[tid].y + 1.0f, payload[tid].z + 1.0f) / 2.f;     </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;         return_color[tid] = (float3)(color.x * 255, color.y * 255, color.z * 255);                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;     }                                                                                                           </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot; }                                                                                                               </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+</pre></div>
+</div>
+<div class="highlight-asm notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="na">.text</span>
+<span class="w">	</span><span class="na">.section</span><span class="w"> </span><span class="no">.mdebug.abi32</span>
+<span class="w">	</span><span class="na">.previous</span>
+<span class="w">	</span><span class="na">.file</span><span class="w">	</span><span class="s">&quot;_cl_03_shader&quot;</span>
+<span class="w">	</span><span class="na">.section</span><span class="w">	</span><span class="no">.rodata.cst4</span><span class="p">,</span><span class="s">&quot;aM&quot;</span><span class="p">,</span><span class="na">@progbits</span><span class="p">,</span><span class="mi">4</span>
+<span class="w">	</span><span class="na">.p2align</span><span class="w">	</span><span class="mi">2</span><span class="w">               </span><span class="c1"># -- Begin function normal_fragment_shader</span>
+<span class="nl">CPI0_0:</span>
+<span class="w">	</span><span class="na">.word</span><span class="w">	</span><span class="mi">1065353216</span><span class="w">              </span><span class="c1"># float 1</span>
+<span class="nl">CPI0_1:</span>
+<span class="w">	</span><span class="na">.word</span><span class="w">	</span><span class="mi">1056964608</span><span class="w">              </span><span class="c1"># float 0.5</span>
+<span class="nl">CPI0_2:</span>
+<span class="w">	</span><span class="na">.word</span><span class="w">	</span><span class="mi">1132396544</span><span class="w">              </span><span class="c1"># float 255</span>
+<span class="w">	</span><span class="na">.text</span>
+<span class="w">	</span><span class="na">.globl</span><span class="w">	</span><span class="no">normal_fragment_shader</span>
+<span class="w">	</span><span class="na">.type</span><span class="w">	</span><span class="no">normal_fragment_shader</span><span class="p">,</span><span class="na">@function</span>
+<span class="w">	</span><span class="na">.ent</span><span class="w">	</span><span class="no">normal_fragment_shader</span><span class="w">  </span><span class="c1"># @normal_fragment_shader</span>
+<span class="nl">normal_fragment_shader:</span>
+<span class="w">	</span><span class="na">.frame</span><span class="w">	</span><span class="no">$sp</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="no">$ra</span>
+<span class="w">	</span><span class="na">.mask</span><span class="w"> 	</span><span class="mi">0x00008000</span><span class="p">,-</span><span class="mi">4</span>
+<span class="w">	</span><span class="na">.fmask</span><span class="w">	</span><span class="mi">0x00000000</span><span class="p">,</span><span class="mi">0</span>
+<span class="c1"># %bb.0:                          # %entry</span>
+<span class="w">	</span><span class="nf">sub</span><span class="w">	</span><span class="no">$zero</span><span class="p">,</span><span class="w"> </span><span class="no">$zero</span><span class="p">,</span><span class="w"> </span><span class="no">$zero</span>
+<span class="w">	</span><span class="nf">add.si</span><span class="w">	</span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="mi">-56</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$ra</span><span class="p">,</span><span class="w"> </span><span class="mi">52</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w"> </span>
+<span class="w">	</span><span class="no">st.w</span><span class="w">	</span><span class="no">$6</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">           </span><span class="c1"># (n: 10)</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="mi">36</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">           </span><span class="c1"># return_color 0xc0000100</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">           </span><span class="c1"># payload 0xc0000000</span>
+<span class="w">	</span><span class="nf">add.si</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="no">$zero</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w">          </span><span class="c1"># $4 = 0</span>
+<span class="w">	</span><span class="nf">jplnk</span><span class="w">	</span><span class="no">_Z13get_global_idj</span><span class="w">    </span><span class="c1"># $2 = id</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">           </span><span class="c1"># $3 = 10</span>
+<span class="w">	</span><span class="nf">setlt.u</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$2</span><span class="p">,</span><span class="w"> </span><span class="no">$3</span><span class="w">            </span><span class="c1"># $3 = 1   rd ← (rs1 &lt; rs2) </span>
+<span class="w">	</span><span class="nf">beq</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$zero</span><span class="p">,</span><span class="w"> </span><span class="no">.LBB0_2</span><span class="w">        </span><span class="c1"># if $3 == 0 then .LBB0_2</span>
+<span class="w">	</span><span class="nf">jp</span><span class="w">	</span><span class="no">.LBB0_1</span>
+<span class="nl">.LBB0_1:</span><span class="w">                         </span><span class="c1"># %if.then</span>
+<span class="w">	</span><span class="nf">sfll.i</span><span class="w">	</span><span class="no">$2</span><span class="p">,</span><span class="w"> </span><span class="no">$2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w">            </span><span class="c1"># $2 = 0</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">          </span><span class="c1"># $3 = 0xc0000000</span>
+<span class="w">	</span><span class="nf">add</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$2</span><span class="w">               </span><span class="c1"># $3 = (address)payload[0]</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="mi">36</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span><span class="w">          </span><span class="c1"># $4 = 0xc0000100</span>
+<span class="w">	</span><span class="nf">add</span><span class="w">	</span><span class="no">$2</span><span class="p">,</span><span class="w"> </span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="no">$2</span><span class="w">               </span><span class="c1"># $2 = return_color[0]</span>
+<span class="w">	</span><span class="nf">mvup.i</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_0</span><span class="p">)</span><span class="w">         </span><span class="c1"># $4 = 0x00 (address)(float)1</span>
+<span class="w">	</span><span class="nf">or.i</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_0</span><span class="p">)</span><span class="w">     </span><span class="c1"># $4 = 0x00 (float)1 </span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$4</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">$4</span><span class="p">)</span><span class="w">            </span><span class="c1"># $4 = (float)1 *(0x00)</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">(</span><span class="no">$3</span><span class="p">)</span><span class="w">            </span><span class="c1"># $5 = payload[0].z</span>
+<span class="w">	</span><span class="nf">fadd</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$4</span><span class="w">           </span><span class="c1"># $5 = payload[0].z + 1</span>
+<span class="w">	</span><span class="nf">mvup.i</span><span class="w">	</span><span class="no">$6</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_1</span><span class="p">)</span><span class="w">         </span><span class="c1"># $6 = 0x08 (address)(float)0.5</span>
+<span class="w">	</span><span class="nf">or.i</span><span class="w">	</span><span class="no">$6</span><span class="p">,</span><span class="w"> </span><span class="no">$6</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_1</span><span class="p">)</span><span class="w">     </span><span class="c1"># $6 = 0x08</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$6</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">$6</span><span class="p">)</span><span class="w">            </span><span class="c1"># $6 = (float)0.5 *(0x08)</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$6</span><span class="w">           </span><span class="c1"># $5 = (payload[0].z + 1) * (float)0.5</span>
+<span class="w">	</span><span class="nf">mvup.i</span><span class="w">	</span><span class="no">$7</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_2</span><span class="p">)</span><span class="w">         </span><span class="c1"># $7 = 0x10 (float)255</span>
+<span class="w">	</span><span class="nf">or.i</span><span class="w">	</span><span class="no">$7</span><span class="p">,</span><span class="w"> </span><span class="no">$7</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">CPI0_2</span><span class="p">)</span><span class="w">     </span><span class="c1"># $7 = 0x10 (address)(float)255</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$7</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">$7</span><span class="p">)</span><span class="w">            </span><span class="c1"># $7 = (float)255 *(0x10)</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$7</span><span class="w">           </span><span class="c1"># $5 = ((payload[0].z + 1) * (float)0.5) * 255</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$8</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">(</span><span class="no">$3</span><span class="p">)</span><span class="w">            </span><span class="c1"># $8 = payload[0].y</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">(</span><span class="no">$2</span><span class="p">)</span><span class="w">            </span><span class="c1"># return_color[0].z = $5</span>
+<span class="w">	</span><span class="nf">fadd</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$8</span><span class="p">,</span><span class="w"> </span><span class="no">$4</span><span class="w">           </span><span class="c1"># $5 = payload[0].y + (float)1</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$6</span><span class="w">           </span><span class="c1"># $5 = (payload[0].y + (float)1) * 0.5</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="no">$7</span><span class="w">           </span><span class="c1"># $5 = ((payload[0].y + (float)1) * 0.5) * 255</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$5</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">(</span><span class="no">$2</span><span class="p">)</span><span class="w">            </span><span class="c1"># return_color[0].y = $5</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">$3</span><span class="p">)</span><span class="w">            </span><span class="c1"># $3 = payload[0].x</span>
+<span class="w">	</span><span class="nf">fadd</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$4</span><span class="w">           </span><span class="c1"># $3 = payload[0].x + 1</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$6</span><span class="w">           </span><span class="c1"># $3 = (payload[0].x + 1) * 0.5</span>
+<span class="w">	</span><span class="nf">fmul</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="no">$7</span><span class="w">           </span><span class="c1"># $3 = ((payload[0].x + 1) * 0.5) * 255</span>
+<span class="w">	</span><span class="nf">st.w</span><span class="w">	</span><span class="no">$3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">$2</span><span class="p">)</span><span class="w">            </span><span class="c1"># return_color[0].x = $3</span>
+<span class="nl">.LBB0_2:</span><span class="w">                         </span><span class="c1"># %if.end</span>
+<span class="w">	</span><span class="nf">ld.w</span><span class="w">	</span><span class="no">$ra</span><span class="p">,</span><span class="w"> </span><span class="mi">52</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span>
+<span class="w">	</span><span class="nf">add.si</span><span class="w">	</span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="no">$sp</span><span class="p">,</span><span class="w"> </span><span class="mi">56</span>
+<span class="w">	</span><span class="nf">jr</span><span class="w">	</span><span class="no">$ra</span>
+<span class="w">	</span><span class="na">.set</span><span class="w">	</span><span class="no">macro</span>
+<span class="w">	</span><span class="na">.set</span><span class="w">	</span><span class="no">reorder</span>
+<span class="w">	</span><span class="na">.end</span><span class="w">	</span><span class="no">normal_fragment_shader</span>
+<span class="nl">$func_end0:</span>
+<span class="w">	</span><span class="na">.size</span><span class="w">	</span><span class="no">normal_fragment_shader</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="no">$func_end0</span><span class="p">)-</span><span class="no">normal_fragment_shader</span>
+<span class="w">                                        </span><span class="c1"># -- End function</span>
+
+<span class="w">	</span><span class="na">.ident</span><span class="w">	</span><span class="s">&quot;clang version 7.0.0 (tags/RELEASE_700/final) (ssh://lidajun@10.0.10.208:29418/llvm-7.0.0 cec070d24becf5467d66f106da98f501a660a4df)&quot;</span>
+<span class="w">	</span><span class="na">.section</span><span class="w">	</span><span class="s">&quot;.note.GNU-stack&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="na">@progbits</span>
+</pre></div>
+</div>
+</section>
+<section id="data-comparison">
+<h2>Data Comparison<a class="headerlink" href="#data-comparison" title="Link to this heading"></a></h2>
+<p>reference data:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">input</span><span class="p">]</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">349</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">275</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.474291</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.819276</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.322235</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">350</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.439626</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.850920</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.287515</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">351</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.403335</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.879764</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.251667</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">351</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.437188</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.849520</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.295266</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">352</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.401025</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.878535</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.259530</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">352</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.434736</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.848052</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.303007</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">353</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.398655</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.877272</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.267336</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">353</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.432255</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.846526</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.310723</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">354</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.429732</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.844947</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.318425</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">355</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.427196</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.843309</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.326088</span><span class="p">)</span>
+<span class="p">[</span><span class="n">output</span><span class="p">]</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">349</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">275</span><span class="w"> </span><span class="p">(</span><span class="mf">67.027870</span><span class="p">,</span><span class="w"> </span><span class="mf">23.042351</span><span class="p">,</span><span class="w"> </span><span class="mf">86.415070</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">350</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">71.447662</span><span class="p">,</span><span class="w"> </span><span class="mf">19.007750</span><span class="p">,</span><span class="w"> </span><span class="mf">90.841866</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">351</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">76.074806</span><span class="p">,</span><span class="w"> </span><span class="mf">15.330095</span><span class="p">,</span><span class="w"> </span><span class="mf">95.412407</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">351</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">71.758545</span><span class="p">,</span><span class="w"> </span><span class="mf">19.186167</span><span class="p">,</span><span class="w"> </span><span class="mf">89.853584</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">352</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">76.369339</span><span class="p">,</span><span class="w"> </span><span class="mf">15.486829</span><span class="p">,</span><span class="w"> </span><span class="mf">94.409889</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">352</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">72.071205</span><span class="p">,</span><span class="w"> </span><span class="mf">19.373405</span><span class="p">,</span><span class="w"> </span><span class="mf">88.866592</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">353</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">273</span><span class="w"> </span><span class="p">(</span><span class="mf">76.671539</span><span class="p">,</span><span class="w"> </span><span class="mf">15.647819</span><span class="p">,</span><span class="w"> </span><span class="mf">93.414688</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">353</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">72.387482</span><span class="p">,</span><span class="w"> </span><span class="mf">19.567909</span><span class="p">,</span><span class="w"> </span><span class="mf">87.882759</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">354</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">72.709206</span><span class="p">,</span><span class="w"> </span><span class="mf">19.769199</span><span class="p">,</span><span class="w"> </span><span class="mf">86.900787</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="mi">355</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mi">274</span><span class="w"> </span><span class="p">(</span><span class="mf">73.032494</span><span class="p">,</span><span class="w"> </span><span class="mf">19.978088</span><span class="p">,</span><span class="w"> </span><span class="mf">85.923813</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>shader data:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">input</span><span class="p">]</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.474291</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.819276</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.322235</span><span class="p">)</span>
+<span class="mh">0xbef2d645</span><span class="w"> </span>
+<span class="mh">0xbf51bc12</span><span class="w"> </span>
+<span class="mh">0xbea4fbfc</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.439626</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.850920</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.287515</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">2</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.403335</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.879764</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.251667</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">3</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.437188</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.849520</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.295266</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">4</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.401025</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.878535</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.259530</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">5</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.434736</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.848052</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.303007</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">6</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.398655</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.877272</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.267336</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">7</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.432255</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.846526</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.310723</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">8</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.429732</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.844947</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.318425</span><span class="p">)</span>
+<span class="n">i</span><span class="o">=</span><span class="mi">9</span><span class="w"> </span><span class="p">(</span><span class="mf">-0.427196</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.843309</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.326088</span><span class="p">)</span>
+<span class="p">[</span><span class="n">output</span><span class="p">]</span>
+
+</pre></div>
+</div>
+</section>
+<section id="dead-lock">
+<h2>Dead lock<a class="headerlink" href="#dead-lock" title="Link to this heading"></a></h2>
+<p>GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - scheduler_unit::cycle()
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Testing (warp_id 12, dynamic_warp_id 12)
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Warp (warp_id 12, dynamic_warp_id 12) has valid instruction (&lt;no instruction at address 0x3b0&gt;)
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Warp (warp_id 12, dynamic_warp_id 12) return from diverged warp flush
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Testing (warp_id 0, dynamic_warp_id 0)
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Warp (warp_id 0, dynamic_warp_id 0) fails as ibuffer_empty
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Testing (warp_id 4, dynamic_warp_id 4)
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Warp (warp_id 4, dynamic_warp_id 4) fails as ibuffer_empty
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Testing (warp_id 8, dynamic_warp_id 8)
+GPGPU-Sim Cycle 9553: WARP_SCHEDULER - Core 0 - Scheduler 0 - Warp (warp_id 8, dynamic_warp_id 8) fails as ibuffer_empty</p>
+<blockquote>
+<div><p>beq 指令跳转到一个非法地址，导致死锁
+beq 指令的实现有问题，未映射到正确的跳转地址</p>
+</div></blockquote>
+</section>
+<section id="kernel-debuger">
+<h2>kernel debuger<a class="headerlink" href="#kernel-debuger" title="Link to this heading"></a></h2>
+<p>给单个线程打断点</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>b<span class="w"> </span>./tempfiles/_cl_Rasterizer.s:23<span class="w"> </span><span class="m">1</span>
+<span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>c
+<span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>s
+<span class="m">136</span><span class="w"> </span><span class="o">[</span><span class="nv">thd</span><span class="o">=</span><span class="m">1</span><span class="o">][</span><span class="nv">i</span><span class="o">=</span><span class="m">5</span><span class="o">]</span><span class="w"> </span>:<span class="w"> </span><span class="nv">ctaid</span><span class="o">=(</span><span class="m">0</span>,0,0<span class="o">)</span><span class="w"> </span><span class="nv">tid</span><span class="o">=(</span><span class="m">0</span>,0,0<span class="o">)</span><span class="w"> </span><span class="nv">icount</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="o">[</span><span class="nv">pc</span><span class="o">=</span><span class="m">24</span><span class="o">]</span><span class="w"> </span><span class="o">(</span>./tempfiles/_cl_Rasterizer.s:23<span class="w"> </span>-<span class="w"> </span>add.si<span class="nv">$sp</span>,<span class="w"> </span><span class="nv">$sp</span>,<span class="w"> </span>-56<span class="o">)</span><span class="w">  </span><span class="o">[</span>0x100000000<span class="o">]</span>
+Output<span class="w"> </span>Registers:
+<span class="w">     </span><span class="nv">$zero</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">0</span>
+Input<span class="w"> </span>Registers:
+<span class="w">     </span><span class="nv">$zero</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">0</span>
+Register<span class="w"> </span>File<span class="w"> </span>Contents:
+<span class="w">        </span><span class="nv">$2</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">0</span>
+<span class="w">       </span><span class="nv">$sp</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">1024</span>
+<span class="w">        </span><span class="nv">$6</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">(</span>n:<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+<span class="w">     </span><span class="nv">$zero</span><span class="w">   </span>.s32<span class="w"> </span><span class="m">0</span>
+<span class="w">        </span><span class="nv">$5</span><span class="w">   </span>.s32<span class="w"> </span>-1073741568<span class="w"> </span><span class="o">(</span>return_color:<span class="w"> </span>0xc0000100<span class="o">)</span>
+<span class="w">        </span><span class="nv">$4</span><span class="w">   </span>.s32<span class="w"> </span>-1073741824<span class="w"> </span><span class="o">(</span>payload:<span class="w"> </span>0xc0000000<span class="o">)</span>
+<span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>b<span class="w"> </span>./tempfiles/_cl_Rasterizer.s:37<span class="w"> </span><span class="m">1</span>
+<span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>s
+MVPGPU-Sim<span class="w"> </span>Kernel<span class="w"> </span>DBG:<span class="w"> </span>reached<span class="w"> </span>breakpoint<span class="w"> </span><span class="m">2</span><span class="w"> </span>at<span class="w"> </span>./tempfiles/_cl_Rasterizer.s:37<span class="w"> </span>thread<span class="w"> </span><span class="nv">uid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span><span class="nv">sp</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">hwtid</span><span class="o">=</span><span class="m">0</span><span class="o">)</span>
+MVPGPU-Sim<span class="w"> </span>Kernel<span class="w"> </span>DBG:<span class="w"> </span>reached<span class="w"> </span>by<span class="w"> </span>thread<span class="w"> </span><span class="nv">uid</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="nv">sid</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">hwtid</span><span class="o">=</span><span class="m">0</span>
+MVPGPU-Sim<span class="w"> </span>Kernel<span class="w"> </span>DBG:<span class="w"> </span><span class="nv">PC</span><span class="o">=</span>0x080<span class="w">  </span>opcode:<span class="w"> </span>ld<span class="w"> </span>operand<span class="w"> </span>name:<span class="w"> </span><span class="nv">$3</span><span class="w"> </span>operand<span class="w"> </span>value:<span class="w"> </span><span class="m">40</span><span class="w"> </span>operand<span class="w"> </span>name:<span class="w"> </span><span class="nv">$sp</span><span class="w"> </span>
+
+<span class="o">(</span>kernel<span class="w"> </span>debugger<span class="o">)</span><span class="w"> </span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>mvp_beq_impl 指令</p></li>
+<li><p>m_label 标签指令为0</p></li>
+</ol>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://xnkiot.com/#/floating">float2hex</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
