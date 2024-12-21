@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Mermaid" href="mermaid.html" />
+    <link rel="prev" title="黑爵i610T说明书" href="avazz-i610t.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../work-related.html">Work-related</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mvpgpu-sim/Index.html">GGangLiu Doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-vpn-setup.html">How to setup VPN to access home server by WireGuard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-start-samba.html">Samba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnc.html">VNC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphviz-dot.html">Graphviz Dot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-server-config.html">Home Server Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avazz-i610t.html">黑爵i610T说明书</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Note</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mvp">MVP介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mvp-2-1">MVP 2.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mvp-3-0">MVP 3.0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpgpu-sim">GPGPU-SIM</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">深度学习框架与大语言模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">深度学习框架</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">大语言模型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">芯片性能分析与仿真</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">性能分析工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">性能建模与测试</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cerebras">Cerebras</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-architecture">Core Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fabric-router">Fabric Router</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#h100">H100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b200">B200</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ai">AI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mermaid.html">Mermaid</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../work-related.html">Work-related</a></li>
+      <li class="breadcrumb-item active">Note</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="note">
+<h1>Note<a class="headerlink" href="#note" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>鼎桥 (3G/4G西门子进入中国)</p></li>
+<li><p>爱立信 Master Software Developer/Indoor Software Architect (平台产品，发货量最大)</p></li>
+<li><p>中国电子-中微电 系统架构建模 负责模拟器组，function simulator/performance simulator/algorithm</p>
+<ul class="simple">
+<li><p>南风一号，部分特性</p></li>
+<li><p>南风二号，架构预研和最初的架构建模，性能评估 (DDR和benchmark)</p></li>
+<li><p>广东省科创委的项目（其中模拟器部分，4个专利）</p></li>
+<li><p>基于模拟器预研AI框架的支持，pytorch</p></li>
+</ul>
+</li>
+</ol>
+<p>传统的冯诺依曼架构只是为了解决CPU指令和数据并发的问题，当时并没有GPU</p>
+<p>目前GPU主要提升算力（通过一些专用单元）和HBM（主要增加IO，从而增加带宽（引脚的数据速率较难））</p>
+<p>从根本上解决问题可能得考虑新的架构，近存计算或存内计算肯定是更适合GPU</p>
+<ul class="simple">
+<li><p>HMB</p></li>
+<li><p>SeDRAM</p></li>
+</ul>
+<p>数据从内存传输到计算单元需要的功耗大约是计算本身的200倍，真正用于计算的时间和功耗占比大大降低</p>
+<p>现在的一些AI大模型实际也是数据的搬运时间占比更高</p>
+<section id="mvp">
+<h2>MVP介绍<a class="headerlink" href="#mvp" title="Link to this heading"></a></h2>
+<section id="mvp-2-1">
+<h3>MVP 2.1<a class="headerlink" href="#mvp-2-1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>分级译码的好处是某些指令在FE阶段就退出</p></li>
+<li><p>指令的并行性在某些情况下高于lane数量</p></li>
+</ul>
+</section>
+<section id="mvp-3-0">
+<h3>MVP 3.0<a class="headerlink" href="#mvp-3-0" title="Link to this heading"></a></h3>
+<p><a class="reference download internal" download="" href="../../_downloads/5e2c86d64f3e185468dd0a21705d1e8e/mvp-gpu-performance-analysis.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MVP</span> <span class="pre">v3.0</span> <span class="pre">Performance</span> <span class="pre">Analysis</span></code></a></p>
+</section>
+<section id="gpgpu-sim">
+<h3>GPGPU-SIM<a class="headerlink" href="#gpgpu-sim" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="id1">
+<h2>深度学习框架与大语言模型<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>深度学习框架<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul>
+<li><p>PyTorch</p>
+<p>PyTorch 是一个开源的深度学习框架，由 Facebook 的人工智能研究小组（FAIR）开发</p>
+</li>
+<li><p>TensorFlow</p>
+<p>TensorFlow 是一个由 Google 开发和维护的开源深度学习框架。它广泛应用于各种机器学习和深度学习任务，包括图像分类、自然语言处理、语音识别等。TensorFlow 提供了一个灵活、全面的工具集，支持从研究到生产的全流程开发。</p>
+<ul>
+<li><p>Keras</p>
+<p>从 TensorFlow 2.0 开始，Keras 成为其高级 API，简化了深度学习模型的构建、训练和验证过程。</p>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h3>大语言模型<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>生产式AI模型进行应用分析，评估模型在不同硬件的架构上的性能瓶颈，分析内存占用情况等；</p></li>
+<li><p>针对应用分析结果设计关键硬件模块的架构，包括数据通路，控制逻辑，计算和访存接口等；</p></li>
+<li><p>构建高精度的硬件架构的仿真器和性能、面积、功耗模型；</p></li>
+<li><p>依据仿真器和模型的结果做架构探索，为硬件架构设计提供理论依据；</p></li>
+</ol>
+<ul>
+<li><p>GPT-3</p>
+<p>GPT-3具有1750亿个参数，计算量非常大，尤其在推理阶段，大量的矩阵乘法操作是主要的计算瓶颈
+每个推理步骤需要大量的内存读写操作，内存带宽可能成为瓶颈。
+尽管GPU可以通过并行计算提高效率，但由于模型规模庞大，单个GPU可能无法完全容纳模型，导致多GPU通信成为瓶颈
+使用混合精度计算和模型分片等优化策略可以在一定程度上降低内存占用</p>
+</li>
+<li><p>LLaMA</p>
+<p>LLaMA模型的参数量也非常大，计算复杂度高，特别是在多层注意力机制和前馈网络的计算中。
+型训练和推理需要频繁访问内存，内存带宽是一个关键瓶颈。
+类似GPT-3，LLaMA模型需要大量内存来存储模型权重。</p>
+</li>
+<li><p>Qwen</p>
+<p>Qwen模型的任务复杂度较高，可能涉及更多复杂的前处理和后处理步骤，增加了计算负担。
+由于任务复杂度高，处理时间可能较长，实时性要求高的应用可能受限。
+处理复杂任务需要更长的上下文存储，占用更多内存。
+可以通过剪枝、量化等技术优化模型，减少内存需求。</p>
+</li>
+<li><p>Stable Diffusion</p>
+<p>图像生成任务需要大量的卷积计算和反卷积计算，这在GPU上有很高的计算需求。
+生成高清图像的实时性要求高，计算延迟可能成为瓶颈。
+大量的卷积核参数需要占用显存
+每层卷积和反卷积操作会产生大量的中间特征图，这些数据需要存储在显存中</p>
+</li>
+<li><p>Hugging Face</p>
+<p>是一个在自然语言处理（NLP）领域非常流行的开源平台和工具集，它为开发者提供了丰富的预训练模型、数据集和强大的库，便于快速实现和部署各种NLP任务。</p>
+</li>
+<li><p><a class="reference external" href="/ai-deep-learning/vllm/vllm.html">vLLM</a></p>
+<p>vLLM是一个高效的深度学习库，用于训练和推理大规模语言模型。它设计目标是优化大型语言模型（如GPT-3、BERT等）的性能和资源利用率，特别是在内存管理和计算效率方面。
+vLLM通过优化内存分配和使用策略，显著降低了内存占用。它使用技术如动态内存分配和内存回收来减少内存碎片和浪费
+支持混合精度训练，通过减少浮点数精度（如使用FP16而不是FP32），有效降低显存占用，同时保持计算精度。
+vLLM提供了模块化和可扩展的架构，方便开发者根据具体需求进行自定义和扩展
+通过高效的内存管理和计算优化，vLLM在相同硬件资源下能够处理更大规模的模型和数据集
+在多GPU和分布式环境下，vLLM能够实现近乎线性的加速效果，大幅缩短模型训练和推理时间
+vLLM通过在内存管理、并行计算、架构设计和I/O处理方面的多重优化，提供了一种高效、灵活的大规模语言模型训练和推理解决方案。它的优势在于显著提升了资源利用效率和计算性能，同时保持了良好的灵活性和易用性，适用于各种大规模语言模型的开发和应用。</p>
+</li>
+<li><p><strong>LightLLM</strong></p>
+<p>LightLLM是一个专为大规模语言模型（LLM，Large Language Models）优化的高效库。它旨在通过一系列技术手段和算法优化，提升语言模型的训练和推理效率，同时减少资源占用。
+LightLLM通过先进的内存分配和优化策略，有效降低了内存占用。其内存管理模块能够动态调整内存使用，避免内存碎片和浪费。
+优化数据加载和预处理流程，减少I/O瓶颈，确保训练和推理过程的流畅进行</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2>芯片性能分析与仿真<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>性能分析工具<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Gem5</p>
+<p>Gem5是一款开源的计算机体系结构模拟器，被广泛用于计算机系统研究、教育和性能评估。
+模拟整个计算机系统，包括CPU、内存、I/O设备等，适用于研究操作系统、硬件和软件之间的交互
+支持多种CPU架构，包括x86、ARM、RISC-V、MIPS、SPARC等
+Gem5采用模块化设计，用户可以根据需要添加、删除或修改模块，定制自己的模拟环境
+Gem5能够生成详细的性能统计数据，包括指令计数、缓存命中率、分支预测精度、内存带宽等，为性能分析提供全面支持
+模拟完成后，收集并分析Gem5生成的统计数据，根据研究目标评估系统性能或行为
+通过修改和模拟不同的处理器架构，研究其性能、功耗、面积等特性，优化处理器设计
+研究不同的缓存策略、内存架构、存储设备对系统性能的影响，优化存储系统设计
+由于详细模拟系统行为，Gem5的模拟速度较慢，尤其是全系统模拟，需要较长时间才能完成一次模拟实验。</p>
+</li>
+<li><p>SST (Structure Simulation Toolkit)</p>
+<p>SST 旨在为高性能计算（HPC）系统的设计、开发和优化提供一个灵活、可扩展的模拟环境。
+SST 采用模块化设计，用户可以通过组合不同的模拟模块来构建自定义的模拟环境。
+SST 支持多尺度模拟，从微观的电路级别模拟到宏观的系统级别模拟，适应不同的研究需求
+支持异构计算系统的模拟，包括传统的CPU、GPU以及新兴的加速器（如FPGA）
+SST 生成详细的性能数据，包括处理器利用率、内存访问模式、网络通信延迟等，支持深入的性能分析和优化
+用户可以通过编写配置文件来灵活控制模拟参数和运行选项，适应不同的模拟场景和需求。</p>
+</li>
+</ul>
+</section>
+<section id="id6">
+<h3>性能建模与测试<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul>
+<li><p>Timeloop (<a class="reference external" href="https://github.com/NVlabs/timeloop">https://github.com/NVlabs/timeloop</a>)</p>
+<p>Timeloop是一种面向深度学习加速器的设计和性能评估工具，特别针对嵌入式设备上的神经网络推理。它帮助架构师和设计师分析和优化加速器的性能和功耗。
+Timeloop允许用户通过配置文件详细描述加速器的架构。这包括计算单元、存储器层次结构、数据移动路径和控制逻辑等。
+用户可以描述要在加速器上运行的神经网络模型，包括层类型（如卷积层、全连接层）、输入数据尺寸、权重尺寸和计算模式等。
+Timeloop支持自动化的设计空间探索，帮助用户在大量的可能设计中找到最优的架构配置。它可以评估不同参数组合下的性能，寻找最佳的设计方案。</p>
+</li>
+<li><p>Maestro</p>
+<p>Maestro 是一种用于建模和评估深度神经网络 (DNN) 加速器设计的工具。它由卡内基梅隆大学的研究人员开发，旨在为设计者提供一个灵活的框架来分析和优化 DNN 加速器的性能、能效和硬件利用率
+Maestro 支持卷积神经网络 (CNN)、循环神经网络 (RNN)、全连接网络 (FCN) 等多种 DNN 算法的建模
+Maestro 提供详细的性能和能效分析工具，可以评估加速器在执行不同 DNN 工作负载时的表现
+支持分析计算延迟、数据传输延迟、能耗、硬件利用率等多种指标</p>
+</li>
+<li><p>性能测试与基准测试</p></li>
+<li><p>Accel-Sim</p></li>
+</ul>
+</section>
+</section>
+<section id="cerebras">
+<h2>Cerebras<a class="headerlink" href="#cerebras" title="Link to this heading"></a></h2>
+<p>Wafer Scale Engine</p>
+<section id="core-architecture">
+<h3>Core Architecture<a class="headerlink" href="#core-architecture" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Half of the silicon area is used by 48KB of SRAM</p></li>
+<li><p>100X compute vs dram（traditional by using local caching or local register and accumulators).
+But cerebras provides full memory bandwidth to all data path at full performance. enables memory bandwidth that is equal to the operand bandwidth of the core data path</p></li>
+<li><p>192-bit access per cycle from two 64-bit reads and one 64-bit write, and 256B cache</p></li>
+</ul>
+<img alt="../../_images/2024-06-14_141641.png" src="../../_images/2024-06-14_141641.png" />
+<ul class="simple">
+<li><p>16 general-purpose registers and six-stage pipeline</p></li>
+<li><p>44 of data structure register as operands to the instruction of tensor</p></li>
+<li><p>Instructions for each individual core are generated by the cerebras software stack and compiler which lowers ML programs from frameworks, such as TensorFlow or pytorch</p></li>
+<li><p>Entire compute fabric is a data flow engine: cores receive data, the hardware triggers a lookup of instructions to run, the lookup is entirely based on what is received</p></li>
+</ul>
+<img alt="../../_images/2024-06-14_150537.png" src="../../_images/2024-06-14_150537.png" />
+<img alt="../../_images/2024-06-14_151436.png" src="../../_images/2024-06-14_151436.png" />
+</section>
+<section id="fabric-router">
+<h3>Fabric Router<a class="headerlink" href="#fabric-router" title="Link to this heading"></a></h3>
+<img alt="../../_images/2024-06-14_152304.png" src="../../_images/2024-06-14_152304.png" />
+<p>Wafer Matrix-Multiply(MatMul) Array</p>
+<img alt="../../_images/2024-06-14_155840.png" src="../../_images/2024-06-14_155840.png" />
+<img alt="../../_images/2024-06-14_160611.png" src="../../_images/2024-06-14_160611.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>SRAM memory design is higher density than traditional caches because it is not a cache; it does not have overhead such as multiporting, tagging, and cache management logic.
+SRAM density is lower than that of DRAM, but the wafer-scale integration is used to make up the capacity to achieve DRAM equivalent capacity per chip</p>
+</div>
+<p>WSE-2 memory bandwidth 400TB/s
+A100  memory bandwidth 2TB/s</p>
+<p>56x larger than the largest GPU today
+850000 core
+20PB/s of memory bandwidth</p>
+</section>
+</section>
+<section id="h100">
+<h2>H100<a class="headerlink" href="#h100" title="Link to this heading"></a></h2>
+</section>
+<section id="b200">
+<h2>B200<a class="headerlink" href="#b200" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Comparison</span><a class="headerlink" href="#id7" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 14.3%" />
+<col style="width: 42.9%" />
+<col style="width: 42.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Tech</p></th>
+<th class="head"><p>B200</p></th>
+<th class="head"><p>H100</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPU</p></td>
+<td><p>2.99</p></td>
+<td><p>On a stick!</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPU memory</p></td>
+<td><p>1.44TB, 64TB/s HBM3e bandwidth</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Performance</p></td>
+<td><p>72peta FP8 training and 144peta FP4 inference</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<img alt="../../_images/2024-06-14_134224.png" src="../../_images/2024-06-14_134224.png" />
+</section>
+<section id="ai">
+<h2>AI<a class="headerlink" href="#ai" title="Link to this heading"></a></h2>
+<p>cfu-playground</p>
+<p>SIMT: 无需开发者费力的把数据拼凑成合适的矢量长度，并且SIMT允许每个线程有不同的分支
+SIMD: 不能并行的执行有条件的跳转的函数</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="avazz-i610t.html" class="btn btn-neutral float-left" title="黑爵i610T说明书" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mermaid.html" class="btn btn-neutral float-right" title="Mermaid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

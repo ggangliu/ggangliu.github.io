@@ -1,0 +1,11 @@
+/* custom.css */
+/*
+.wy-nav-content {
+    max-width: 85% !important;
+}*/
+
+/* Match the logo colors in the background. */
+.wy-nav-top, .wy-side-nav-search { background-color: #11c0cab5;}
+
+/* Make the logo more reasonably sized. */
+.wy-side-nav-search > a img.logo { width: 200px; }

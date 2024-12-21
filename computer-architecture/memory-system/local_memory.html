@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Memory &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Local Memory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="local-memory">
+<h1>Local Memory<a class="headerlink" href="#local-memory" title="Link to this heading"></a></h1>
+<p><img alt="local memory" src="../../_images/local-memory.png" />
+32KB = 4KB x 8 bank
+4KB = 1024 x 32 /8</p>
+<p>按照当前RTL的设计，每个线程的栈大小为1KB，那么意味着一个Bank内有4个线程的栈</p>
+<section id="how-to-generate-bank-id">
+<h2>How to generate bank id ?<a class="headerlink" href="#how-to-generate-bank-id" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>bank id = (addr / 4) % number_local_memory_bank</p>
+</div></blockquote>
+<p>由于线程的栈是存在local memory中，每个栈的大小是1KB。所以bank_id应该用需要访问的栈的地址来除以bank的size，具体如下</p>
+<blockquote>
+<div><p>bank id = (addr / 4096) % number_local_memory_bank</p>
+</div></blockquote>
+<section id="id1">
+<h3>线程栈的分配策略<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>这样就衍生出一个问题，线程栈的分配策略问题。不同的策略将对性能有不一样的影响。</p>
+<ol class="arabic simple">
+<li><p>如果按顺序线程0，1，2，3在bank0中分配，那么线程0123将会在访问栈时由bank冲突</p></li>
+<li><p>如果按照bank0分配线程0，bank1分配线程1，bank2分配线程2，bank3分配线程3的策略，在并发访问栈时将没有bank冲突，性能更好</p></li>
+</ol>
+</section>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>以32个浮点数的平方及32个线程为例来理解Local Memory的运作方式</p>
+<div class="highlight-asm notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nf">PC</span><span class="err">=</span><span class="mi">0x0010</span><span class="w"> </span><span class="p">(</span><span class="no">_cl_hello.s</span><span class="p">:</span><span class="mi">15</span><span class="p">)</span><span class="w"> </span><span class="no">st.w$ra</span><span class="p">,</span><span class="w"> </span><span class="mi">52</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">PC</span><span class="err">=</span><span class="mi">0x0018</span><span class="w"> </span><span class="p">(</span><span class="no">_cl_hello.s</span><span class="p">:</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="no">st.w$6</span><span class="p">,</span><span class="w"> </span><span class="mi">36</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">PC</span><span class="err">=</span><span class="mi">0x0020</span><span class="w"> </span><span class="p">(</span><span class="no">_cl_hello.s</span><span class="p">:</span><span class="mi">17</span><span class="p">)</span><span class="w"> </span><span class="no">st.w$5</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">PC</span><span class="err">=</span><span class="mi">0x0028</span><span class="w"> </span><span class="p">(</span><span class="no">_cl_hello.s</span><span class="p">:</span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="no">st.w$4</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">(</span><span class="no">$sp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当前线程栈的大小是1024Byte，而每个bank的大小是4KB，也就是每个Bank只有4个线程栈，根据此配置，Local Memory中的内容如下：</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">bank0</th>
+<th style="text-align: left;">bank1</th>
+<th style="text-align: left;">bank2</th>
+<th style="text-align: left;">bank3</th>
+<th style="text-align: left;">bank4</th>
+<th style="text-align: left;">bank5</th>
+<th style="text-align: left;">bank6</th>
+<th style="text-align: left;">bank7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">9</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">11</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

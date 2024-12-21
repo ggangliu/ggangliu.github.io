@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZYNQ7010 &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Xilinx" href="../xilinx/xilinx.html" />
+    <link rel="prev" title="ZYNQ" href="zynq.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../tinyml/tinyml.html">TinyML</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="zynq.html">ZYNQ</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="zynq.html#how-to-do">How to do</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="zynq.html#software-stack">Software Stack</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ZYNQ7010</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../xilinx/xilinx.html">Xilinx</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../ai-embedded.html">AI Embedded</a></li>
+          <li class="breadcrumb-item"><a href="zynq.html">ZYNQ</a></li>
+      <li class="breadcrumb-item active">ZYNQ7010</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="zynq7010">
+<h1>ZYNQ7010<a class="headerlink" href="#zynq7010" title="Link to this heading"></a></h1>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>TMDS差分传动技术是一种利用2个引脚间电压差来传送信号的技术，传输数据的数值（0或者1）有两脚间电压正负极性和大小决定。即，采用2根线来传输信号，一根线传输原来的信号，另一根线上传输与原来信号相反的信号。这样接收端就可以通过让一根线上的信号减去另一根线上的信号的方式来屏蔽电磁干扰，从而得到正确的信号。</p>
+</div>
+<section id="fsbl">
+<h2>FSBL<a class="headerlink" href="#fsbl" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>初始化CPU, 初始化串口</p></li>
+<li><p>初始化一些外设的控制器，比如PLL, CLK和DDR</p></li>
+<li><p>禁止L1 Dache Cache</p></li>
+<li><p>注册ARM中断向量</p></li>
+<li><p>通过Boot mode寄存器判断启动方式</p>
+<blockquote>
+<div><ul>
+<li><p>QSPI Flash</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>初始化QSPI Flash控制器</p></li>
+<li><p>从Flash复制System.bit到FPGA</p></li>
+<li><p>从Flash复制应用程序的代码到DDR3</p></li>
+<li><p>跳转到应用程序执行</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>SD Card启动方式类似</p></li>
+<li><p>JTAG启动方式，直到退出</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<p>Create BOOT.bin（fsbl.elf, system_wrapper.bit和u-boot.elf）</p>
+</section>
+<section id="u-boot">
+<h2>U-BOOT<a class="headerlink" href="#u-boot" title="Link to this heading"></a></h2>
+<section id="u-boot-buidling">
+<h3>u-boot buidling<a class="headerlink" href="#u-boot-buidling" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>需要确保环境中已经安装了设备数编译器工具（device tree compiler, dtc）</p>
+</div>
+<ol class="arabic simple">
+<li><p>下载u-boot源码</p></li>
+<li><p>通过make编译</p></li>
+</ol>
+</section>
+<section id="id1">
+<h3>u-boot的工作模式<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>启动加载模式： 嵌入式产品发布时，bootloader必须工作在这种模式下</p></li>
+<li><p>下载模式：一般是开发过程中，方便调试不同的内核映像或文件系统</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>u-boot启动内核的过程<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>第一阶段</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>硬件设备初始化</p></li>
+<li><p>加载u-boot第二阶段代码到RAM空间</p></li>
+<li><p>设置好栈</p></li>
+<li><p>跳转到第二阶段代码入口</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>第二阶段</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>初始化本阶段使用的硬件设备</p></li>
+<li><p>检测系统内存映射</p></li>
+<li><p>将内核从Flash读取到RAM中</p></li>
+<li><p>为内核设置启动参数</p></li>
+<li><p>调用内核</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<section id="kernel-image">
+<h2>Kernel image<a class="headerlink" href="#kernel-image" title="Link to this heading"></a></h2>
+<p>u-boot跑起来后，进入linux，则需要三大法宝：</p>
+<ul class="simple">
+<li><p>Linux image(uImage or zImage)</p></li>
+<li><p>Device Tree image</p></li>
+<li><p>File System</p></li>
+</ul>
+<section id="linux-image">
+<h3>Linux Image<a class="headerlink" href="#linux-image" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果出现”mkimage” Command not found 癿问题，需要输入命令”sudo apt-get install u-boot-tools”安装一下</p>
+</div>
+<p>使用如下命令进行编译，编译完成后在/arch/arm/boot目录下产生uImage文件</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nv">ARCH</span><span class="o">=</span>arm<span class="w"> </span><span class="nv">CROSS_COMPILE</span><span class="o">=</span>arm-xilinx-linux-gnueabi-uImage<span class="w"> </span><span class="nv">LOADADDR</span><span class="o">=</span>0x00008000
+</pre></div>
+</div>
+</section>
+<section id="device-tree-image">
+<h3>Device Tree Image<a class="headerlink" href="#device-tree-image" title="Link to this heading"></a></h3>
+<p>在 ARM Linux 在，一个.dts 文件对应一个 ARM machine，一般放置在内核的 arch/arm/boot/dts/目录</p>
+<p>通过如下命令即在linux目录下生成了devicetree.dtb文件</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./scripts/dtc/dtc<span class="w"> </span>-I<span class="w"> </span>dts<span class="w"> </span>-O<span class="w"> </span>dtb<span class="w"> </span>-o<span class="w"> </span>devicetree.dtb<span class="w"> </span>./arch/arm/boot/dts/AX7020.dts
+</pre></div>
+</div>
+</section>
+<section id="file-system">
+<h3>File System<a class="headerlink" href="#file-system" title="Link to this heading"></a></h3>
+<p>Linux内核启动阶段，待所有的驱动和外设都初始化好了以后，最后要加载一种文件系统，Linux才可以正常启动。</p>
+<p>三种类型的文件系统</p>
+<ol class="arabic simple">
+<li><p>ubuntu文件系统（linaro-precise-ubuntu-desktop-20121124-560.tar.gz）</p></li>
+<li><p>基于RAM的文件系统ramdisk8M.image.gz</p></li>
+<li><p>基于NFS的网络文件系统（NFS文件系统一直都是调试Linux app的最佳方法）</p></li>
+</ol>
+</section>
+</section>
+<section id="sd-card">
+<h2>SD Card<a class="headerlink" href="#sd-card" title="Link to this heading"></a></h2>
+<ul>
+<li><p>BOOT.bin放入FAT分区</p></li>
+<li><p>uImage放入FAT分区</p></li>
+<li><p>devicetree.dtb放入FAT分区</p></li>
+<li><p>文件系统放入EXT分区，解压，并将./binary/boot/filesystem.dir下所有内容同步到EXT分区根目录</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rsync<span class="w"> </span>-av<span class="w"> </span>./<span class="w"> </span>/media/alinx/EXT
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="nfs-server">
+<h2>NFS Server<a class="headerlink" href="#nfs-server" title="Link to this heading"></a></h2>
+<p>通过网络将PC ubuntu Linux NFS Server上的文件，mount到开发板上。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">nfs</span><span class="o">-</span><span class="n">kernel</span><span class="o">-</span><span class="n">server</span>
+<span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">nfs</span> <span class="mf">192.168.1.27</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">alinx</span><span class="o">/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">nfs_server</span> <span class="o">/</span><span class="n">mnt</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="zynq.html" class="btn btn-neutral float-left" title="ZYNQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../xilinx/xilinx.html" class="btn btn-neutral float-right" title="Xilinx" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

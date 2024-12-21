@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenCL API &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link href="../../../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">OpenCL API</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="opencl-api">
+<h1>OpenCL API<a class="headerlink" href="#opencl-api" title="Link to this heading"></a></h1>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://registry.khronos.org/OpenCL/sdk/1.2/docs/man/xhtml/">OpenCL 1.2 Reference Pages</a></p>
+<section id="clenqueuendrangekernel">
+<h3><a class="reference internal" href="#/opencl/opencl-api-clEnqueueNDRangeKernel.md"><span class="xref myst">clEnqueueNDRangeKernel</span></a><a class="headerlink" href="#clenqueuendrangekernel" title="Link to this heading"></a></h3>
+</section>
+<section id="async-work-group-copy">
+<h3>async_work_group_copy<a class="headerlink" href="#async-work-group-copy" title="Link to this heading"></a></h3>
+<p>The OpenCL C programming language implements the following functions that provide asynchronous copies between global and local memory and a prefetch from global memory.</p>
+<ul class="simple">
+<li><p>Interface Definition</p></li>
+</ul>
+<div class="highlight-OpenCL notranslate"><div class="highlight"><pre><span></span>event_t async_work_group_copy ( __local gentype *dst,
+                          const __global gentype *src,
+                          size_t  num_elements,
+                          event_t event)
+event_t async_work_group_copy ( __global gentype *dst,
+                          const __local gentype *src,
+                          size_t num_elements,
+                          event_t event)
+void wait_group_events (int num_events, event_t *event_list)
+void prefetch (const __global gentype *p, size_t num_elements)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Function description</p></li>
+</ul>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">async_work_group_copy</td>
+<td style="text-align: left;">Perform an async copy of num_gentypes gentype elements from src to dst; </br> The async copy is performed by <strong>all work-items in a work-group</strong> and this built-in function must therefore be encountered by all work-items in a work-group executing the kernel with <strong>the same argument values</strong>; </br> otherwise the results are undefined;</td>
+</tr>
+<tr>
+<td style="text-align: left;">async_work_group_strided_copy</td>
+<td style="text-align: left;">Perform an async gather of num_gentypes gentype elements from src to dst.</td>
+</tr>
+<tr>
+<td style="text-align: left;">wait_group_events</td>
+<td style="text-align: left;">Wait for events that identify the async_work_group_copy operations to complete.</td>
+</tr>
+<tr>
+<td style="text-align: left;">prefetch</td>
+<td style="text-align: left;">Prefetch num_gentypes * sizeof(gentype) bytes into the global cache.</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Example</p></li>
+</ul>
+<div class="highlight-OpenCL notranslate"><div class="highlight"><pre><span></span>__kernel void test(__global float *x) {
+    __local xcopy[GROUP_SIZE];
+    int globalid = get_global_id(0);
+    int localid = get_local_id(0);
+    event_t e = async_work_group_copy(xcopy, x+globalid-localid, GROUP_SIZE, 0);
+    wait_group_events(1, &amp;e);   
+}
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The call to async_work_group_copy() must be executed by all work-items in the group</p></li>
+<li><p>Source and destination address need to be the same for all work items</p></li>
+<li><p>num_gentypes is the number of elements, not the size in bytes</p></li>
+</ul>
+</section>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/15545841/how-to-use-async-work-group-copy-in-opencl">https://stackoverflow.com/questions/15545841/how-to-use-async-work-group-copy-in-opencl</a></p></li>
+<li><p><a class="reference external" href="https://registry.khronos.org/OpenCL/specs/opencl-1.0.pdf#page=201">https://registry.khronos.org/OpenCL/specs/opencl-1.0.pdf#page=201</a></p></li>
+<li><p><a class="reference external" href="https://man.opencl.org/async_work_group_copy.html">https://man.opencl.org/async_work_group_copy.html</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

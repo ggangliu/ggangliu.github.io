@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVPGPU-Sim User Guide &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVPGPU-Sim User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvpgpu-sim-user-guide">
+<h1>MVPGPU-Sim User Guide<a class="headerlink" href="#mvpgpu-sim-user-guide" title="Link to this heading"></a></h1>
+<p>This guide is only for how new developer to run application based on MVPGPU-Sim</p>
+<section id="table-of-content">
+<h2>Table of content<a class="headerlink" href="#table-of-content" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mvpgpu-sim-user-guide"><span class="xref myst">MVPGPU-Sim User Guide</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#table-of-content"><span class="xref myst">Table of content</span></a></p></li>
+<li><p><a class="reference internal" href="#how-to-compile-opencl-application"><span class="xref myst">How to compile OpenCL application</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#host-compiling"><span class="xref myst">Host compiling</span></a></p></li>
+<li><p><a class="reference internal" href="#kernel-built-in-function-lib"><span class="xref myst">Kernel built-in function lib</span></a></p></li>
+<li><p><a class="reference internal" href="#kernel-compiling"><span class="xref myst">Kernel compiling</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#how-to-compile-graphic-application"><span class="xref myst">How to compile Graphic application</span></a></p></li>
+<li><p><a class="reference internal" href="#how-to-run-application-based-on-mvpgpu-sim"><span class="xref myst">How to run application based on MVPGPU-Sim</span></a></p></li>
+<li><p><a class="reference internal" href="#how-to-build-and-run-opencl-cts"><span class="xref myst">How to build and run OpenCL CTS</span></a></p></li>
+<li><p><a class="reference internal" href="#setup_environment"><span class="xref myst">setup_environment</span></a></p></li>
+<li><p><a class="reference internal" href="#git"><span class="xref myst">Git</span></a></p></li>
+<li><p><a class="reference internal" href="#code-commit-flow"><span class="xref myst">Code Commit Flow</span></a></p></li>
+<li><p><a class="reference internal" href="#gerrit"><span class="xref myst">Gerrit</span></a></p></li>
+<li><p><a class="reference internal" href="#aerialvision"><span class="xref myst">Aerialvision</span></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="how-to-compile-opencl-application">
+<h2>How to compile OpenCL application<a class="headerlink" href="#how-to-compile-opencl-application" title="Link to this heading"></a></h2>
+<section id="host-compiling">
+<h3>Host compiling<a class="headerlink" href="#host-compiling" title="Link to this heading"></a></h3>
+<p>If want to build OpenCL file, first to build MVPGPU-SIM to build OpenCL libraries.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>setup_environment<span class="w"> </span>debug<span class="w"> </span><span class="p">|</span><span class="w"> </span>release
+make
+</pre></div>
+</div>
+<p>Then compile application file as below.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>clang-7<span class="w"> </span>-g<span class="w"> </span>-lOpenCL<span class="w"> </span>-DCL_TARGET_OPENCL_VERSION<span class="o">=</span><span class="m">120</span><span class="w"> </span>-I<span class="w"> </span>/usr/local/cuda/include<span class="w"> </span>-L<span class="w"> </span>../lib/<span class="w">  </span>hello.c<span class="w"> </span>-o<span class="w"> </span>hello
+</pre></div>
+</div>
+</section>
+<section id="kernel-built-in-function-lib">
+<h3>Kernel built-in function lib<a class="headerlink" href="#kernel-built-in-function-lib" title="Link to this heading"></a></h3>
+<p>Because kernel built-in functions will be used only by kernel, so this lib should be compiled as .bc file by MVP compiler. Then using <em>llvm-link</em> link against it with shader bitcode file to produce a new bitcode file which contains all functions, final <em>llc</em> convert it as assemble file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>api/libopencl
+$<span class="w"> </span>clang-7<span class="w"> </span>-x<span class="w"> </span>cl<span class="w"> </span>-emit-llvm<span class="w"> </span>-S<span class="w"> </span>-cl-std<span class="o">=</span>CL1.2<span class="w"> </span>-Xclang<span class="w"> </span>-finclude-default-header<span class="w"> </span>opencl_built_in_api.c<span class="w"> </span>-o<span class="w"> </span>../../lib/opencl_built_in_api.bc
+</pre></div>
+</div>
+</section>
+<section id="kernel-compiling">
+<h3>Kernel compiling<a class="headerlink" href="#kernel-compiling" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>llvm-link just link files, don’t remove the unused functions</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span>clang-7<span class="w"> </span>-x<span class="w"> </span>cl<span class="w"> </span>-emit-llvm<span class="w"> </span>-S<span class="w"> </span>-cl-std<span class="o">=</span>CL1.2<span class="w"> </span>-Xclang<span class="w"> </span>-finclude-default-header<span class="w"> </span>_cl_Rasterizer<span class="w"> </span>-o<span class="w"> </span>_cl_Rasterizer.bc
+$<span class="w"> </span>llvm-link<span class="w"> </span>-only-needed<span class="w"> </span>_cl_Rasterizer.bc<span class="w"> </span>../lib/opencl_built_in_api.bc<span class="w"> </span>-o<span class="w"> </span>_cl_Rasterizer.bc
+$<span class="w"> </span>llc<span class="w"> </span>-march<span class="o">=</span>mvp<span class="w"> </span>_cl_Rasterizer.bc<span class="w"> </span>-o<span class="w"> </span>_cl_Rasterizer.s
+</pre></div>
+</div>
+</section>
+</section>
+<section id="how-to-compile-graphic-application">
+<h2>How to compile Graphic application<a class="headerlink" href="#how-to-compile-graphic-application" title="Link to this heading"></a></h2>
+<p>Kernel compiling</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>clang-7<span class="w"> </span>-emit-llvm<span class="w"> </span>-S<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-I<span class="w"> </span>/usr/local/include/opencv4<span class="w"> </span>-I<span class="w"> </span><span class="si">${</span><span class="nv">GPGPUSIM_ROOT</span><span class="si">}</span>/gpu/graphics/include<span class="w"> </span>-I<span class="w"> </span><span class="si">${</span><span class="nv">GPGPUSIM_ROOT</span><span class="si">}</span>/gpu/graphics/texture<span class="w"> </span>fs_shader.cpp<span class="w"> </span>-o<span class="w"> </span>fs_shader.bc
+
+-L<span class="w"> </span><span class="si">${</span><span class="nv">GPGPUSIM_ROOT</span><span class="si">}</span>/lib
+
+llc<span class="w"> </span>-march<span class="o">=</span>mvp<span class="w"> </span>fs_shader.bc<span class="w"> </span>-o<span class="w"> </span>fs_shader.s
+</pre></div>
+</div>
+</section>
+<section id="how-to-run-application-based-on-mvpgpu-sim">
+<h2>How to run application based on MVPGPU-Sim<a class="headerlink" href="#how-to-run-application-based-on-mvpgpu-sim" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>source setup_environment debug</p></li>
+<li><p>make</p></li>
+<li><p>ldd <em>application</em> to check if link against MVPGPU-Sim’s xxx.so file
+<img alt="app_ldd" src="../../_images/app_ldd.png" /></p></li>
+<li><p>./hello_opencl</p></li>
+</ul>
+</section>
+<section id="how-to-build-and-run-opencl-cts">
+<h2>How to build and run OpenCL CTS<a class="headerlink" href="#how-to-build-and-run-opencl-cts" title="Link to this heading"></a></h2>
+<ul>
+<li><p>Building</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>test/OpenCL-CTS
+$<span class="w"> </span>mkdir<span class="w"> </span>build
+$<span class="w"> </span>cmake<span class="w"> </span>-B<span class="w"> </span>./build<span class="w"> </span>-DCL_INCLUDE_DIR<span class="o">=</span><span class="nv">$PWD</span>/OpenCL-Headers<span class="w"> </span>-DCL_LIB_DIR<span class="o">=</span>/home/user/liuyonggang/repo/mvpgpu-sim/lib<span class="w"> </span>-DOPENCL_LIBRARIES<span class="o">=</span>OpenCL
+$<span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>./build<span class="w"> </span>--config<span class="w"> </span>Debug
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+$<span class="w"> </span>make
+</pre></div>
+</div>
+</li>
+<li><p>Running test cases</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/repo/mvpgpu-sim
+$<span class="w"> </span>./test/OpenCL-CTS/build/test_conformance/basic/test_basic<span class="w"> </span>-h
+$<span class="w"> </span>./test/OpenCL-CTS/build/test_conformance/api/test_api<span class="w"> </span>-h
+</pre></div>
+</div>
+</li>
+<li><p>How to debug</p>
+<p>launch.json file content as below.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;configurations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(gdb) ????&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cppdbg&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;request&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;launch&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;program&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${workspaceFolder}/test/OpenCL-CTS/build/test_conformance/api/test_api&quot;</span><span class="p">,</span><span class="w"> </span><span class="c1">//smoke_test/01_opencl_arithmetic opencl: hello_opencl/vectorAdd cuda:cuadd cts:test_api get_device_info</span>
+<span class="w">            </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;load_single_kernel&quot;</span><span class="p">],</span><span class="w"> </span><span class="c1">//This is case name</span>
+<span class="w">            </span><span class="nt">&quot;stopAtEntry&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;preLaunchTask&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;cwd&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${workspaceFolder}&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">            </span><span class="nt">&quot;externalConsole&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;MIMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gdb&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;setupCommands&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;?? gdb ????????????&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-enable-pretty-printing&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w">  </span><span class="s2">&quot;?????????????????? Intel&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-gdb-set disassembly-flavor intel&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;ignoreFailures&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="setup-environment">
+<h2>setup_environment<a class="headerlink" href="#setup-environment" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Env Variables</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">MVPGPUSIM_CONFIG_FILE_PATH</td>
+<td style="text-align: left;">mvpgpu-sim.config's folder path</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="git">
+<h2>Git<a class="headerlink" href="#git" title="Link to this heading"></a></h2>
+<ul>
+<li><p>Create branch</p>
+<div class="highlight-#!/bash/sh notranslate"><div class="highlight"><pre><span></span>git push origin new-branch-name:new-branch-name
+</pre></div>
+</div>
+</li>
+<li><p>Delete branch</p>
+<div class="highlight-#!/bash/sh notranslate"><div class="highlight"><pre><span></span>git push origin --delete delete-branch-name
+</pre></div>
+</div>
+<p>For example, The meaning of <em>remotes/origin/test</em> is that you have a branch called test in the remote server origin. So the command would be</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>fetch<span class="w"> </span>--prune
+git<span class="w"> </span>branch<span class="w"> </span>-r
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>--delete<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+</li>
+<li><p>Tag</p>
+<div class="highlight-#!/bash/sh notranslate"><div class="highlight"><pre><span></span>git tag //列出所有的标签名
+git show &lt;tag_name&gt; //显示标签对应提交记录的具体信息
+git ls-remote --tags origin  //显示远端的tag
+
+git tag &lt;tag_name&gt;   //当前分支所在的提交上打上轻量标签
+git tag &lt;tag_name&gt; &lt;commit hash value&gt; //为某次具体的提交打上轻量标签
+git tag -a &lt;anotated_name&gt; -m &lt;tag_message&gt; //为当前分支所在提交打上附注标签
+git push origin &lt;tag_name&gt;  //推送某个标签到远程仓库
+git push origin --tags //推送所有标签到远程仓库
+
+git tag -d &lt;tag_name&gt;  //删除某个标签
+git ls-remote --tags origin //找出要删除的远端标签，类似于ref/tags/&lt;tag_name&gt;的格式 
+git push origin :refs/tags/&lt;tag_name&gt; //删除远程仓库某个标签
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="code-commit-flow">
+<h2>Code Commit Flow<a class="headerlink" href="#code-commit-flow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Update to the latest commit by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> before commit code modification, and fix conflict if there are</p></li>
+<li><p>Finish smoke test, and <strong>code can not be commited if smoke test fails</strong></p></li>
+<li><p>Commit code by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> and <strong>must modify relate items of commit message</strong></p></li>
+<li><p>Push the change to gerrit for review by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">HEAD:refs/for/developing</span></code></p></li>
+<li><p>Add reviewer in gerrit link</p></li>
+<li><p>Resolve all comments or issues, and <strong>all patches should be commited from local rather than online fixes unless you are sure it’s no problem</strong></p></li>
+</ol>
+</section>
+<section id="gerrit">
+<h2>Gerrit<a class="headerlink" href="#gerrit" title="Link to this heading"></a></h2>
+<ul>
+<li><p>How to restart (Executing the following bat by root user or <strong>wangyuwei&#64;icubecorp.cn</strong>)</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>/home/gerrit/review-site/bin/gerrit.sh restart
+</pre></div>
+</div>
+</li>
+<li><p>How to add new user (New user should be added to related group by adminstrator or <strong>zhongwei&#64;icubecorp.cn</strong>)</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>[liuyonggang@eda mvpgpu-doc]$ groups
+hw soc system
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="aerialvision">
+<h2>Aerialvision<a class="headerlink" href="#aerialvision" title="Link to this heading"></a></h2>
+<ul>
+<li><p>How to start AerialVision</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">mvpgpu</span><span class="o">-</span><span class="n">sim</span><span class="o">/</span>
+<span class="n">source</span> <span class="n">setup_environment</span> <span class="c1"># + debug/release</span>
+<span class="n">cd</span> <span class="o">~/</span><span class="n">mvpgpu</span><span class="o">-</span><span class="n">sim</span><span class="o">/</span><span class="n">tool</span><span class="o">/</span>
+<span class="n">python3</span> <span class="n">aerialvision_main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>Launch Page
+<img alt="aerialvision_0" src="../../_images/aerialvision_0.png" />
+Here we need to upload all the files that are required here. These files are by default in the form gpgpusim_visualizer__*.log.gz. We submit files by clicking the <code class="docutils literal notranslate"><span class="pre">Browse</span></code> button (if you’ve submitted the file before you can click on the Recent Files button), and then clicking <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">File</span></code> once the file’s path is in the Add Input File text field. Notice that you can submit numerous files for visualizing into this tab; however, for the purposes of this walkthrough we have limited it to one.
+<img alt="aerialvision_1" src="../../_images/aerialvision_1.png" />
+Now click on the File Inputs for Source Code View tab. In this tab we submit files that present statistics corresponding to each line of PTX or CUDA/OpenCL source. Before clicking the <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Files</span></code> button, it is necessary to insert the file paths to three distinct files required by this part of AerialVision. The file that goes in the Add CUDA/OpenCL Source Code File text field is the appropriate CUDA/OpenCL kernel source code file(.cu/.c).<br />
+<br />
+The file that goes in the <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Corresponding</span> <span class="pre">PTX</span> <span class="pre">File</span></code> text field is the appropriate PTX file generated.<br />
+<br />
+Finally, the file that goes in the <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">Corresponding</span> <span class="pre">Stat</span> <span class="pre">File</span></code> is generated by the GPGPU-Sim and is by default named gpgpu_inst_stats.txt.<br />
+<br />
+Once you have filled the three text fields, click the green Add Files button.<br />
+<br />
+You can now launch AerialVision by clicking the <code class="docutils literal notranslate"><span class="pre">Submit</span></code> button at the bottom. It should be noted that for your own purposes, it is not necessary to fill both the File Inputs for Time Lapse View and File Inputs for Source Code View tabs as both parts of AerialVision can be used independently of the other.</p></li>
+<li><p>Time Lapse View
+<img alt="aerialvision_2" src="../../_images/aerialvision_2.png" />
+We first need to Choose a File by double clicking on the trace file that we want to extra data from. Double clicking on one of the files should turn the appropriate section of the <code class="docutils literal notranslate"><span class="pre">‘Options</span> <span class="pre">Chosen’</span></code> list green.<br />
+<br />
+In B and C, we can choose which data to plot and their config such as with derivative or not and plot with line or Parallel Intensity Plot. <code class="docutils literal notranslate"><span class="pre">THIS</span> <span class="pre">IS</span> <span class="pre">DEPEND</span> <span class="pre">ON</span> <span class="pre">THE</span> <span class="pre">STAT</span> <span class="pre">TO</span> <span class="pre">SHOW.</span> <span class="pre">YOU</span> <span class="pre">CAN</span> <span class="pre">FIND</span> <span class="pre">THE</span> <span class="pre">CONFIG</span> <span class="pre">IN</span> <span class="pre">ANOTHER</span> <span class="pre">TABLE.</span></code><br />
+<br />
+You may now press the green <code class="docutils literal notranslate"><span class="pre">GraphMe!</span></code> button. If you have followed this walkthrough correctly, all of the fields in the Option Chosen list should be green.
+<img alt="aerialvision_3" src="../../_images/aerialvision_3.png" />
+After clicking the green <code class="docutils literal notranslate"><span class="pre">GraphMe!</span></code> button, your screen should now look something like figure above.</p></li>
+<li><p>Source Code View
+<img alt="aerialvision_4" src="../../_images/aerialvision_4.png" />
+First we must choose the appropriate CUDA/OpenCL source file by clicking the appropriate file under the <code class="docutils literal notranslate"><span class="pre">Cuda</span> <span class="pre">C</span></code> header. This should turn the File: under Chosen Data from red to green. Next, we will need to choose the appropriate PTX statistic aggregation method from under <code class="docutils literal notranslate"><span class="pre">Available</span> <span class="pre">Functions</span></code> as well as A<code class="docutils literal notranslate"><span class="pre">vailable</span> <span class="pre">Stats</span></code>. Finally, click the green <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">Data</span></code> button at the bottom.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

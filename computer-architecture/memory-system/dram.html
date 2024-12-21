@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRAM &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DRAM</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="dram">
+<h1>DRAM<a class="headerlink" href="#dram" title="Link to this heading"></a></h1>
+<p><img alt="dram scheduling" src="../../_images/dram-scheduling.png" /></p>
+<p><img alt="dram" src="../../_images/2023-08-29_134508.png" /></p>
+<p>The data is stored in the DRAM devices, which are implemented as separate chips. Access to these devices is managed by memory controllers.</p>
+<section id="what-is-dram">
+<h2>What Is DRAM<a class="headerlink" href="#what-is-dram" title="Link to this heading"></a></h2>
+<p>Memory is fundamental in the operation of a computer. When combined with a CPU, the ability to run sets of instructions (programs) and store working data becomes possible. Random-access memory (RAM) is a well-known type of memory and is so-called because of its ability to access any location in memory with roughly the same time delay.</p>
+</section>
+<section id="how-does-dram-work">
+<h2>How does DRAM work?<a class="headerlink" href="#how-does-dram-work" title="Link to this heading"></a></h2>
+<p>DRAM works much differently than other types of memory. The fundamental storage cell within DRAM is composed of two elements: a transistor and a capacitor.</p>
+<p>When a bit needs to be put in memory, the transistor is used to charge or discharge the capacitor. A charged capacitor represents a logic high, or ‘1’, while a discharged capacitor represents a logic low, or ‘0’. The charging/discharging is done via the wordline and bitline, shown in below.</p>
+<p><img alt="dram a bit" src="../../_images/intro_to_DRAM1.webp" /></p>
+<p>ually problematic is the fact that the capacitors leak charge over time. Therefore, to maintain the data stored in memory the capacitors must be refreshed periodically. Refreshing works just like a read and ensures data is never lost. This is where DRAM gets the “Dynamic” moniker from—the charge on a DRAM cell is dynamically refreshed every so often. Contrast this with SRAM (Static RAM) which retains its state without needing to be refreshed.</p>
+</section>
+<section id="how-is-dram-organized">
+<h2>How Is DRAM Organized?<a class="headerlink" href="#how-is-dram-organized" title="Link to this heading"></a></h2>
+<p>The rank of a DRAM module is the highest level of organization within a DIMM. Below that, each chip is organized into a number of banks and memory arrays containing rows and columns. Figure 3 shows a DRAM chip with four banks.</p>
+<p><img alt="dram" src="../../_images/intro_to_DRAM2.webp" /></p>
+<p>Each bank operates independently of the others. This means that reading, writing, and precharging can all be done on one bank without impacting the other.</p>
+<section id="rank-bank-row-and-column">
+<h3>Rank, Bank, Row, and Column<a class="headerlink" href="#rank-bank-row-and-column" title="Link to this heading"></a></h3>
+<p>As mentioned earlier, the rank of a DRAM is a set of separately addressable DRAM chips. Each DRAM chip is further organized into a number of banks that contain a set of memory arrays. The number of memory arrays per bank is equal to the size of the output width. Therefore in a x4 DRAM chip, the internal banks would each have four memory arrays. Figure 4 shows an example of a single x4 bank.</p>
+<p><img alt="bank" src="../../_images/intro_to_DRAM4.webp" /></p>
+<p>The gray section is the memory array designed as a grid of rows and columns. A set of decoders are used to access the rows and columns, selecting a single intersection within the memory array. It is at this intersection that a small capacitor stores a charge representing the data being accessed.</p>
+<p>Sense amplifiers perform precharge operations on capacitors and generate logic-level outputs for a number of data buffers that store the data until it can be retrieved by a memory controller or CPU.</p>
+</section>
+</section>
+<section id="executing-commands-in-memory-dram-commands">
+<h2>Executing Commands in Memory: DRAM Commands<a class="headerlink" href="#executing-commands-in-memory-dram-commands" title="Link to this heading"></a></h2>
+<p>How does a processor or memory controller tell the DRAM to return or store specific data in a specific location?</p>
+<p>To execute a command, a memory controller will write values to a set of inputs within the DRAM. These inputs belong to the DRAM’s command decoder. This decoder has a 4-bit input where, depending on the combination of bits, a different command gets requested.</p>
+<p><img alt="decoder" src="../../_images/dram_commands_SSM_AAC_image2.webp" /></p>
+<p>These active-low inputs all have names and are typically defined as CS, CAS, RAS, and WE:</p>
+<ul class="simple">
+<li><p>CS: chip select (enables or disables the command decoder)</p></li>
+<li><p>RAS: row address strobe</p></li>
+<li><p>CAS: column address strobe</p></li>
+<li><p>WE: write enable</p></li>
+</ul>
+<p><img alt="dram reference" src="../../_images/dram_commands_SSM_AAC_image3.webp" /></p>
+<section id="command-inhibit">
+<h3>Command Inhibit<a class="headerlink" href="#command-inhibit" title="Link to this heading"></a></h3>
+<p>To use the command, the CS input is brought high (and other inputs are disregarded, i.e., “don’t care”). As mentioned earlier, CS stands for chip select and disables the command decoder.</p>
+</section>
+<section id="activate">
+<h3>Activate<a class="headerlink" href="#activate" title="Link to this heading"></a></h3>
+<p>Activate is essentially the row access command. Meaning, it opens up a row and moves the charge from the capacitors into the sense amplifiers. Accessing a row is always done before a column in DRAM. This command is paired with inputs to a bank address register (that selects the current bank) and a row address register (that selects the desired row).</p>
+</section>
+<section id="precharge">
+<h3>Precharge<a class="headerlink" href="#precharge" title="Link to this heading"></a></h3>
+<p>Precharge deactivates the row currently open in a bank. When issued a precharge command, the DRAM is told to restore the values read from the row of capacitors. This is done by the sense amplifiers and when completed prepares the bank for another row access. Precharge is performed by pulling CS, RAS, and WE low and leaving CAS high.</p>
+</section>
+<section id="read">
+<h3>Read<a class="headerlink" href="#read" title="Link to this heading"></a></h3>
+<p>The read command can also be thought of as a column read command. When combined with a proper bank address and column address, the data recently moved into the sense amplifiers from an activate command (row access) is now pushed onto the data bus.</p>
+<p>DRAMs often include a “Read and Auto-Precharge” command that performs the column read and then closes/precharges the row.</p>
+</section>
+<section id="write">
+<h3>Write<a class="headerlink" href="#write" title="Link to this heading"></a></h3>
+<p>A write command is virtually the same as a read, except for the direction of the data. During a write command, data is pulled off of the data bus and put into the selected bank, row, and column. Auto-precharging can be performed much like a read and closes the currently activated row when the write is done. To perform a write, CS, CAS, and WE are pulled low, while RAS is held high.</p>
+<p>Below shows an activate command (row access) in yellow, with a subsequent read/write command (column access) in blue. The data at the intersection of the row and column, shown in green, is moved between the sense amplifiers and data buffers.</p>
+<p><img alt="read/write command" src="../../_images/dram_commands_SSM_AAC_image4.webp" /></p>
+</section>
+<section id="refresh">
+<h3>Refresh<a class="headerlink" href="#refresh" title="Link to this heading"></a></h3>
+<p>What differentiates DRAM from other kinds of random access memory is the fact that the capacitors used for memory storage will leak charge over time. Thus, DRAM is dynamic because it needs to be periodically refreshed. One important aspect of refreshing is that any active banks should be precharged before the command is issued. Most DRAMs will perform 8192 refresh cycles every 64 ms.</p>
+</section>
+<section id="other-commands">
+<h3>Other Commands<a class="headerlink" href="#other-commands" title="Link to this heading"></a></h3>
+<p><img alt="dram commands" src="../../_images/dram_commands_SSM_AAC_image5.webp" /></p>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>Since a single DRAM cell is composed of only two components—a transistor and a capacitor—DRAM can be made in high densities, and it is inexpensive compared to other types of memory.</p>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.allaboutcircuits.com/technical-articles/executing-commands-memory-dram-commands/">https://www.allaboutcircuits.com/technical-articles/executing-commands-memory-dram-commands/</a></p></li>
+<li><p><a class="reference external" href="https://www.allaboutcircuits.com/technical-articles/introduction-to-dram-dynamic-random-access-memory/">https://www.allaboutcircuits.com/technical-articles/introduction-to-dram-dynamic-random-access-memory/</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

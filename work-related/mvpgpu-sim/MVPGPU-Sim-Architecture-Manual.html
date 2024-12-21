@@ -1,0 +1,694 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVPGPU-Sim Architecture Manual &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVPGPU-Sim Architecture Manual</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvpgpu-sim-architecture-manual">
+<h1>MVPGPU-Sim Architecture Manual<a class="headerlink" href="#mvpgpu-sim-architecture-manual" title="Link to this heading"></a></h1>
+<p>MVPGPU-Sim is developed based on GPGPU-Sim, and Added lots of features which MVP GPU dedicated</p>
+<section id="revision-history">
+<h2>Revision history<a class="headerlink" href="#revision-history" title="Link to this heading"></a></h2>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Date</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2023-3-27</td>
+<td style="text-align: left;">V0.00</td>
+<td style="text-align: left;">Initial</td>
+<td style="text-align: left;">Liu Yonggang</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mvpgpu-sim-architecture-manual"><span class="xref myst">MVPGPU-Sim Architecture Manual</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#revision-history"><span class="xref myst">Revision history</span></a></p></li>
+<li><p><a class="reference internal" href="#table-of-contents"><span class="xref myst">Table of Contents</span></a></p></li>
+<li><p><a class="reference internal" href="#why-we-use-markdown-as-file-format"><span class="xref myst">Why we use markdown as file format</span></a></p></li>
+<li><p><a class="reference internal" href="#platform-architecture-design"><span class="xref myst">Platform Architecture Design</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#function-lists"><span class="xref myst">Function Lists</span></a></p></li>
+<li><p><a class="reference internal" href="#folder-and-code-structure"><span class="xref myst">Folder and Code structure</span></a></p></li>
+<li><p><a class="reference internal" href="#key-concept-mapping"><span class="xref myst">Key concept mapping</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#basic-design-principles"><span class="xref myst">Basic Design Principles</span></a></p></li>
+<li><p><a class="reference internal" href="#application"><span class="xref myst">Application</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#benchmark--cts"><span class="xref myst">Benchmark &amp; CTS</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#api"><span class="xref myst">API</span></a></p></li>
+<li><p><a class="reference internal" href="#hardware-model"><span class="xref myst">Hardware Model</span></a></p></li>
+<li><p><a class="reference internal" href="#hardware-architecture"><span class="xref myst">Hardware Architecture</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mvp-architecture"><span class="xref myst">MVP Architecture</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mvp-isa"><span class="xref myst">MVP ISA</span></a></p></li>
+<li><p><a class="reference internal" href="#mvp-compiling"><span class="xref myst">MVP Compiling</span></a></p></li>
+<li><p><a class="reference internal" href="#mvp-instruction-parsing"><span class="xref myst">MVP Instruction Parsing</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mvp-microarchitecture"><span class="xref myst">MVP Microarchitecture</span></a></p></li>
+<li><p><a class="reference internal" href="#mvp-microarchitecture-run-time"><span class="xref myst">MVP Microarchitecture Run-time</span></a></p></li>
+<li><p><a class="reference internal" href="#mvp-kernel-and-thread"><span class="xref myst">MVP Kernel and Thread</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#graphics"><span class="xref myst">Graphics</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#graphics-function-list"><span class="xref myst">Graphics function list</span></a></p></li>
+<li><p><a class="reference internal" href="#graphics-process-flow"><span class="xref myst">Graphics Process Flow</span></a></p></li>
+<li><p><a class="reference internal" href="#opengl-shader-compilation-flow"><span class="xref myst">OpenGL Shader Compilation Flow</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#what-we-can-do-in-next-step"><span class="xref myst">What we can do in next step</span></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="why-we-use-markdown-as-file-format">
+<h2>Why we use markdown as file format<a class="headerlink" href="#why-we-use-markdown-as-file-format" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>It’s possible to convert to other file format</p></li>
+<li><p>It’s easy to do version control based on git repo</p>
+<ul>
+<li><p>Revision history</p></li>
+<li><p>Web-style release</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="platform-architecture-design">
+<h2>Platform Architecture Design<a class="headerlink" href="#platform-architecture-design" title="Link to this heading"></a></h2>
+<p>Here is the architecture design of MVPGPU-Sim as a long-term target</p>
+<p><img alt="MVPGPU-Sim Architecture" src="../../_images/MVPGPU-SIM-Arch.jpg" /></p>
+<section id="function-lists">
+<h3>Function Lists<a class="headerlink" href="#function-lists" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> MVP ISA support</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> OpenCL support</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> OpenGL support</p></li>
+</ul>
+<blockquote>
+<div><dl class="myst field-list simple">
+<dt class="field-odd">memo<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Note:</strong> OpenCL API is still on developing</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="folder-and-code-structure">
+<h3>Folder and Code structure<a class="headerlink" href="#folder-and-code-structure" title="Link to this heading"></a></h3>
+<p>Source code folder and Class relationship structure
+<a class="reference internal" href="../../_images/MVPGPU-SIM-Refactoring.png"><img alt="../../_images/MVPGPU-SIM-Refactoring.png" src="../../_images/MVPGPU-SIM-Refactoring.png" style="width: 100%;" /></a></p>
+</section>
+<section id="key-concept-mapping">
+<h3>Key concept mapping<a class="headerlink" href="#key-concept-mapping" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;"><font color="red"> MVP </font></th>
+<th style="text-align: left;">OpenCL</th>
+<th style="text-align: left;">CUDA View</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">😊</td>
+<td style="text-align: left;">NDRange</td>
+<td style="text-align: left;">grid</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">😊</td>
+<td style="text-align: left;">wave-group</td>
+<td style="text-align: left;">block/CTA</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">warp</td>
+<td style="text-align: left;">wavefront(AMD)</td>
+<td style="text-align: left;">warp</td>
+<td style="text-align: left;">The minimum schedule unit</td>
+</tr>
+<tr>
+<td style="text-align: left;">thread</td>
+<td style="text-align: left;">work-item</td>
+<td style="text-align: left;">thread</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">ALU</td>
+<td style="text-align: left;">PE</td>
+<td style="text-align: left;">CUDA Core</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SP</td>
+<td style="text-align: left;">CU</td>
+<td style="text-align: left;">SM</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="basic-design-principles">
+<h2>Basic Design Principles<a class="headerlink" href="#basic-design-principles" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Modularization, Each coulde be compiled as dynamic library(.so), and provide headers for external (xxx.so + include/xxx.hpp)</p></li>
+<li><p>Each class only occupy one cpp/hpp file, don’t allow to be placed in different files</p></li>
+<li><p>Naming-style, using hardware name to match hardware structure and concept</p></li>
+<li><p>Separate abstraction and implementation, support unified up-layer abstraction and differentated low-layer implementation</p></li>
+<li><p>Makefile contians specific include path by -I</p></li>
+</ol>
+</section>
+<section id="application">
+<h2>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h2>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> nuFHE (OpenCL)</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Pytorch (OpenCL)</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Graphics Rasterizer</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> LearnOpenGL</p></li>
+</ul>
+<section id="benchmark-cts">
+<h3>Benchmark &amp; CTS<a class="headerlink" href="#benchmark-cts" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> ispass2009-benchmark</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> OpenCL CTS</p></li>
+</ul>
+</section>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> OpenCL</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Cuda</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> OpenGL</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Vulkan</p></li>
+</ul>
+</section>
+<section id="hardware-model">
+<h2>Hardware Model<a class="headerlink" href="#hardware-model" title="Link to this heading"></a></h2>
+<p>High level hardware model abstraction</p>
+</section>
+<section id="hardware-architecture">
+<h2>Hardware Architecture<a class="headerlink" href="#hardware-architecture" title="Link to this heading"></a></h2>
+<p>Low level hardware architecture implementation</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">MVP</th>
+<th style="text-align: left;">V2.1</th>
+<th style="text-align: left;">V3.0</th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">GPC</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">TPC</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SM</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SP</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">INT32</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">FP32</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">SFU</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">LD/ST</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<dl class="simple myst">
+<dt>INT32</dt><dd><p>MAC: mul/mac/mas</p>
+</dd>
+<dd><p>ALU: add/sub/beq/ble</p>
+</dd>
+<dt>FP32</dt><dd><p>MAC: fadd/fsub/fmul/fmac/fmas</p>
+</dd>
+<dd><p>ALU: fbeq/fble</p>
+</dd>
+<dt>SFU</dt><dd><p>Fixed Floating Point Function, actually there are two different function unit for different instruction. So I can think that there is only one SFU.</p>
+</dd>
+</dl>
+<p>The whole MVP architecture as the following shows:</p>
+<p><img alt="Architecture" src="../../_images/MVP-Architecture.png" /></p>
+<p>The detailed SP architecture as below:</p>
+<p><img alt="MVP SP Arch" src="../../_images/SP-Architecture.png" /></p>
+<section id="mvp-architecture">
+<h3>MVP Architecture<a class="headerlink" href="#mvp-architecture" title="Link to this heading"></a></h3>
+<p>MVP Architecture is the interface between software and hardware microarchitecture
+<img alt="MVP Microarchitecture" src="../../_images/MVPGPU-SIM-SoC.jpg" /></p>
+<section id="mvp-isa">
+<h4>MVP ISA<a class="headerlink" href="#mvp-isa" title="Link to this heading"></a></h4>
+<p>MVP instruction set architecture is the most important part of MVP GPU</p>
+</section>
+<section id="mvp-compiling">
+<h4>MVP Compiling<a class="headerlink" href="#mvp-compiling" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>How to compile OpenCL</p></li>
+<li><p>How to compile OpenGL</p></li>
+</ul>
+</section>
+<section id="mvp-instruction-parsing">
+<h4>MVP Instruction Parsing<a class="headerlink" href="#mvp-instruction-parsing" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>How to parse MVP assembly language</p></li>
+<li><p>Lex/Yacc</p></li>
+</ul>
+</section>
+</section>
+<section id="mvp-microarchitecture">
+<h3>MVP Microarchitecture<a class="headerlink" href="#mvp-microarchitecture" title="Link to this heading"></a></h3>
+<p>MVP Microarchitecture is the implementation of the MVP ISA</p>
+<ul>
+<li><p>GPC
+Current MVP architecture has no this concept. But there are 4 TPCs, 1 PA and 1 Rast.</p></li>
+<li><p>TPC
+There are 2 SMs, 1 ROP and 1 Texture in each TPC.</p></li>
+<li><p>SM
+There are 4 SPs in each SM.</p></li>
+<li><p>SP
+SP is the minimum execution unit in MVP architecture.
+<img alt="SP Microarchitecture" src="../../_images/SP-Core-microarchitecture.png" /></p>
+<ul>
+<li><p>Pipeline
+Multi-thread Virtual pipeline stream Processor(MVP) has the goal of replacing the MPU, DSP or GPU into a single scalable core and delivering the most cost efficient performance in the whole system by offloading the host processor’s application work load, exploiting instruction level parallelism(ILP), data level parallelism(DLP) and task level parallelism(TLP), enabling load balancing between resources inside MVP and hiding memory or I/O latency due to cache miss. It supports a maximum of <strong>16</strong> running threads and can issue 4 instructions per cycle.
+<img alt="SP Pipeline" src="../../_images/SP-Pipeline.png" /></p>
+<ul>
+<li><p>FE
+Instruction fetch for 4 of the running threads per cycle</p>
+<ul class="simple">
+<li><p>FE State Machine
+SYNC instruction will tells all threads to synchronize before further execution, the fetch unit stops fetching instruction and notifies the thread control unit about the pause when it fetches the SYNC instruction and all instructions before SYNC are executed. The thread control unit then waits for the SYNC notifications from all other threads
+EXIT instruction will stops fetching the instructions, and thread control unit updates the thread status</p></li>
+</ul>
+<blockquote>
+<div><p>m_inst_fetch_buffer = ifetch_buffer_t(m_warp[mf-&gt;get_wid()]-&gt;get_pc(), mf-&gt;get_access_size(), mf-&gt;get_wid());</p>
+</div></blockquote>
+</li>
+<li><p>IS
+The issue unit gets 4 instructions from horizontal threads and performs both data and resource hazard check, issue instruction, set up GPR address. All instruction must be issued in-order.
+<strong>Data hazard</strong> (RaW)
+<strong>Resource hazard</strong> (FP0/FP1)
+<img alt="issue block architecture" src="../../_images/2023-05-27_112954.png" /></p>
+<blockquote>
+<div><p>📝 Timing is not sufficient due to sram type GPR, so added extra pipeline stage RF between IS and EX</p>
+</div></blockquote>
+</li>
+<li><p>RF
+For better timing consideration, the data from SRAM type GPR will be received at this stage. RF stage will also receive data bypassed from WB stage if there is RaW data dependency.
+Get operand from GPR</p></li>
+<li><p>EX
+MVP can only get the instruction operands from either GPR or bypass data from later pipeline stage. There are 4 ALUs，4 MACs，4 LSs and 1 fix functions units.</p>
+<ul class="simple">
+<li><p>Ex0
+Get operands from GPR or bypass, instruction decode and execution, load/store memory effective address generation by ALU, resolve branch condition</p></li>
+<li><p>Ex1
+Determine memory address space, on-chip memory or external if cache miss occurs</p></li>
+<li><p>Ex2
+Get data from cache or local memory</p></li>
+</ul>
+</li>
+<li><p>WB
+In WB stage, the execution result write-back to GPR or memory, or already written back to ACC/HI reg. There are at most 2 operands are retrieved from and 1 result is written back to GPR. Hence four banks 2rw port SRAM, that each bank is divided into two blocks are sufficient.
+<img alt="WB" src="../../_images/2023-05-27_143548.png" />
+When odd thread is at IS stage, it will generate two operand’s GPR read signals to odd GPR sram, and gets data at RF stage. Then even thread will do that same when it is at IS stage, and get data from even GPR sram next stage. Every thread will write data to GPR sram when it is at WB stage. We use odd/even GPR sram to resolve 2r1w requirement of GPR.
+When there is data dependency, the data at WB stage will be bypassed to RF stage, and then mux with GPR data.</p></li>
+<li><p>SIMT Stack</p></li>
+<li><p>Scoreboard</p></li>
+<li><p>Operand Collector</p></li>
+</ul>
+</li>
+<li><p>THDC
+THDC is used to schedule the threads when and how to switch in and switch out of pipeline. There are total 64 threads supported by hardware to cover the mis-branch penalty and L&amp;S latency to L2CC. When ther is L&amp;S cache miss, the corresponding thread will be switched out, and a new set of horizontal threads will be switched in, and at the same time, the miss request will be processed.
+<img alt="thdc controller" src="../../_images/2023-05-26_145012.png" /></p>
+<p>There are 4 horizontal running threads simultaneously, and have four groups of vertical threads. So the core support maximum of 16 running threads. The 4 horizontal threads are simultaneous-multi-thread(SMT) threads that are running at the same cycle among the 4 sets of execution units, e.g. MACs and ALUs. Most of time, their PC are identical and as such executed in a SIMD manner. The 4 vertical threads are time-shared threads which are running in a round-robin manner. Hence, instructions from one thread will only be fetched and executed every 4 cycles.
+<img alt="thdc-running" src="../../_images/THDC-RUNNING.png" /></p>
+<p>In total there are 64 threads inside SP. Except 16 running threads, 48 threads are waiting for scheduling.
+<img alt="THDC" src="../../_images/SP-THDC-Design.jpg" /></p>
+</li>
+<li><p>ICC
+ICC is responsible to check if it is a cache hit when the fetch unit requests for instructions in every cycle. Otherwise, external access request is sent to XI to get the instruction from external memory. ICC can issue four requests to XI at the same time. ICC has the highest priority in external access.
+<img alt="cache line" src="../../_images/2023-05-27_111726.png" /></p></li>
+<li><p>DCC
+DCC is responsible to evaluate if the request data is in the data cache. If so, data and valid signal are returned in the next cycle. Data is written back to external memory when the data has been modified and cache word is replaced due to cache miss.</p></li>
+<li><p>OCC(On-Chip Controller)
+The memory access in MVP is basically controlled by On-Chip Controller and Data Cache Controller. And ensure the load/store instructions are executed in order. Whenever there is a valid load/store, it determines whether the memory address is an on-chip address, if the address is a off-chip address, it sends the valid signal and memory address to DCC.
+<img alt="memory access control" src="../../_images/2023-05-27_135407.png" /></p></li>
+<li><p>Memory</p>
+<ul>
+<li><p>GPR
+There are 16-entry by 32-bit GPRs for each thread, so totally has 64x16x32 bits GPRs. There are at most 2 operands are retrieved from and 1 result is written back to GPR.</p></li>
+<li><p>Cache</p>
+<ul>
+<li><p>I-Cache
+There is 32KB instruction cache divided into 4 banks each of which is used by one running horizontal thread. Instruction cache line size are 256-bit(8x32-bit).</p></li>
+<li><p>D-Cache
+There are only word buffers in Data Cache. The word buffers are for all the horizontal and vertical threads.</p>
+<ul class="simple">
+<li><p>It is a write back word buffer</p></li>
+<li><p>The size of word buffer is 64x2x32bit</p></li>
+<li><p>Each entry is composed of {valid, dirty, address, data}
+<img alt="D-Cache" src="../../_images/2023-05-27_141719.png" />
+Data is written back to external memory when the data has been modified and cache word is replaced due to cache miss. For better performance and to collect the cache miss request, we use one request fifo to deal with the cache miss. The fifo will show which thread’s word buffer need update or write back.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>read access</p>
+<ol class="arabic simple">
+<li><p>cache hit, it returns the data in next cycle</p></li>
+<li><p>cache miss,</p>
+<ol class="arabic simple">
+<li><p>if dirty bit set, write back to external memory</p></li>
+<li><p>retrieve data from external memory and replace the cache line</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>write access</p>
+<ol class="arabic simple">
+<li><p>cache hit, update cache line and set the dirty bit</p></li>
+<li><p>cache miss,</p>
+<ol class="arabic simple">
+<li><p>if dirty bit set, write back to external memory</p></li>
+<li><p>retrieve data from external memory and replace the cache line</p></li>
+<li><p>update the cache line and set the dirty bit</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>Local memory
+Local memory size in MVP is 32KB. It is physically origanized as 8 buffer banks to reduce the possibility of bank conflicts. One port for both read and write accesses.
+<img alt="local memory configuration" src="../../_images/2023-05-27_135958.png" /></p></li>
+</ul>
+</li>
+<li><p>XI
+External Interface is the only place through which the external access can be accomplished. There are 3 clients that can request for external access: ICC and DCC from MEM, and the DMA controller.</p></li>
+<li><p>DDR</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="mvp-microarchitecture-run-time">
+<h3>MVP Microarchitecture Run-time<a class="headerlink" href="#mvp-microarchitecture-run-time" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Block Assignment</p></li>
+<li><p>Warp Assignment</p>
+<ul>
+<li><p>issue_block2core()</p>
+<ul>
+<li><p>ptx_sim_init_thread()</p></li>
+<li><p>init_warps()</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Warp Scheduling</p>
+<ul>
+<li><p>scheduler_unit::cycle()</p></li>
+</ul>
+</li>
+<li><p>Thread Execution</p>
+<ul>
+<li><p>ptx_thread_info::ptx_exec_inst()</p></li>
+</ul>
+</li>
+<li><p>Instruction Execution</p></li>
+</ul>
+</section>
+<section id="mvp-kernel-and-thread">
+<h3>MVP Kernel and Thread<a class="headerlink" href="#mvp-kernel-and-thread" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Kernel
+Kernel is the static existing of user shader program</p></li>
+<li><p>Thread
+Thread is the active existing of user shader program</p></li>
+<li><p>How to pass arguments between kernel and thread</p></li>
+</ul>
+</section>
+</section>
+<section id="graphics">
+<h2>Graphics<a class="headerlink" href="#graphics" title="Link to this heading"></a></h2>
+<section id="graphics-function-list">
+<h3>Graphics function list<a class="headerlink" href="#graphics-function-list" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Primitive Assembly</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Rasterization</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Texture</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> ROP</p></li>
+</ul>
+</section>
+<section id="graphics-process-flow">
+<h3>Graphics Process Flow<a class="headerlink" href="#graphics-process-flow" title="Link to this heading"></a></h3>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th style="text-align: left;">Input</th>
+<th style="text-align: left;">VS</th>
+<th style="text-align: left;">PA</th>
+<th style="text-align: left;">Raster</th>
+<th style="text-align: left;">PS</th>
+<th style="text-align: left;">ROP</th>
+<th style="text-align: left;">Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">OpenGL API</td>
+<td style="text-align: left;">GPGPU</td>
+<td style="text-align: left;">Graphics</td>
+<td style="text-align: left;">Graphics</td>
+<td style="text-align: left;">GPGPU</td>
+<td style="text-align: left;">Graphics</td>
+<td style="text-align: left;">Framebuffer</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Input assembler</p>
+<ul>
+<li><p>Load index data and vertices data</p></li>
+</ul>
+</li>
+<li><p>VS</p>
+<ul>
+<li><p>MVP tranforms</p></li>
+</ul>
+</li>
+<li><p>PA</p>
+<ul>
+<li><p>Primitive assemble</p>
+<ul>
+<li><p>Triangle</p></li>
+<li><p>Line</p></li>
+<li><p>Point</p></li>
+</ul>
+</li>
+<li><p>View clipping</p></li>
+<li><p>Screen mapping</p></li>
+</ul>
+</li>
+<li><p>Raster</p>
+<ul>
+<li><p>Barycentric interpolation</p></li>
+</ul>
+</li>
+<li><p>FS</p>
+<ul>
+<li><p>Shading</p></li>
+<li><p>Texture mapping</p></li>
+</ul>
+</li>
+<li><p>ROP
+Perform color and depth frame buffer operations directly on memory</p>
+<ul>
+<li><p>Z-buffer</p></li>
+<li><p>Blending</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="opengl-shader-compilation-flow">
+<h3>OpenGL Shader Compilation Flow<a class="headerlink" href="#opengl-shader-compilation-flow" title="Link to this heading"></a></h3>
+<p>Using two steps compiling flow for simplifying compiling process.</p>
+<ol class="arabic simple">
+<li><p>OpenGL shader compiling
+Offline-compiling shader program as MVP assemble program</p></li>
+<li><p>OpenGL application compiling
+GCC compile application, and using OpenGL API to load MVP assemble program into kernel for executing</p></li>
+</ol>
+</section>
+</section>
+<section id="what-we-can-do-in-next-step">
+<h2>What we can do in next step<a class="headerlink" href="#what-we-can-do-in-next-step" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Shared memory for low-latency access to data shared by cooperating threads in the same SM</p></li>
+<li><p>TMA(Tensor Memory Accelerator), hardware async data load</p></li>
+<li><p>Asynchronous copy</p></li>
+<li><p>Asynchronous barrier</p></li>
+<li><p>局部数据通过shared memory限制在SM内，不能跨SM</p></li>
+<li><p>GPC内部通过交叉互联网络将数据共享层次扩展到SM之间，GPC内的SM可以高效访问彼此的共享内存</p></li>
+<li><p>Simultaneous execution of FP32 and INT32 operations</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

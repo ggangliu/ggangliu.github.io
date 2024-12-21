@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to setup VPN to access home server by WireGuard &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Docker Notes" href="docker.html" />
+    <link rel="prev" title="GGangLiu Doc" href="../mvpgpu-sim/Index.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../work-related.html">Work-related</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mvpgpu-sim/Index.html">GGangLiu Doc</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to setup VPN to access home server by WireGuard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conceptual-overview">Conceptual overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">配置步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">配置为网关</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">配置详解</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interface">[Interface]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#address">Address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#listenport">ListenPort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#privatekey">PrivateKey</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dns">DNS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#peer">[Peer]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#endpoint">Endpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allowedips">AllowedIPs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#publickey">PublicKey</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#persistentkeepalive">PersistentKeepalive</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html">Docker Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to-start-samba.html">Samba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssh.html">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnc.html">VNC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphviz-dot.html">Graphviz Dot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="home-server-config.html">Home Server Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avazz-i610t.html">黑爵i610T说明书</a></li>
+<li class="toctree-l2"><a class="reference internal" href="note.html">Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mermaid.html">Mermaid</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../work-related.html">Work-related</a></li>
+      <li class="breadcrumb-item active">How to setup VPN to access home server by WireGuard</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-setup-vpn-to-access-home-server-by-wireguard">
+<h1>How to setup VPN to access home server by WireGuard<a class="headerlink" href="#how-to-setup-vpn-to-access-home-server-by-wireguard" title="Link to this heading"></a></h1>
+<section id="conceptual-overview">
+<h2>Conceptual overview<a class="headerlink" href="#conceptual-overview" title="Link to this heading"></a></h2>
+<p>WireGuard associates tunnel IP addresses with public keys and remote endpoints. When the interface sends a packet to a peer, it does the following:</p>
+<p>This packet is meant for 192.168.30.8. Which peer is that? Let me look… Okay, it’s for peer ABCDEFGH. (Or if it’s not for any configured peer, drop the packet.)
+Encrypt entire IP packet using peer ABCDEFGH’s public key.
+What is the remote endpoint of peer ABCDEFGH? Let me look… Okay, the endpoint is UDP port 53133 on host 216.58.211.110.
+Send encrypted bytes from step 2 over the Internet to 216.58.211.110:53133 using UDP.</p>
+<p>When the interface receives a packet, this happens:</p>
+<p>I just got a packet from UDP port 7361 on host 98.139.183.24. Let’s decrypt it!
+It decrypted and authenticated properly for peer LMNOPQRS. Okay, let’s remember that peer LMNOPQRS’s most recent Internet endpoint is 98.139.183.24:7361 using UDP.
+Once decrypted, the plain-text packet is from 192.168.43.89. Is peer LMNOPQRS allowed to be sending us packets as 192.168.43.89?
+If so, accept the packet on the interface. If not, drop it.</p>
+</section>
+<section id="id1">
+<h2>安装<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wireguard
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2>配置步骤<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>wg<span class="w"> </span>genkey<span class="w"> </span><span class="p">|</span><span class="w"> </span>tee<span class="w"> </span>wg_server.key<span class="w"> </span><span class="p">|</span><span class="w"> </span>wg<span class="w"> </span>pubkey<span class="w"> </span>&gt;<span class="w"> </span>wg_server.pub<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cat<span class="w"> </span>wg_server.key<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cat<span class="w"> </span>wg_server.pub
+</pre></div>
+</div>
+<p>服务器端的配置 /etc/wireguard/wg0.conf</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Interface]</span>
+<span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">GIZEVov6oTpWsaHUKyN4jvORvNZdw5kHZoBikpBUR0o=</span>
+<span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.1/32</span>
+<span class="na">ListenPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">51820</span>
+
+<span class="na">PreUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreUp</span>
+<span class="na">PostUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -I FORWARD -i wg0 -j ACCEPT</span><span class="c1">; iptables -I FORWARD -o wg0 -j ACCEPT; iptables -I INPUT -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</span>
+<span class="na">PreDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">echo WireGuard PreDown</span>
+<span class="na">PostDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">iptables -D FORWARD -i wg0 -j ACCEPT</span><span class="c1">; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -D INPUT -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE</span>
+
+<span class="k">[Peer]</span>
+<span class="c1"># remote pc</span>
+<span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">63EmJHn3Ki6JKhQ1lrbr235soT4qfECahuBb1zJZixc=</span>
+<span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.2/32</span>
+</pre></div>
+</div>
+<p>启动服务</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>wg-quick<span class="w"> </span>up<span class="w"> </span>wg0
+</pre></div>
+</div>
+<p>检查哪些端口处于监听状态</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>netstat<span class="w"> </span>-tuln
+</pre></div>
+</div>
+<p>如果需要开机自启，则可以</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>wg-quick@wg0
+</pre></div>
+</div>
+<p>客户端的配置</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Interface]</span>
+<span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">aDHxtVvZodTWj3a0jFVpsb6ZYyZDIBkEnVIRVC6mUFY=</span>
+<span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.2/32</span>
+
+<span class="k">[Peer]</span>
+<span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4jqjWGiinulgYYGVGfMzQc+D9tfwUIR5nnlrWYmu10A=</span>
+<span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.1/32</span>
+<span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">8.137.11.23:51820</span>
+<span class="na">PersistentKeepalive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">25</span>
+</pre></div>
+</div>
+<p>home server client:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Interface]</span>
+<span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">aDHxtVvZodTWj3a0jFVpsb6ZYyZDIBkEnVIRVC6mUFY=</span>
+<span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.31.2/32</span>
+
+<span class="k">[Peer]</span>
+<span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">4jqjWGiinulgYYGVGfMzQc+D9tfwUIR5nnlrWYmu10A=</span>
+<span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.168.31.3/32</span>
+<span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">125.71.119.43:51820</span>
+<span class="na">PersistentKeepalive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">25</span>
+</pre></div>
+</div>
+<p>How to restart in server</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>wg<span class="w"> </span>show<span class="w"> </span>wg0
+sudo<span class="w"> </span>wg-quick<span class="w"> </span>down<span class="w"> </span>wg0
+sudo<span class="w"> </span>wg-quick<span class="w"> </span>up<span class="w"> </span>wg0
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>wg-quick@wg0.service
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>wg-quick@wg0.service
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>配置为网关<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>To configure a WireGuard interface to act as a gateway or handle routing, you need to configure the routing table and enable IP forwarding. Here’s how you can do it:</p>
+<ol class="arabic">
+<li><p><strong>Enable IP Forwarding</strong>:</p>
+<ul>
+<li><p>Open the <code class="docutils literal notranslate"><span class="pre">/etc/sysctl.conf</span></code> file for editing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/sysctl.conf
+</pre></div>
+</div>
+</li>
+<li><p>Uncomment the following line to enable IP forwarding:</p>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>net.ipv4.ip_forward=1
+</pre></div>
+</div>
+</li>
+<li><p>Save and close the file.</p></li>
+<li><p>Apply the changes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>sysctl<span class="w"> </span>-p
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Configure Routing</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">PostUp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>POSTROUTING<span class="w"> </span>-s<span class="w"> </span><span class="m">192</span>.0.3.0/24<span class="w"> </span>-j<span class="w"> </span>SNAT<span class="w"> </span>--to-source<span class="w"> </span><span class="m">192</span>.168.31.188
+<span class="nv">PostDown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-D<span class="w"> </span>POSTROUTING<span class="w"> </span>-s<span class="w"> </span><span class="m">192</span>.0.3.0/24<span class="w"> </span>-j<span class="w"> </span>SNAT<span class="w"> </span>--to-source<span class="w"> </span><span class="m">192</span>.168.31.188
+</pre></div>
+</div>
+<p>ref to <a class="reference external" href="https://devld.me/2020/07/27/wireguard-setup/">https://devld.me/2020/07/27/wireguard-setup/</a></p>
+</li>
+<li><p><strong>Configure Allowed IPs in WireGuard</strong>:</p>
+<ul>
+<li><p>Ensure that the <code class="docutils literal notranslate"><span class="pre">AllowedIPs</span></code> setting in your WireGuard configuration includes the IP addresses of the networks you want to route through the WireGuard interface.</p>
+<p>For example, if you want to route traffic for <code class="docutils literal notranslate"><span class="pre">92.168.32.0/24</span></code>, your WireGuard configuration (<code class="docutils literal notranslate"><span class="pre">wg0.conf</span></code>) should include:</p>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>AllowedIPs = 10.0.0.0/24
+</pre></div>
+</div>
+</li>
+<li><p>Reload or restart the WireGuard service to apply the changes.</p></li>
+</ul>
+</li>
+<li><p><strong>Firewall Configuration</strong>:</p>
+<ul class="simple">
+<li><p>If you have a firewall enabled, ensure that it allows traffic to pass through the WireGuard interface and that it allows forwarding packets.</p></li>
+</ul>
+</li>
+<li><p><strong>Testing</strong>:</p>
+<ul class="simple">
+<li><p>Test the routing by sending traffic from a device within the WireGuard network to a destination in the specified network. Verify that the traffic is routed correctly.</p></li>
+</ul>
+</li>
+</ol>
+<p>By following these steps, you can configure a WireGuard interface to act as a gateway and handle routing for specific networks. Make sure to adjust the configuration according to your specific network setup and requirements.</p>
+</section>
+<section id="id4">
+<h2>配置详解<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>WireGuard 使用 INI 语法作为其配置文件格式。默认路径是 /etc/wireguard/wg0.conf。</p>
+<section id="interface">
+<h3>[Interface]<a class="headerlink" href="#interface" title="Link to this heading"></a></h3>
+<p>定义本地 VPN 配置。</p>
+<ul>
+<li><p>本地节点是客户端，只路由自身的流量，只暴露一个 IP。</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">[Interface]</span>
+<span class="w">  </span><span class="c1"># Name = phone.example-vpn.dev</span>
+<span class="w">  </span><span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.5/32</span>
+<span class="w">  </span><span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;private key for phone.example-vpn.dev&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>本地节点是中继服务器，它可以将流量转发到其他对等节点（peer），并公开整个 VPN 子网的路由。</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">[Interface]</span>
+<span class="w">  </span><span class="c1"># Name = public-server1.example-vpn.tld</span>
+<span class="w">  </span><span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.1/24</span>
+<span class="w">  </span><span class="na">ListenPort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">51820</span>
+<span class="w">  </span><span class="na">PrivateKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;private key for public-server1.example-vpn.tld&gt;</span>
+<span class="w">  </span><span class="na">DNS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.1.1.1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="address">
+<h3>Address<a class="headerlink" href="#address" title="Link to this heading"></a></h3>
+<p>定义本地节点应该对哪个地址范围进行路由。如果是常规的客户端，则将其设置为节点本身的单个 IP（使用 CIDR 指定，例如 192.0.2.3/32）；如果是中继服务器，则将其设置为可路由的子网范围。</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.3/32</span>
+</pre></div>
+</div>
+</section>
+<section id="listenport">
+<h3>ListenPort<a class="headerlink" href="#listenport" title="Link to this heading"></a></h3>
+<p>当本地节点是中继服务器时，需要通过该参数指定端口来监听传入 VPN 连接，默认端口号是 51820。常规客户端不需要此选项</p>
+</section>
+<section id="privatekey">
+<h3>PrivateKey<a class="headerlink" href="#privatekey" title="Link to this heading"></a></h3>
+<p>本地节点的私钥，所有节点（包括中继服务器）都必须设置。不可与其他服务器共用。
+私钥可通过命令 <code class="docutils literal notranslate"><span class="pre">wg</span> <span class="pre">genkey</span> <span class="pre">&gt;</span> <span class="pre">example.key</span></code> 来生成</p>
+</section>
+<section id="dns">
+<h3>DNS<a class="headerlink" href="#dns" title="Link to this heading"></a></h3>
+<p>通过 DHCP 向客户端宣告 DNS 服务器。客户端将会使用这里指定的 DNS 服务器来处理 VPN 子网中的 DNS 请求，但也可以在系统中覆盖此选项。</p>
+</section>
+<section id="peer">
+<h3>[Peer]<a class="headerlink" href="#peer" title="Link to this heading"></a></h3>
+<p>定义能够为一个或多个地址路由流量的对等节点（peer）的 VPN 设置。对等节点（peer）可以是将流量转发到其他对等节点（peer）的中继服务器，也可以是通过公网或内网直连的客户端。</p>
+<p>中继服务器必须将所有的客户端定义为对等节点（peer）</p>
+<p>对等节点（peer）是路由可达的客户端，只为自己路由流量：</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">[Peer]</span>
+<span class="w">    </span><span class="c1"># Name = public-server2.example-vpn.dev</span>
+<span class="w">    </span><span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">public-server2.example-vpn.dev:51820</span>
+<span class="w">    </span><span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;public key for public-server2.example-vpn.dev&gt;</span>
+<span class="w">    </span><span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.2/32</span>
+</pre></div>
+</div>
+<p>对等节点（peer）是中继服务器，用来将流量转发到其他对等节点（peer）</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="k">[Peer]</span>
+
+<span class="w">    </span><span class="c1"># Name = public-server1.example-vpn.tld</span>
+<span class="w">    </span><span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">public-server1.example-vpn.tld:51820</span>
+<span class="w">    </span><span class="na">PublicKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;public key for public-server1.example-vpn.tld&gt;</span>
+<span class="w">    </span><span class="c1"># 路由整个 VPN 子网的流量</span>
+<span class="w">    </span><span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.1/24</span>
+<span class="w">    </span><span class="na">PersistentKeepalive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">25</span>
+</pre></div>
+</div>
+</section>
+<section id="endpoint">
+<h3>Endpoint<a class="headerlink" href="#endpoint" title="Link to this heading"></a></h3>
+<p>指定远端对等节点（peer）的公网地址。如果对等节点（peer）位于 NAT 后面或者没有稳定的公网访问地址，就忽略这个字段。通常只需要指定中继服务器的 Endpoint，当然有稳定公网 IP 的节点也可以指定。</p>
+<p>通过 IP 指定：</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">123.124.125.126:51820</span>
+</pre></div>
+</div>
+<p>通过域名指定：</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">Endpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">public-server1.example-vpn.tld:51820</span>
+</pre></div>
+</div>
+</section>
+<section id="allowedips">
+<h3>AllowedIPs<a class="headerlink" href="#allowedips" title="Link to this heading"></a></h3>
+<p>允许该对等节点（peer）发送过来的 VPN 流量中的源地址范围。同时这个字段也会作为本机路由表中 wg0 绑定的 IP 地址范围。如果对等节点（peer）是常规的客户端，则将其设置为节点本身的单个 IP；如果对等节点（peer）是中继服务器，则将其设置为可路由的子网范围。可以使用，来指定多个 IP 或子网范围。该字段也可以指定多次。</p>
+<p>当决定如何对一个数据包进行路由时，系统首先会选择最具体的路由，如果不匹配再选择更宽泛的路由。例如，对于一个发往 192.0.2.3 的数据包，系统首先会寻找地址为 192.0.2.3/32 的对等节点（peer），如果没有再寻找地址为 192.0.2.1/24 的对等节点（peer），以此类推。</p>
+<p>对等节点（peer）是常规客户端，只路由自身的流量：</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.3/32</span>
+</pre></div>
+</div>
+<p>对等节点（peer）是中继服务器，可以路由其自身的流量和它所在的内网的流量：</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="na">AllowedIPs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">192.0.2.3/32,192.168.1.1/24</span>
+</pre></div>
+</div>
+</section>
+<section id="publickey">
+<h3>PublicKey<a class="headerlink" href="#publickey" title="Link to this heading"></a></h3>
+<p>对等节点（peer）的公钥，所有节点（包括中继服务器）都必须设置。</p>
+</section>
+<section id="persistentkeepalive">
+<h3>PersistentKeepalive<a class="headerlink" href="#persistentkeepalive" title="Link to this heading"></a></h3>
+<p>如果连接是从一个位于 NAT 后面的对等节点（peer）到一个公网可达的对等节点（peer），那么 NAT 后面的对等节点（peer）必须定期发送一个出站 ping 包来检查连通性，如果 IP 有变化，就会自动更新 Endpoint。</p>
+</section>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://www.wireguard.com/">https://www.wireguard.com/</a>
+<a class="reference external" href="https://i.nickyam.com/article/wireguard-vpn">https://i.nickyam.com/article/wireguard-vpn</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../mvpgpu-sim/Index.html" class="btn btn-neutral float-left" title="GGangLiu Doc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="docker.html" class="btn btn-neutral float-right" title="Docker Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

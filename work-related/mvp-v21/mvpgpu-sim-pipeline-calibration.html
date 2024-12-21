@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVPGPU-SIM Pipeline Calibration &mdash; ggangliu-doc v0.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/_variables.scss?v=a5c9e1b9" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f1f8bc0" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f6c7d6a8"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ggangliu-doc
+              <img src="../../_static/firstai-2.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-deep-learning.html">AI (Deep Learning)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ai-embedded.html">AI Embedded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../simulator.html">Simulator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compiler.html">Compiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../computer-architecture.html">Computer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hdl.html">Hardware Description Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../open-source-project.html">Open Source Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../project.html">Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work-related.html">Work-related</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ggangliu-doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MVPGPU-SIM Pipeline Calibration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="mvpgpu-sim-pipeline-calibration">
+<h1>MVPGPU-SIM Pipeline Calibration<a class="headerlink" href="#mvpgpu-sim-pipeline-calibration" title="Link to this heading"></a></h1>
+<section id="application">
+<h2>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define DATA_SIZE (32)</span>
+
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="c1">// Simple compute kernel which computes the square of an input array </span>
+<span class="c1">//</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">KernelSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;__kernel void square(                                                       </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   __global float* input,                                              </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   __global float* output,                                             </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   const unsigned int count)                                           </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;{                                                                      </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   int i = get_global_id(0);                                           </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   if(i &lt; count)                                                       </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;       output[i] = input[i] * input[i];                                </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;   else                                                                </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;       output[i] = 0;                                                  </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;}                                                                      </span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span>\
+<span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+<span class="c1">////////////////////////////////////////////////////////////////////////////////</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="p">;</span><span class="w">                            </span><span class="c1">// error code returned from api calls</span>
+<span class="w">      </span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">DATA_SIZE</span><span class="p">];</span><span class="w">              </span><span class="c1">// original data set given to device</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">results</span><span class="p">[</span><span class="n">DATA_SIZE</span><span class="p">];</span><span class="w">           </span><span class="c1">// results returned from device</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">correct</span><span class="p">;</span><span class="w">               </span><span class="c1">// number of correct results returned</span>
+
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">global</span><span class="p">;</span><span class="w">                      </span><span class="c1">// global domain size for our calculation</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">local</span><span class="p">;</span><span class="w">                       </span><span class="c1">// local domain size for our calculation</span>
+
+<span class="w">    </span><span class="n">cl_platform_id</span><span class="w"> </span><span class="n">Platform</span><span class="p">;</span>
+<span class="w">    </span><span class="n">cl_device_id</span><span class="w"> </span><span class="n">device_id</span><span class="p">;</span><span class="w">             </span><span class="c1">// compute device id </span>
+<span class="w">    </span><span class="n">cl_context</span><span class="w"> </span><span class="n">context</span><span class="p">;</span><span class="w">                 </span><span class="c1">// compute context</span>
+<span class="w">    </span><span class="n">cl_command_queue</span><span class="w"> </span><span class="n">commands</span><span class="p">;</span><span class="w">          </span><span class="c1">// compute command queue</span>
+<span class="w">    </span><span class="n">cl_program</span><span class="w"> </span><span class="n">program</span><span class="p">;</span><span class="w">                 </span><span class="c1">// compute program</span>
+<span class="w">    </span><span class="n">cl_kernel</span><span class="w"> </span><span class="n">kernel</span><span class="p">;</span><span class="w">                   </span><span class="c1">// compute kernel</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">cl_mem</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">                       </span><span class="c1">// device memory used for the input array</span>
+<span class="w">    </span><span class="n">cl_mem</span><span class="w"> </span><span class="n">output</span><span class="p">;</span><span class="w">                      </span><span class="c1">// device memory used for the output array</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Fill our data set with random float values</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DATA_SIZE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">RAND_MAX</span><span class="p">;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Connect to a compute device</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">gpu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">err</span><span class="o">=</span><span class="n">clGetPlatformIDs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Platform</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clGetDeviceIDs</span><span class="p">(</span><span class="n">Platform</span><span class="p">,</span><span class="n">CL_DEVICE_TYPE_GPU</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to create a device group!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">    </span><span class="c1">// Create a compute context </span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateContext</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">context</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to create a compute context!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Create a command commands</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateCommandQueue</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">commands</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to create a command commands!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Create the compute program from the source buffer</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">program</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateProgramWithSource</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">KernelSource</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">program</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to create compute program!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Build the program executable</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clBuildProgram</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">2048</span><span class="p">];</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to build program executable!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">clGetProgramBuildInfo</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="n">CL_PROGRAM_BUILD_LOG</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">len</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Create the compute kernel in the program we wish to run</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">kernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateKernel</span><span class="p">(</span><span class="n">program</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;square&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">kernel</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to create compute kernel!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Create the input and output arrays in device memory for our calculation</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateBuffer</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w">  </span><span class="n">CL_MEM_READ_ONLY</span><span class="p">,</span><span class="w">  </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clCreateBuffer</span><span class="p">(</span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">CL_MEM_WRITE_ONLY</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">input</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">output</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to allocate device memory!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w">    </span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Write our data set into the input array in device memory </span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clEnqueueWriteBuffer</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span><span class="w"> </span><span class="n">input</span><span class="p">,</span><span class="w"> </span><span class="n">CL_TRUE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to write to source array!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Set the arguments to our compute kernel</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">err</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">clSetKernelArg</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">cl_mem</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">clSetKernelArg</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">cl_mem</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">output</span><span class="p">);</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">clSetKernelArg</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to set kernel arguments! %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Get the maximum work group size for executing the kernel on the device</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clGetKernelWorkGroupInfo</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="n">device_id</span><span class="p">,</span><span class="w"> </span><span class="n">CL_KERNEL_WORK_GROUP_SIZE</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">local</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">local</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to retrieve kernel work group info! %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Execute the kernel over the entire range of our 1d input data set</span>
+<span class="w">    </span><span class="c1">// using the maximum number of work group items for this device</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">global</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clEnqueueNDRangeKernel</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span><span class="w"> </span><span class="n">kernel</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">global</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">local</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to execute kernel!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Wait for the command commands to get serviced before reading back results</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">clFinish</span><span class="p">(</span><span class="n">commands</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Read back the results from the device to verify the output</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clEnqueueReadBuffer</span><span class="p">(</span><span class="w"> </span><span class="n">commands</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="n">CL_TRUE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="n">results</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="p">);</span><span class="w">  </span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">CL_SUCCESS</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error: Failed to read output array! %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Validate our results</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">correct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="w">            </span><span class="n">correct</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Print a brief summary detailing the results</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Computed &#39;%d/%d&#39; correct values!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">correct</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Shutdown and cleanup</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="n">clReleaseMemObject</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+<span class="w">    </span><span class="n">clReleaseMemObject</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+<span class="w">    </span><span class="n">clReleaseProgram</span><span class="p">(</span><span class="n">program</span><span class="p">);</span>
+<span class="w">    </span><span class="n">clReleaseKernel</span><span class="p">(</span><span class="n">kernel</span><span class="p">);</span>
+<span class="w">    </span><span class="n">clReleaseCommandQueue</span><span class="p">(</span><span class="n">commands</span><span class="p">);</span>
+<span class="w">    </span><span class="n">clReleaseContext</span><span class="p">(</span><span class="n">context</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Kernel program</p>
+<div class="highlight-s notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="n">.text</span>
+<span class="w">	</span><span class="n">.section</span><span class="w"> </span><span class="n">.mdebug.abi32</span>
+<span class="w">	</span><span class="n">.previous</span>
+<span class="w">	</span><span class="n">.file</span><span class="w">	</span><span class="s">&quot;_cl_hello&quot;</span>
+<span class="w">	</span><span class="n">.globl</span><span class="w">	</span><span class="n">square</span><span class="w">                  </span><span class="c1"># -- Begin function square</span>
+<span class="w">	</span><span class="n">.type</span><span class="w">	</span><span class="n">square</span><span class="p">,</span><span class="o">@</span><span class="n">function</span>
+<span class="w">	</span><span class="n">.ent</span><span class="w">	</span><span class="n">square</span><span class="w">                  </span><span class="c1"># @square</span>
+<span class="n">square</span><span class="o">:</span>
+<span class="w">	</span><span class="n">.frame</span><span class="w">	</span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="m">56</span><span class="p">,</span><span class="o">$</span><span class="n">ra</span>
+<span class="w">	</span><span class="n">.mask</span><span class="w"> 	</span><span class="mh">0x00008000</span><span class="p">,</span><span class="m">-4</span>
+<span class="w">	</span><span class="n">.fmask</span><span class="w">	</span><span class="mh">0x00000000</span><span class="p">,</span><span class="m">0</span>
+<span class="c1"># %bb.0:                                # %entry</span>
+<span class="w">	</span><span class="n">sub</span><span class="w">	</span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span>
+<span class="w">	</span><span class="n">add.si</span><span class="w">	</span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="m">-56</span>
+<span class="w">	</span><span class="n">st.w</span><span class="w">	</span><span class="o">$</span><span class="n">ra</span><span class="p">,</span><span class="w"> </span><span class="m">52</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">st.w</span><span class="w">	</span><span class="o">$</span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">36</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">st.w</span><span class="w">	</span><span class="o">$</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">32</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">st.w</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">add.si</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="m">0</span>
+<span class="w">	</span><span class="n">jplnk</span><span class="w">	</span>_<span class="n">Z13get_global_idj</span>
+<span class="w">	</span><span class="n">fadd</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span>
+<span class="w">	</span><span class="n">ld.w</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">36</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">setlt.u</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span>
+<span class="w">	</span><span class="n">beq</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="n">.LBB0_2</span>
+<span class="w">	</span><span class="n">jp</span><span class="w">	</span><span class="n">.LBB0_1</span>
+<span class="n">.LBB0_1</span><span class="o">:</span><span class="w">                                </span><span class="c1"># %if.then</span>
+<span class="w">	</span><span class="n">sfll.i</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span>
+<span class="w">	</span><span class="n">ld.w</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">add</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span>
+<span class="w">	</span><span class="n">ld.w</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">(</span><span class="o">$</span><span class="m">3</span><span class="p">)</span>
+<span class="w">	</span><span class="n">fmul</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span>
+<span class="n">.LBB0_2</span><span class="o">:</span><span class="w">                                </span><span class="c1"># %if.end</span>
+<span class="w">	</span><span class="n">sfll.i</span><span class="w">	</span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span>
+<span class="w">	</span><span class="n">ld.w</span><span class="w">	</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">32</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">add</span><span class="w">	</span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span>
+<span class="w">	</span><span class="n">st.w</span><span class="w">	</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">(</span><span class="o">$</span><span class="m">2</span><span class="p">)</span>
+<span class="w">	</span><span class="n">ld.w</span><span class="w">	</span><span class="o">$</span><span class="n">ra</span><span class="p">,</span><span class="w"> </span><span class="m">52</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w">	</span><span class="n">add.si</span><span class="w">	</span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="m">56</span>
+<span class="w">	</span><span class="n">jr</span><span class="w">	</span><span class="o">$</span><span class="n">ra</span>
+<span class="w">	</span><span class="n">.set</span><span class="w">	</span><span class="n">macro</span>
+<span class="w">	</span><span class="n">.set</span><span class="w">	</span><span class="n">reorder</span>
+<span class="w">	</span><span class="n">.end</span><span class="w">	</span><span class="n">square</span>
+<span class="o">$</span><span class="n">func_end0</span><span class="o">:</span>
+<span class="w">	</span><span class="n">.size</span><span class="w">	</span><span class="n">square</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="o">$</span><span class="n">func_end0</span><span class="p">)</span><span class="o">-</span><span class="n">square</span>
+<span class="w">                                        </span><span class="c1"># -- End function</span>
+
+<span class="w">	</span><span class="n">.ident</span><span class="w">	</span><span class="s">&quot;clang version 7.0.0 (tags/RELEASE_700/final) (ssh://lidajun@10.0.10.208:29418/llvm-7.0.0 cec070d24becf5467d66f106da98f501a660a4df)&quot;</span>
+<span class="w">	</span><span class="n">.section</span><span class="w">	</span><span class="s">&quot;.note.GNU-stack&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="o">@</span><span class="n">progbits</span>
+</pre></div>
+</div>
+<p>After parsing</p>
+<div class="highlight-s notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0000</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">13</span><span class="p">)</span><span class="w"> </span><span class="n">sub</span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0008</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">14</span><span class="p">)</span><span class="w"> </span><span class="n">add.si</span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="m">-56</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0010</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">15</span><span class="p">)</span><span class="w"> </span><span class="n">st.w</span><span class="o">$</span><span class="n">ra</span><span class="p">,</span><span class="w"> </span><span class="m">52</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0018</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">16</span><span class="p">)</span><span class="w"> </span><span class="n">st.w</span><span class="o">$</span><span class="m">6</span><span class="p">,</span><span class="w"> </span><span class="m">36</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0020</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">17</span><span class="p">)</span><span class="w"> </span><span class="n">st.w</span><span class="o">$</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="m">32</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0028</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">18</span><span class="p">)</span><span class="w"> </span><span class="n">st.w</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0030</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">19</span><span class="p">)</span><span class="w"> </span><span class="n">add.si</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="m">0</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0038</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">20</span><span class="p">)</span><span class="w"> </span><span class="n">jplnk_Z13get_global_idj</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0040</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">21</span><span class="p">)</span><span class="w"> </span><span class="n">fadd</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0048</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">22</span><span class="p">)</span><span class="w"> </span><span class="n">ld.w</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">36</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0050</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">23</span><span class="p">)</span><span class="w"> </span><span class="n">setlt.u</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0058</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">24</span><span class="p">)</span><span class="w"> </span><span class="n">beq</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">zero</span><span class="p">,</span><span class="w"> </span><span class="n">.LBB0_2</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0060</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">25</span><span class="p">)</span><span class="w"> </span><span class="n">jp.LBB0_1</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0068</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">27</span><span class="p">)</span><span class="w"> </span><span class="n">sfll.i</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0070</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">28</span><span class="p">)</span><span class="w"> </span><span class="n">ld.w</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0078</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">29</span><span class="p">)</span><span class="w"> </span><span class="n">add</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0080</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">30</span><span class="p">)</span><span class="w"> </span><span class="n">ld.w</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">(</span><span class="o">$</span><span class="m">3</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0088</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">31</span><span class="p">)</span><span class="w"> </span><span class="n">fmul</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">3</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0090</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">33</span><span class="p">)</span><span class="w"> </span><span class="n">sfll.i</span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">2</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x0098</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">34</span><span class="p">)</span><span class="w"> </span><span class="n">ld.w</span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="m">32</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x00a0</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">35</span><span class="p">)</span><span class="w"> </span><span class="n">add</span><span class="o">$</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="m">2</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x00a8</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">36</span><span class="p">)</span><span class="w"> </span><span class="n">st.w</span><span class="o">$</span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">(</span><span class="o">$</span><span class="m">2</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x00b0</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">37</span><span class="p">)</span><span class="w"> </span><span class="n">ld.w</span><span class="o">$</span><span class="n">ra</span><span class="p">,</span><span class="w"> </span><span class="m">52</span><span class="p">(</span><span class="o">$</span><span class="n">sp</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x00b8</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">38</span><span class="p">)</span><span class="w"> </span><span class="n">add.si</span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">sp</span><span class="p">,</span><span class="w"> </span><span class="m">56</span>
+<span class="w"> </span><span class="n">PC</span><span class="o">=</span><span class="mh">0x00c0</span><span class="w"> </span><span class="p">(</span>_<span class="n">cl_hello.s</span><span class="o">:</span><span class="m">39</span><span class="p">)</span><span class="w"> </span><span class="n">jr</span><span class="o">$</span><span class="n">ra</span>
+</pre></div>
+</div>
+</section>
+<section id="mvp-rtl-pipeline">
+<h2>MVP RTL Pipeline<a class="headerlink" href="#mvp-rtl-pipeline" title="Link to this heading"></a></h2>
+<p><img alt="pipline" src="../../_images/mvp-sp-pipeline.png" /></p>
+</section>
+<section id="mvpgpu-sim-pipeline">
+<h2>MVPGPU-SIM Pipeline<a class="headerlink" href="#mvpgpu-sim-pipeline" title="Link to this heading"></a></h2>
+<p><img alt="mvppipeline" src="../../_images/mvpgpu-sim-pipeline-flow.png" /></p>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<div class="highlight-config notranslate"><div class="highlight"><pre><span></span># high level architecture configuration
+-mvpgpu_n_gpc 1
+-mvpgpu_n_tpc_per_gpc 1
+-mvpgpu_n_sm_per_tpc 1
+-mvpgpu_n_sp_per_sm 1
+-mvpgpu_max_concurrent_kernel 8 
+
+#-mvpgpu_clock_domains in MhZ
+#&lt;Core Clock&gt;:&lt;Interconnect Clock&gt;:&lt;L2 Clock&gt;:&lt;DRAM Clock&gt;:&lt;pa_clock&gt;:&lt;rop_clock&gt;:&lt;raster_clock&gt;:&lt;texture_clock&gt;
+-mvpgpu_clock_domains 1000.0:1000.0:1000.0:800.0:1000.0:1000.0:1000.0:1000.0
+
+# Pipeline widths and number of FUs
+# IS_RF_SP,IS_RF_DP,IS_RF_INT,IS_RF_SFU,IS_RF_MEM,RF_EX_SP,RF_EX_DP,RF_EX_INT,RF_EX_SFU,RF_EX_MEM,EX_WB,IS_RF_TENSOR_CORE,RF_EX_TENSOR_CORE
+## We need to scale the number of pipeline registers to be equal to the number of SP units
+-mvpgpu_pipeline_widths 4,4,0,4,4,4,4,0,4,4,4,4,0,0
+
+-gpgpu_num_fp32_units_per_sp 4
+-gpgpu_num_int32_units_per_sp 4
+-gpgpu_num_sfu_units_per_sp 2
+-mvpgpu_num_ldst_units_per_sp 4
+
+# Instruction latencies and initiation intervals
+# &quot;ADD,MAX,MUL,MAD,DIV&quot;
+# All Div operations are executed on SFU unit
+-ptx_opcode_latency_int 3,3,3,3,3,3
+-ptx_opcode_initiation_int 0,0,0,0,0,0
+
+-ptx_opcode_latency_fp 3,3,3,3,3
+-ptx_opcode_initiation_fp 0,0,0,0,0
+
+# mvp local memory bankconflict detection
+-mvpgpu_local_mem_num_banks 8
+-mvpgpu_local_mem_read_cycle 1
+-mvpgpu_local_mem_write_cycle 1
+
+</pre></div>
+</div>
+</section>
+<section id="fe-stage">
+<h3>FE Stage<a class="headerlink" href="#fe-stage" title="Link to this heading"></a></h3>
+<p>从L1I cache中取出mem_fetch，基于该mem_fetch创建一个ifetch_buffer_t赋值给m_inst_fetch_buffer。同时将当前的cycle记录到warp中</p>
+<p>[Open Issue]</p>
+<ol class="arabic simple">
+<li><p>FE_IS 利用的ibuffer,所以在流水线寄存器中没有体现 [后续进行修正，不影响性能准确性]</p></li>
+<li><p>线程里PC</p></li>
+<li><p>WARP的PC</p></li>
+</ol>
+</section>
+<section id="is-stage">
+<h3>IS Stage<a class="headerlink" href="#is-stage" title="Link to this heading"></a></h3>
+<p>scheduler.cycle()会从warp中m_ibuffer中取出指令。之后进行冲突检测，如果没有冲突，则根据指令操作码的类型来检查IS_RF中对应的流水线寄存器是否有空的且前一条指令与当前指令不占用同一种执行单元</p>
+<section id="hazard-check">
+<h4>Hazard Check<a class="headerlink" href="#hazard-check" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>checkCollision()会检查当前指令所有用到的寄存器（包括目的寄存器和源寄存器）是否在于scoreboard中的reg_table中，如果是表示冲突，否则不冲突。</p></li>
+<li><p>Issue指令后，reserveRegister()会将该指令的目的寄存器（如果有）插入reg_table中</p></li>
+<li><p>WriteBack阶段执行完寄存器回写操作后，releaseRegister()删除reg_table中该warp对应的寄存器</p></li>
+</ul>
+</section>
+<section id="thdc">
+<h4>THDC<a class="headerlink" href="#thdc" title="Link to this heading"></a></h4>
+<p><img alt="thdc" src="../../_images/SP-THDC-Design.jpg" /></p>
+<p>运行时效果
+<img alt="thdc-running" src="../../_images/THDC-RUNNING.png" /></p>
+<p>调度算法：</p>
+<ol class="arabic simple">
+<li><p>ldst遇到load指令，stall直到那会数据继续执行；</p></li>
+<li><p>ldst遇到load指令，不stall，从流水线中清除该指令及已进入流水线的指令，阻塞该warp/线程的执行，直到所有线程阻塞，重新进入流水线（推测需要的数据已被cache，但实际情况是没有，cache大小或cache的替换策略相关）；</p></li>
+<li><p>ldst遇到load指令后，stall，并该指令进入一个buffer，直到有数据返回再继续执行，但是其他alu继续执行；</p></li>
+</ol>
+<p>[Open Issue]</p>
+<ol class="arabic simple">
+<li><p>后续流水线中会有同一个warp内指令同时出现的情况[Fixed]</p></li>
+</ol>
+</section>
+</section>
+<section id="rf-stage">
+<h3>RF Stage<a class="headerlink" href="#rf-stage" title="Link to this heading"></a></h3>
+<p>流水线寄存器m_pipeline_reg中存放的是register_set，但register_set中的regs存放又是warp_inst_t()。所以本质上上当前实现中流水线之间传递的是warp_Inst</p>
+</section>
+<section id="ex-stage">
+<h3>EX Stage<a class="headerlink" href="#ex-stage" title="Link to this heading"></a></h3>
+<p>遍历RF_EX寄存器，如果RF_EX中有指令且对应的Function Unit也是空闲的，则该指令进入该Function Unit（具体指令会给到m_dispatch_reg）。</p>
+<section id="local-memory">
+<h4>Local Memory<a class="headerlink" href="#local-memory" title="Link to this heading"></a></h4>
+</section>
+<section id="ldst-unit-cycle">
+<h4>ldst unit cycle()<a class="headerlink" href="#ldst-unit-cycle" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>ldst unit会完成load global类指令 [修改中]</p></li>
+<li><p>ldst unit中load mvp_local_memory类指令会到WB完成 [已修改]</p></li>
+</ol>
+</section>
+<section id="other-fu-cycle">
+<h4>other FU cycle()<a class="headerlink" href="#other-fu-cycle" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>如果EX_WB有空闲并且sub_pipeline_reg[0]不空，则把sub_pipeline_reg[0]中的指令送入EX_WB</p></li>
+<li><p>如果EX stage的sub流水线中还有指令，则将前一级的往后传递一级</p></li>
+<li><p>如果m_dispatch_reg不空且dispatch_delay已为0，则将该指令放入sub_pipeline_reg的起始位置</p></li>
+</ul>
+</section>
+</section>
+<section id="write-back">
+<h3>Write Back<a class="headerlink" href="#write-back" title="Link to this heading"></a></h3>
+<p>从m_pipeline_reg[EX_WB]中get_ready()指令，然后回写到m_operand_collector。Scoreboard释放已回写的寄存器。warp指令完成。清空寄存器。</p>
+<ul class="simple">
+<li><p>执行寄存器回写 m_operand_collector.writeback(*pipe_reg);</p></li>
+<li><p>m_scoreboard释放已被回写的寄存器</p></li>
+<li><p>更新状态warp的状态</p></li>
+</ul>
+</section>
+</section>
+<section id="log-analysis">
+<h2>Log Analysis<a class="headerlink" href="#log-analysis" title="Link to this heading"></a></h2>
+<section id="l1d-cache-perfect-hit">
+<h3>1. L1D Cache Perfect Hit<a class="headerlink" href="#l1d-cache-perfect-hit" title="Link to this heading"></a></h3>
+<p><img alt="perfect hit" src="../../_images/2023-09-26_091030.png" /></p>
+</section>
+<section id="completed-instruction-per-cycle">
+<h3>Completed Instruction Per Cycle<a class="headerlink" href="#completed-instruction-per-cycle" title="Link to this heading"></a></h3>
+<p><img alt="completed instruction" src="../../_images/2023-09-06_145727.png" /></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, ggangliu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
